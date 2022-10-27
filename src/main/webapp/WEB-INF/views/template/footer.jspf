@@ -1,0 +1,42 @@
+
+<nav class="navbar bg-success rounded fixed-bottom">
+    <div class="container-fluid">
+        <div class="col-md-12 justify-content-around row">
+            <div class="col-md-6">
+                <a class="navbar-brand text-light" href="#"><span class="justify-content-start">Copyright &copy; 2022</span></a>
+            </div>
+            <div class="col-md-6 d-flex flex-row-reverse text-light">
+                <span class="justify-content-end">Mneulite Investments</span>
+            </div>
+        </div>
+
+    </div>
+</nav>
+</div>
+</div> 
+<script type="text/javascript" src="<c:url value="js/jquery-3.6.1.min.js" /> "></script>
+<script src="<c:url value="bootstrap-5.2/js/bootstrap.bundle.min.js" /> "></script>
+<script src="<c:url value="datatables/dataTables.min.js" /> "></script>
+<script src="<c:url value="datatables/buttons.bootstrap5.min.js" /> "></script>
+<script src="<c:url value="datatables/dataTables.bootstrap5.min.js" /> "></script>
+<script src="<c:url value="datatables/responsive.bootstrap5.min.js" /> "></script>
+<script src="<c:url value="datatables/rowReorder.bootstrap5.min.js" /> "></script>
+<script src="<c:url value="datatables/scroller.bootstrap5.min.js" /> "></script>
+<script src="<c:url value="datatables/pdfmake.min.js" /> "></script>
+<script src="<c:url value="datatables/vfs_fonts.js" /> "></script>
+<script src="<c:url value="datatables/dataTables.pageResize.js" /> "></script>
+<script src="<c:url value="jquery-ui-1.11.4/jquery-ui.min.js" /> "></script>
+<script src="<c:url value="jquery-validate/jquery.validate.min.js" /> "></script>
+<script src="<c:url value="js/product.js" /> "></script>
+<script src="<c:url value="js/product-search.js" /> "></script>
+<script src="<c:url value="js/sale.js" /> "></script>
+<script src="<c:url value="js/organization.js" /> "></script>
+<script src="<c:url value="js/businessUnit.js" /> "></script>
+<script src="<c:url value="js/customer.js" /> "></script>
+<script src="<c:url value="js/supplier.js" /> "></script>
+<%--<script src="<c:url value="js/invoice.js" /> "></script>--%>
+<%--<script src="<c:url value="js/quotation.js" /> "></script>--%>
+
+
+</body>
+</html>

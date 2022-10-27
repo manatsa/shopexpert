@@ -1,0 +1,10 @@
+package com.mana.limo.repo;
+
+import com.mana.limo.domain.Supplier;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+@Repository
+public interface SupplierRepo extends JpaRepository<Supplier, String> {
+
+}

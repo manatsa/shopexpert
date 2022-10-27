@@ -1,0 +1,11 @@
+
+<div class="container">
+    <div class="padded">
+        <div class="alert alert-${msg.type} alert-dismissible fade show <c:if test="${msg==null}"> visually-hidden</c:if>" role="alert">
+            ${msg.data}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    </div>
+</div>
+
+

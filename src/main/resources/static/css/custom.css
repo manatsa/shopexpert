@@ -1,0 +1,72 @@
+.bold{
+    font-weight: 700;
+}
+
+.indented{
+    padding-left: 50px;
+    padding-right: 50px;
+    border-radius: 10px;
+}
+
+.rounded{
+    margin-top: 2px;
+    border-radius: 20%;
+}
+
+
+.rounded-body{
+    margin-top: 5px;
+    border-radius: 10px;
+    padding:10px;
+}
+
+.modern{
+    border-width: 0px;
+    border-bottom: 2px solid green;
+}
+
+.padded{
+    margin-top: 5px;
+    padding:5px;
+}
+.vertical-padded{
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+}
+
+.heavily-padded{
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+.row_selected td {
+    background-color: grey !important; /* Add !important to make sure override datables base styles */
+}
+.table tr.row_selected td{
+    background-color: grey !important;
+}
+
+table.dataTable tbody tr.selected {
+    color: white !important;
+    background-color: green !important;
+}
+
+table.dataTable.productSearchList tbody th, table.dataTable.productSearchList tbody td, table.dataTable.productSearchList {
+    padding: 1px 1px;
+    font-size: smaller;
+}
+
+.bg-transparent, .bg-transparent:hover, .bg-transparent:active, .bg-transparent:visited{
+    background-color: transparent !important;
+    border: 2px solid transparent !important;
+    border-radius: 10%;
+}
+
+.product-search{
+    background-color: lightgrey;
+    padding: 20px;
+    border: 2px solid darkslategrey;
+    border-radius: 40px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}

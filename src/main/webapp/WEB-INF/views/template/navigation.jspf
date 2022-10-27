@@ -1,0 +1,100 @@
+<section class="container-fluid">
+    <nav class="navbar navbar-expand-lg bg-success text-white indented fixed-top">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/limousine">
+                <img src="images/limo.jfif" class="rounded" alt="Logo" width="90" height="40" />
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle text-white bold" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Inventory Admin
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="/limousine/product-list">Products</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li class="justify-content-center bg-success bg-opacity-50 text-white bold"><span>&nbsp;SUPPLIER ADMIN</span></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="/limousine/suppliers-list">Suppliers</a></li>
+                        </ul>
+                    </li>
+
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle text-white bold" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Customer Admin
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="/limousine/customers-list">Customers</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li class="justify-content-center bg-success bg-opacity-50 text-white bold"><span>&nbsp;COMPANY ADMIN</span></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="/limousine/orgs-list">Organizations</a></li>
+                            <li><a class="dropdown-item" href="/limousine/units-list">Business Units</a></li>
+                        </ul>
+                    </li>
+
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle text-white bold" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Accounting Admin
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="/limousine/sales-list">Sales</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li class="justify-content-center bg-success bg-opacity-50 text-white bold"><span>&nbsp;QUOTES ADMIN</span></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="/limousine/quotes-lite">Quotations</a></li>
+                            <li><a class="dropdown-item" href="/limousine/invoices-list">Invoices</a></li>
+                        </ul>
+                    </li>
+
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle text-white bold" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Reports Admin
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="#">Products Report</a></li>
+                            <li><a class="dropdown-item" href="#">Customers Report</a></li>
+                            <li><a class="dropdown-item" href="#">Suppliers Report</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li class="justify-content-center bg-success bg-opacity-50 text-white bold"><span>&nbsp;INVENTORY REPORTS</span></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="#">Inventory Report</a></li>
+                            <li><a class="dropdown-item" href="#">Reorder Levels Report</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li class="justify-content-center bg-success bg-opacity-50 text-white bold"><span>&nbsp;FINANCIAL REPORTS </span></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="#">Sales Report</a></li>
+                            <li><a class="dropdown-item" href="#">Quotations Report</a></li>
+                            <li><a class="dropdown-item" href="#">Receipts Report</a></li>
+
+                        </ul>
+                    </li>
+                </ul>
+
+                <ul class="navbar-nav d-flex">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle bold text-white" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            ${user.firstName} ${user.lastName}
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="#">Profile Details</a></li>
+                            <li><a class="dropdown-item" href="#">Change Password</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="#">Log Out</a></li>
+                        </ul>
+                    </li>
+                </ul>
+
+            </div>
+        </div>
+    </nav>
+</section>
+
+<section class="container">
+    <nav class="navbar bg-dark bg-opacity-25 justify-content-center rounded">
+        <span class="text-success  bold " style="font-size: large">${pageTitle}</span>
+    </nav>
+</section>
