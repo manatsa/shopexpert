@@ -9,6 +9,7 @@ import com.mana.limo.service.UserService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -23,6 +24,7 @@ import java.util.UUID;
  */
 
 @Service
+@Transactional
 public class SaleServiceImpl implements SaleService {
     @Autowired
     SaleRepo saleRepo;
@@ -40,24 +42,30 @@ public class SaleServiceImpl implements SaleService {
     }
 
     @Override
+    public List<Sale> getAllActiveSales() {
+        return saleRepo.getAllByActiveOrderByReceiptNumberAsc(Boolean.TRUE);
+    }
+
+    @Override
     public Sale Save(Sale sale) {
         if(sale!=null){
-            sale.setCreatedBy(entityManager.find(User.class,userService.getCurrentUser().getId()));
-            sale.setDateCreated(new Date());
+//            sale.setCreatedBy(entityManager.find(User.class,userService.getCurrentUser().getId()));
+//            sale.setDateCreated(new Date());
             sale.setId(UUID.randomUUID().toString());
             return saleRepo.save(sale);
         }
         return null;
     }
 
+    @Transactional
     @Override
     public Sale update(Sale sale) {
         Sale target=null;
         if(sale!=null && sale.getId()!=null){
             target=entityManager.find(Sale.class, sale.getId());
-            target.setModifiedBy(userService.getCurrentUser());
+//            sale.setModifiedBy(entityManager.find(User.class,userService.getCurrentUser().getId()));
             BeanUtils.copyProperties(sale, target);
-            target.setDateModified(new Date());
+//            target.setDateModified(new Date());
             return entityManager.merge(target);
         }
 
@@ -66,7 +74,7 @@ public class SaleServiceImpl implements SaleService {
 
     @Override
     public Sale get(String id) {
-        return null;
+        return saleRepo.getASaleById(id);
     }
 
     @Override

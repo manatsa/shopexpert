@@ -70,7 +70,7 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public Product get(String id) {
         if(id!=null)
-        return repo.getReferenceById(id);
+        return repo.findById(id).isPresent()?repo.findById(id).get():null;
         else{
             throw new IllegalArgumentException("Id cannot be empty!");
         }

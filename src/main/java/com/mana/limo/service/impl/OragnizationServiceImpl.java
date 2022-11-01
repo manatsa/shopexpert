@@ -46,8 +46,8 @@ public class OragnizationServiceImpl implements OrganizationService {
 
     @Override
     public Organization Save(Organization organization) {
-            organization.setCreatedBy(entityManager.find(User.class,userService.getCurrentUser().getId()));
-            organization.setDateCreated(new Date());
+//            organization.setCreatedBy(entityManager.find(User.class,userService.getCurrentUser().getId()));
+//            organization.setDateCreated(new Date());
             organization.setId(UUID.randomUUID().toString());
             return repo.save(organization);
     }
@@ -56,13 +56,13 @@ public class OragnizationServiceImpl implements OrganizationService {
     @Override
     public Organization update(Organization organization) {
         Organization target=null;
-        User user=userService.get(organization.getCreatedBy().getId());
+//        User user=userService.get(organization.getCreatedBy().getId());
         if(organization!=null && organization.getId()!=null){
             target=entityManager.find(Organization.class, organization.getId());
-            organization.setModifiedBy(userService.getCurrentUser());
+//            organization.setModifiedBy(userService.getCurrentUser());
             BeanUtils.copyProperties(organization, target);
-            target.setDateModified(new Date());
-            target.setCreatedBy(user);
+//            target.setDateModified(new Date());
+//            target.setCreatedBy(user);
             return entityManager.merge(target);
         }
 

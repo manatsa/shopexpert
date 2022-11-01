@@ -1,5 +1,6 @@
 package com.mana.limo.service.impl;
 
+import com.mana.limo.domain.Customer;
 import com.mana.limo.domain.User;
 import com.mana.limo.dto.SearchDTO;
 import com.mana.limo.repo.UserRepo;
@@ -7,6 +8,7 @@ import com.mana.limo.service.UserRoleService;
 import com.mana.limo.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -57,52 +59,44 @@ public class UserServiceImpl implements UserService {
             throw new IllegalStateException("Item to be deleted is in an inconsistent state");
         }
         t.setActive(Boolean.FALSE);
-        t.setDeleted(Boolean.TRUE);
         userRepo.save(t);
     }
 
-    @Override
-    public List<User> getPageable() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
 
     @Override
     @Transactional
-    public User save(User t) {
+    public User Save(User t) {
         if (t.getId() == null) {
-            //t.setId(UUIDGen.generateUUID());
-            t.setCreatedBy(getCurrentUser());
-            t.setDateCreated(new Date());
             BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
             String hashedPassword = encoder.encode(t.getPassword());
             t.setPassword(hashedPassword);
             return userRepo.save(t);
         }
-        t.setModifiedBy(getCurrentUser());
-        t.setDateModified(new Date());
         return userRepo.save(t);
     }
 
     @Override
     @Transactional
     public User changePassword(User t) {
-        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(8);
         String hashedPassword = encoder.encode(t.getPassword());
         t.setPassword(hashedPassword);
-        t.setModifiedBy(getCurrentUser());
-        t.setDateModified(new Date());
         return userRepo.save(t);
     }
 
+    @Transactional
     @Override
-    public Boolean checkDuplicate(User current, User old) {
-        if (current.getId() == null) {
-            if (findByUserName(current.getUserName()) != null) {
-                return Boolean.TRUE;
-            }
+    public User update(User user) {
+        User target=null;
+        if(user!=null && user.getId()!=null){
+            target=entityManager.find(User.class, user.getId());
+            BeanUtils.copyProperties(user, target);
+            return entityManager.merge(target);
         }
-        return Boolean.FALSE;
+
+        return null;
     }
+
 
     @Override
     public User findByUserName(String name) {
@@ -149,69 +143,5 @@ public class UserServiceImpl implements UserService {
         return userRepo.findByNames(names[0], names[1]);
     }
 
-   /* @Override
-    public List<User> getUsers(SearchDTO dto) {
-        StringBuilder builder = new StringBuilder("Select Distinct u from User u inner join u.userRoles");
-        int position = 0;
-        if (dto.getProvince() != null) {
-            if (position == 0) {
-                builder.append(" where u.province=:province");
-                position++;
-            } else {
-                builder.append(" and u.province=:province");
-            }
-        }
-        if (dto.getDistrict() != null) {
-            if (position == 0) {
-                builder.append(" where u.district=:district");
-                position++;
-            } else {
-                builder.append(" and u.district=:district");
-            }
-        }
-        if (dto.getUserType() != null) {
-            if (position == 0) {
-                builder.append(" where u.userType=:userType");
-                position++;
-            } else {
-                builder.append(" and u.userType=:userType");
-            }
-        }
-        if (dto.getUserLevel() != null) {
-            if (position == 0) {
-                builder.append(" where u.userLevel=:userLevel");
-                position++;
-            } else {
-                builder.append(" and u.userLevel=:userLevel");
-            }
-        }
-        if (dto.getUserRoles() != null && !dto.getUserRoles().isEmpty()) {
-            if (position == 0) {
-                builder.append(" where :userRoles member of u.userRoles");
-                position++;
-            } else {
-                builder.append(" and :userRoles member of u.userRoles");
-            }
-        }
-        builder.append(" order by u.lastName, u.firstName ASC");
-        TypedQuery<User> query = entityManager.createQuery(builder.toString(), User.class);
-        if (dto.getProvince() != null) {
-            query.setParameter("province", dto.getProvince());
-        }
-        if (dto.getDistrict() != null) {
-            query.setParameter("district", dto.getDistrict());
-        }
-        if (dto.getUserType() != null) {
-            query.setParameter("userType", dto.getUserType());
-        }
-        if (dto.getUserLevel() != null) {
-            query.setParameter("userLevel", dto.getUserLevel());
-        }
-        if (dto.getUserRoles() != null && !dto.getUserRoles().isEmpty()) {
-            query.setParameter("userRoles", dto.getUserRoles());
-        }
-        logger.info("Query statement here \n\n\n " + builder.toString());
-        System.out.println("Query statement here \n\n\n " + builder.toString());
-        return query.getResultList();
-    }*/
+
 }

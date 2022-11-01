@@ -1,81 +1,65 @@
-<%--<%@include file="template/header.jspf" %>--%>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" type="text/css" />
-<!-- start: Favicon -->
-<%--<link rel="shortcut icon" href="<c:url value="../../resources/login/img/favicon.ico" />">--%>
-<!-- end: Favicon -->
-<%--<link href="css/custom.css" type="text/css"
-      rel="stylesheet">
-<link href="css/custom.login.css" rel="stylesheet" type="text/css" />--%>
-<script src="https://code.jquery.com/jquery-3.6.1.min.js" type="text/javascript"></script>
-<%--
-<style>
-    .sidebar-nav{
-        display: none;
-    }
-    #page-wrapper {
-        margin: 0 ! important;
-    }
-    .make-scroll{
-        height: 445px;
-        overflow: scroll;
-    }
-    .fa-caret-down, .fa-user, .fa-envelope{
-        display: none;
-    }
-</style>
---%>
+<%@include file="template/header.jspf" %>
 
-<div class="row">
-    <div class="col-lg-12">
-        <div class="row">
-            <div class="col-lg-2">
+<div class="mui-container d-flex mui--align-middle justify-content-center" >
+    <div class="d-flex mui-col-md-5 d-flex justify-content-center" style="border: 1px solid green; border-radius: 20px;margin-top: 60px">
 
+       <%-- <form:form class="mui-form mui-col-md-12" method="post" action="${pageContext.request.contextPath}/logins">
+            <legend  class="text-danger bold" style="margin-bottom: 10px; margin-top: 20px"><i class="fa fa-key text-danger"></i> Please Login</legend>
+            <hr style="border: 0.8px solid green; width: 100%"/>
+                <span class="mui--text-danger ">${errorMsg}</span>
+            <div class="mui-textfield mui-textfield--float-label heavily-padded">
+                <input type="text" id="username" name="username" required autofocus>
+                <label>Your Username</label>
             </div>
-            <div class="col-lg-4">
-                <img src="images/aids-logo.png"  />
+            <div class="mui-textfield mui-textfield--float-label heavily-padded">
+                <input type="password" id="password" name="password" required>
+                <label>Your Password</label>
             </div>
-            <div class="col-lg-2">
+            <input name="_csrf" type="hidden" value="4b07e915-905d-4c04-a88f-e85910fedf36" />
+            <div class="d-flex justify-content-between mui-row mui-col-md-12 text-white" style="margin-bottom: 30px;">
+                <a href="/" class="mui-btn mui-btn--raised mui-btn--danger rounded"><i class="fa fa-undo"></i> Cancel</a>
+                <button type="submit" class="mui-btn mui-btn--raised bg-success text-white rounded"><i class="fa fa-unlock"></i> Login</button>
+            </div>
+        </form:form>--%>
 
-            </div>
-            <div class="col-lg-4">
-                <img src="images/applogo.png"   />
-            </div>
+    <form:form class="mui-form mui-col-md-12" action="${pageContext.request.contextPath}/logins" method="post">
+        <br/>
+        <h3  class="text-danger bold" style="margin-bottom: 10px; margin-top: 20px"><i class="fa fa-key text-danger"></i> Please Login</h3>
+        <br/>
+        <div class="mui-textfield mui-textfield--float-label heavily-padded">
+            <input type="text" id="username" name="username" required autofocus>
+            <label>Your Username</label>
         </div>
+        <br>
+        <div class="mui-textfield mui-textfield--float-label heavily-padded">
+            <input type="password" id="password" name="password" required>
+            <label>Your Password</label>
+        </div>
+        <br>
+        <div class="d-flex justify-content-between mui-row mui-col-md-12 text-white" style="margin-bottom: 30px;">
+            <a href="/" class="mui-btn mui-btn--raised mui-btn--danger rounded"><i class="fa fa-undo"></i> Cancel</a>
+            <button type="submit" class="mui-btn mui-btn--raised bg-success text-white rounded"><i class="fa fa-unlock"></i> Login</button>
+        </div>
+        <br/>
+        <br/>
+    </form:form>
+
     </div>
 </div>
-<div class="row-fluid">
-    <div class="row-fluid">
-        <div class="login-box">
-            <div class="icons">
-                <a href="index.html"><i class="halflings-icon home"></i></a>
-                <a href="#"><i class="halflings-icon cog"></i></a>
+
+
+<nav class="navbar bg-success rounded fixed-bottom">
+    <div class="container-fluid">
+        <div class="col-md-12 justify-content-around row">
+            <div class="col-md-6">
+                <a class="navbar-brand text-light" href="/limousine"><span class="justify-content-start" style="font-size: small"> Copyright &copy; 2022</span></a>
             </div>
-            <h2>Login to your account</h2>
-<%--            <%@include file="template/message.jspf" %>--%>
-            <form class="form-horizontal"  method="post">
-                <fieldset>
-                    <div class="input-prepend" title="Username">
-                        <span class="add-on"><i class="halflings-icon user"></i></span>
-                        <input class="input-large span10" name='j_username' id="username" type="text" placeholder="type username"/>
-                    </div>
-                    <div class="clearfix"></div>
-                    <div class="input-prepend" title="Password">
-                        <span class="add-on"><i class="halflings-icon lock"></i></span>
-                        <input class="input-large span10" name='j_password' id="password" type="password" placeholder="type password"/>
-                    </div>
-                    <div class="clearfix"></div>							
-                    <label class="remember" for="remember"><input type="checkbox" id="remember" />Remember me</label>
-                    <div class="button-login">	
-                        <button type="submit" class="btn btn-primary">Login</button>
-                    </div>
-                    <div class="clearfix"></div>
-                </fieldset>
-            </form>
+            <div class="col-md-6 d-flex flex-row-reverse text-light">
+                <span class="justify-content-end">Mneulite Investments</span>
+            </div>
         </div>
+
     </div>
-</div>
-<%@include file="template/footer.jspf" %>
-<script type="text/javascript">
-    $("#username").focus();
-    $("#toggle-rem-side-bar").remove();
-</script>
+</nav>
+
+

@@ -27,7 +27,15 @@ import java.util.List;
  * Package Name :: com.mana.limo.service
  */
 
-public interface UserService extends GenericService<User> {
+public interface UserService {
+
+    public User get(String id);
+
+    public List<User> getAll();
+
+    public User Save(User user);
+
+    public void delete(User user);
 
     public User findByUserName(String name);
 
@@ -37,7 +45,7 @@ public interface UserService extends GenericService<User> {
     
     public User changePassword(User t);
     
-//    public List<User> getUsers(SearchDTO dto);
+    public User update(User user);
     
     public List<User> searchUsers(String [] names);
 

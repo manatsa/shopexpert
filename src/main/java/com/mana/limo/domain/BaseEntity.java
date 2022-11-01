@@ -21,6 +21,13 @@ import com.mana.limo.domain.enums.RecordSource;
 import com.mana.limo.domain.enums.Status;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
+import org.springframework.data.annotation.CreatedBy;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedBy;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
@@ -33,33 +40,43 @@ import java.util.Date;
  * Package Name :: com.mana.limo.domain
  */
 
-@Data
+@Getter
+@Setter
 @MappedSuperclass
-@JsonIgnoreProperties(value = {"version"})
+@EntityListeners(AuditingEntityListener.class)
 abstract public class BaseEntity implements Serializable {
     @Id
     private String id;
     private Status status;
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
+
     @JsonIgnore
+    @CreatedBy
     @JoinColumn(name="created_by")
+    @ManyToOne(fetch = FetchType.LAZY)
     private User createdBy;
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
+
     @JsonIgnore
+    @LastModifiedBy
     @JoinColumn(name="modified_by")
+    @ManyToOne(fetch = FetchType.LAZY)
     private User modifiedBy;
+
+    @CreatedDate
+    @Column(updatable = false)
     @Temporal(TemporalType.DATE)
     @DateTimeFormat(pattern = "dd-MM-yyyy")
     private Date dateCreated;
+
+    @LastModifiedDate
     @Temporal(TemporalType.DATE)
     @DateTimeFormat(pattern = "dd-MM-yyyy")
     private Date dateModified;
+
     @Version
     private Long version;
     private Boolean active = Boolean.TRUE;
-    private Boolean deleted = Boolean.FALSE;
     @Enumerated
-    private RecordSource recordSource = RecordSource.MOBILE_APP;
+    private RecordSource recordSource = RecordSource.WEB_APP;
     public BaseEntity() {
     }
     public BaseEntity(String id) {

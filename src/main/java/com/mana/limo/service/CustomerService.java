@@ -8,6 +8,10 @@ public interface CustomerService {
 
     public List<Customer> getAllCustomers();
 
+    public List<Customer> searchActiveCustomers(String term);
+
+    public Customer searchCustomerByName(String name);
+
     public Customer Save(Customer supplier);
 
     public Customer update(Customer supplier);

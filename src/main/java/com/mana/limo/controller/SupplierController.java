@@ -20,6 +20,7 @@ import org.springframework.web.context.annotation.RequestScope;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.util.List;
 import java.util.stream.Collectors;
 
 /**
@@ -45,7 +46,9 @@ public class SupplierController {
     @RequestMapping("suppliers-list")
     public String getProductList(Model model,HttpServletRequest request){
         model.addAttribute("pageContext", request.getContextPath());
+        List<String> privileges=user.getUserRoles().stream().map(role->role.getPrivileges().stream().map(privilege -> privilege.getPrintName())).collect(Collectors.toList()).stream().map(stringStream -> stringStream.collect(Collectors.joining(","))).collect(Collectors.toList());
         model.addAttribute("user", user);
+        model.addAttribute("privileges",privileges );
         model.addAttribute("title", "Suppliers List");
         model.addAttribute("pageTitle", Constants.TITLE+" :: Suppliers List");
         return "suppliers/list";
@@ -57,7 +60,9 @@ public class SupplierController {
         model.addAttribute("command", supplier==null?new Supplier():supplier);
         model.addAttribute("statuses", Status.values());
         model.addAttribute("types", ExternalType.values());
+        List<String> privileges=user.getUserRoles().stream().map(role->role.getPrivileges().stream().map(privilege -> privilege.getPrintName())).collect(Collectors.toList()).stream().map(stringStream -> stringStream.collect(Collectors.joining(","))).collect(Collectors.toList());
         model.addAttribute("user", user);
+        model.addAttribute("privileges",privileges );
         model.addAttribute("title", "Suppliers List");
         model.addAttribute("pageTitle", Constants.TITLE+" :: Suppliers List");
         return "suppliers/item";
@@ -66,13 +71,16 @@ public class SupplierController {
     @PostMapping("/suppliers-creation")
     public String makeProduct(Model model, @ModelAttribute("item") @Valid Supplier supplier, BindingResult result){
         model.addAttribute("msg", new Message("Supplier saved successfully!", MsgType.success));
+        List<String> privileges=user.getUserRoles().stream().map(role->role.getPrivileges().stream().map(privilege -> privilege.getPrintName())).collect(Collectors.toList()).stream().map(stringStream -> stringStream.collect(Collectors.joining(","))).collect(Collectors.toList());
         model.addAttribute("user", user);
+        model.addAttribute("privileges",privileges );
         model.addAttribute("title", "Supplier List");
         model.addAttribute("pageTitle", Constants.TITLE+" :: Supplier List");
         if(result.hasErrors()){
             model.addAttribute("command", supplier);
             model.addAttribute("statuses", Status.values());
             model.addAttribute("user", user);
+            model.addAttribute("privileges",privileges );
             model.addAttribute("title", "Suppliers List");
             model.addAttribute("pageTitle", Constants.TITLE+" :: Suppliers List");
             model.addAttribute("msg", new Message(result.getAllErrors().stream().map(error->error.toString()).collect(Collectors.joining("\n")), MsgType.danger));

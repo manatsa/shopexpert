@@ -20,6 +20,7 @@ import org.springframework.web.context.annotation.RequestScope;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.util.List;
 import java.util.stream.Collectors;
 
 /**
@@ -45,7 +46,9 @@ public class CustomerController {
     @RequestMapping("customers-list")
     public String getProductList(Model model,HttpServletRequest request){
         model.addAttribute("pageContext", request.getContextPath());
+        List<String> privileges=user.getUserRoles().stream().map(role->role.getPrivileges().stream().map(privilege -> privilege.getPrintName())).collect(Collectors.toList()).stream().map(stringStream -> stringStream.collect(Collectors.joining(","))).collect(Collectors.toList());
         model.addAttribute("user", user);
+        model.addAttribute("privileges",privileges );
         model.addAttribute("title", "Customers List");
         model.addAttribute("pageTitle", Constants.TITLE+" :: Customers List");
         return "customers/list";
@@ -57,7 +60,9 @@ public class CustomerController {
         model.addAttribute("command", customer==null?new Customer():customer);
         model.addAttribute("statuses", Status.values());
         model.addAttribute("types", ExternalType.values());
+        List<String> privileges=user.getUserRoles().stream().map(role->role.getPrivileges().stream().map(privilege -> privilege.getPrintName())).collect(Collectors.toList()).stream().map(stringStream -> stringStream.collect(Collectors.joining(","))).collect(Collectors.toList());
         model.addAttribute("user", user);
+        model.addAttribute("privileges",privileges );
         model.addAttribute("title", "Customers List");
         model.addAttribute("pageTitle", Constants.TITLE+" :: Customers List");
         return "customers/item";
@@ -66,13 +71,16 @@ public class CustomerController {
     @PostMapping("/customers-creation")
     public String makeProduct(Model model, @ModelAttribute("item") @Valid Customer customer, BindingResult result){
         model.addAttribute("msg", new Message("Customer saved successfully!", MsgType.success));
+        List<String> privileges=user.getUserRoles().stream().map(role->role.getPrivileges().stream().map(privilege -> privilege.getPrintName())).collect(Collectors.toList()).stream().map(stringStream -> stringStream.collect(Collectors.joining(","))).collect(Collectors.toList());
         model.addAttribute("user", user);
+        model.addAttribute("privileges",privileges );
         model.addAttribute("title", "Customer List");
         model.addAttribute("pageTitle", Constants.TITLE+" :: Customer List");
         if(result.hasErrors()){
             model.addAttribute("command", customer);
             model.addAttribute("statuses", Status.values());
             model.addAttribute("user", user);
+            model.addAttribute("privileges",privileges );
             model.addAttribute("title", "Customers List");
             model.addAttribute("pageTitle", Constants.TITLE+" :: Customers List");
             model.addAttribute("msg", new Message(result.getAllErrors().stream().map(error->error.toString()).collect(Collectors.joining("\n")), MsgType.danger));

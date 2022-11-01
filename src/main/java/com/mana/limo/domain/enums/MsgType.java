@@ -21,7 +21,7 @@ package com.mana.limo.domain.enums;
  */
 public enum MsgType {
 
-    success(1), danger(2);
+    success(1), danger(2), warning(3);
 
     private final Integer code;
 
@@ -39,6 +39,8 @@ public enum MsgType {
                 return success;
             case 2:
                 return danger;
+            case 3:
+                return warning;
             default:
                 throw new IllegalArgumentException("Illegal parameter passed to method :"+code);
         }

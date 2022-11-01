@@ -6,6 +6,8 @@ import java.util.List;
 
 public interface SaleService {
     public List<Sale> getAllSales();
+
+    public List<Sale> getAllActiveSales();
     public Sale Save(Sale sale);
 
     public Sale update(Sale sale);

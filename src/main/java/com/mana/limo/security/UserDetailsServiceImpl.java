@@ -30,6 +30,7 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
@@ -45,23 +46,20 @@ import java.util.Set;
 @Service
 @Slf4j
 public class UserDetailsServiceImpl implements org.springframework.security.core.userdetails.UserDetailsService {
-    
+
     final Logger logger = LoggerFactory.getLogger(UserDetailsServiceImpl.class);
-    
+
     @Resource
     private UserService userService;
     @Autowired
     private UserRoleService userRoleService;
 
-    @Override
-    public UserDetails loadUserByUsername(String userName)
-            throws UsernameNotFoundException {
 
-        //log.info("Loading user record for user name: {}", userName);
+    @Override
+    public UserDetails loadUserByUsername(String userName)throws UsernameNotFoundException {
         UserDetails userDetails = null;
 
         com.mana.limo.domain.User user =  userService.findByUserName(userName);
-        //log.error("Loading user record for user: {}", user);
 
         if (user != null) {
             String password = user.getPassword();
@@ -70,13 +68,12 @@ public class UserDetailsServiceImpl implements org.springframework.security.core
             List<GrantedAuthority> authorities = new ArrayList<>();
             roles.stream().forEach(role-> {
                 roles.stream().forEach(userRole -> {
-                    Set<Privilege> privileges=userRole.getPrivileges();
-                    privileges.stream().forEach(privilege -> {
-                        authorities.add(new SimpleGrantedAuthority(privilege.getName()));
-                    });
+                    authorities.add(new SimpleGrantedAuthority(role.getName()));
                 });
             });
             userDetails = new User(userName, password, authorities);
+
+//            System.err.println("********************* \n "+userDetails);
 
         } else {
             // If username not found, throw exception

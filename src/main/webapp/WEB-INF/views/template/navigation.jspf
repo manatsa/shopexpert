@@ -1,94 +1,217 @@
-<section class="container-fluid">
+<section class="container-fluid" style="margin-top: 20px;">
+
+    <div class="modal .modal-lg fade" id="ChangePasswordModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header bg-success">
+                    <h5 class="modal-title" >${user.firstName} ${user.lastName}:: Change Password</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3 form-floating">
+                        <input type="password" class="form-control modern" id="passwd" minlength="5" />
+                        <label for="passwd">Enter New Password</label>
+                    </div>
+                </div>
+                <div class="modal-footer d-flex justify-content-between">
+                    <button type="button" class="btn btn-outline-success"  data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-outline-success" onclick="changePassword()"  data-bs-dismiss="modal">Change</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal .modal-lg fade" id="userProfileModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header bg-success d-flex justify-content-between">
+                    <h5 class="modal-title" id="staticBackdropLabel">${user.firstName} ${user.lastName} Profile</h5>
+                    <button type="button" class="btn-close pull-right" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <table class="table table-responsive  bg-light table-striped" style="width: 100%">
+                        <thead>
+                            <th>PROPERTY</th>
+                            <th>PROPERTY VALUE</th>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>First Name</td>
+                                <td>${user.firstName}</td>
+                            </tr>
+                            <tr>
+                                <td>Last Name</td>
+                                <td>${user.lastName}</td>
+                            </tr>
+                            <tr>
+                                <td>Username</td>
+                                <td>${user.userName}</td>
+                            </tr>
+                            <tr>
+                                <td>Username</td>
+                                <td>${user.userLevel}</td>
+                            </tr>
+                            <tr>
+                                <td>Roles</td>
+                                <td>${user.userRoles}</td>
+                            </tr>
+                            <tr>
+                                <td>Privileges</td>
+                                <td>${privileges}</td>
+                            </tr>
+                            <tr>
+                                <td>Date Created</td>
+                                <td>${user.dateCreated}</td>
+                            </tr>
+                            <tr>
+                                <td>Status</td>
+                                <td>${user.status}</td>
+                            </tr>
+
+                        </tbody>
+                    </table>
+                </div>
+                <div class="modal-footer d-flex justify-content-between">
+                    <button type="button" class="btn btn-outline-success" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-outline-success"   data-bs-dismiss="modal">OK</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <nav class="navbar navbar-expand-lg bg-success text-white indented fixed-top">
         <div class="container-fluid">
             <a class="navbar-brand" href="/limousine">
-                <img src="images/limo.jfif" class="rounded" alt="Logo" width="90" height="40" />
+                <img src="<c:url value="/resources/images/limo.jfif"/> " class="rounded" alt="Logo" width="90" height="40" />
+                <sec:authorize access="!isAuthenticated()">
+                    <span class="text-white" style="font-size: x-large"> Limousine Shop Management System</span>
+                </sec:authorize>
             </a>
+
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle text-white bold" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            Inventory Admin
-                        </a>
-                        <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="/limousine/product-list">Products</a></li>
-                            <li><hr class="dropdown-divider"></li>
-                            <li class="justify-content-center bg-success bg-opacity-50 text-white bold"><span>&nbsp;SUPPLIER ADMIN</span></li>
-                            <li><hr class="dropdown-divider"></li>
-                            <li><a class="dropdown-item" href="/limousine/suppliers-list">Suppliers</a></li>
-                        </ul>
-                    </li>
+            <sec:authorize access="isAuthenticated()">
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                        <sec:authorize access="hasAuthority('ADMIN')">
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle text-white bold" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Administration
+                            </a>
+                            <ul class="dropdown-menu">
+                                    <li><a class="dropdown-item" href="/product-list">User Admin</a></li>
+                                    <li><hr class="dropdown-divider"></li>
+                                    <li><a class="dropdown-item" href="/suppliers-list">User Reports</a></li>
+                                    <li><hr class="dropdown-divider"></li>
 
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle text-white bold" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            Customer Admin
-                        </a>
-                        <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="/limousine/customers-list">Customers</a></li>
-                            <li><hr class="dropdown-divider"></li>
-                            <li class="justify-content-center bg-success bg-opacity-50 text-white bold"><span>&nbsp;COMPANY ADMIN</span></li>
-                            <li><hr class="dropdown-divider"></li>
-                            <li><a class="dropdown-item" href="/limousine/orgs-list">Organizations</a></li>
-                            <li><a class="dropdown-item" href="/limousine/units-list">Business Units</a></li>
-                        </ul>
-                    </li>
+                                <li><a class="dropdown-item" href="/suppliers-list">System Settings</a></li>
+                            </ul>
+                        </li>
+                        </sec:authorize>
 
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle text-white bold" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            Accounting Admin
-                        </a>
-                        <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="/limousine/sales-list">Sales</a></li>
-                            <li><hr class="dropdown-divider"></li>
-                            <li class="justify-content-center bg-success bg-opacity-50 text-white bold"><span>&nbsp;QUOTES ADMIN</span></li>
-                            <li><hr class="dropdown-divider"></li>
-                            <li><a class="dropdown-item" href="/limousine/quotes-lite">Quotations</a></li>
-                            <li><a class="dropdown-item" href="/limousine/invoices-list">Invoices</a></li>
-                        </ul>
-                    </li>
+                        <sec:authorize access="hasAuthority('OPERATIONS') or hasAuthority('ADMIN')">
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle text-white bold" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    Operations
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li class="justify-content-center bg-success bg-opacity-50 text-white bold"><span>&nbsp;INVENTORY ADMIN</span></li>
+                                    <li><hr class="dropdown-divider"></li>
+                                    <li><a class="dropdown-item" href="/product-list">Products</a></li>
+                                    <li><hr class="dropdown-divider"></li>
+                                    <li class="justify-content-center bg-success bg-opacity-50 text-white bold"><span>&nbsp;RELATIONSHIPS</span></li>
+                                    <li><hr class="dropdown-divider"></li>
+                                    <li><a class="dropdown-item" href="/customers-list">Customers</a></li>
+                                    <li><a class="dropdown-item" href="/suppliers-list">Suppliers</a></li>
+                                    <li><hr class="dropdown-divider"></li>
+                                    <li class="justify-content-center bg-success bg-opacity-50 text-white bold"><span>&nbsp;COMPANY ADMIN</span></li>
+                                    <li><hr class="dropdown-divider"></li>
+                                    <li><a class="dropdown-item" href="/orgs-list">Organizations</a></li>
+                                    <li><a class="dropdown-item" href="/units-list">Business Units</a></li>
+                                </ul>
+                            </li>
+                        </sec:authorize>
 
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle text-white bold" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            Reports Admin
-                        </a>
-                        <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="#">Products Report</a></li>
-                            <li><a class="dropdown-item" href="#">Customers Report</a></li>
-                            <li><a class="dropdown-item" href="#">Suppliers Report</a></li>
-                            <li><hr class="dropdown-divider"></li>
-                            <li class="justify-content-center bg-success bg-opacity-50 text-white bold"><span>&nbsp;INVENTORY REPORTS</span></li>
-                            <li><hr class="dropdown-divider"></li>
-                            <li><a class="dropdown-item" href="#">Inventory Report</a></li>
-                            <li><a class="dropdown-item" href="#">Reorder Levels Report</a></li>
-                            <li><hr class="dropdown-divider"></li>
-                            <li class="justify-content-center bg-success bg-opacity-50 text-white bold"><span>&nbsp;FINANCIAL REPORTS </span></li>
-                            <li><hr class="dropdown-divider"></li>
-                            <li><a class="dropdown-item" href="#">Sales Report</a></li>
-                            <li><a class="dropdown-item" href="#">Quotations Report</a></li>
-                            <li><a class="dropdown-item" href="#">Receipts Report</a></li>
+                        <sec:authorize access="hasAuthority('ACCOUNTING') or hasAuthority('ADMIN')">
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle text-white bold" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    Accounting
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li><a class="dropdown-item" href="/sales-list">Sales</a></li>
+                                    <li><hr class="dropdown-divider"></li>
+                                    <li class="justify-content-center bg-success bg-opacity-50 text-white bold"><span>&nbsp;QUOTES ADMIN</span></li>
+                                    <li><hr class="dropdown-divider"></li>
+                                    <li><a class="dropdown-item" href="/quotes-lite">Quotations</a></li>
+                                    <li><a class="dropdown-item" href="/invoices-list">Invoices</a></li>
+                                </ul>
+                            </li>
+                        </sec:authorize>
 
-                        </ul>
-                    </li>
-                </ul>
 
-                <ul class="navbar-nav d-flex">
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle bold text-white" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            ${user.firstName} ${user.lastName}
-                        </a>
-                        <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="#">Profile Details</a></li>
-                            <li><a class="dropdown-item" href="#">Change Password</a></li>
-                            <li><hr class="dropdown-divider"></li>
-                            <li><a class="dropdown-item" href="#">Log Out</a></li>
-                        </ul>
-                    </li>
-                </ul>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle text-white bold" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Reporting
+                            </a>
+                            <ul class="dropdown-menu">
+                                <sec:authorize access="hasAuthority('OPERATIONS_REPORTS') or hasAuthority('ADMIN')">
+                                    <li><a class="dropdown-item" href="#">Products Report</a></li>
+                                    <li><a class="dropdown-item" href="#">Customers Report</a></li>
+                                    <li><a class="dropdown-item" href="#">Suppliers Report</a></li>
+                                    <li><hr class="dropdown-divider"></li>
+                                </sec:authorize>
+                                <sec:authorize access="hasAuthority('INVENTORY_REPORTS') or hasAuthority('ADMIN')">
+                                    <li class="justify-content-center bg-success bg-opacity-50 text-white bold"><span>&nbsp;INVENTORY REPORTS</span></li>
+                                    <li><hr class="dropdown-divider"></li>
+                                    <li><a class="dropdown-item" href="#">Inventory Report</a></li>
+                                    <li><a class="dropdown-item" href="#">Reorder Levels Report</a></li>
+                                    <li><hr class="dropdown-divider"></li>
+                                </sec:authorize>
+                                <sec:authorize access="hasAuthority('ACCOUNTING_REPORTS') or hasAuthority('ADMIN')">
+                                    <li class="justify-content-center bg-success bg-opacity-50 text-white bold"><span>&nbsp;FINANCIAL REPORTS </span></li>
+                                    <li><hr class="dropdown-divider"></li>
+                                    <li><a class="dropdown-item" href="#">Sales Report</a></li>
+                                    <li><a class="dropdown-item" href="#">Quotations Report</a></li>
+                                    <li><a class="dropdown-item" href="#">Receipts Report</a></li>
+                                </sec:authorize>
 
-            </div>
+                            </ul>
+                        </li>
+                    </ul>
+
+                    <div id="spinner">
+                        <div class="spinner-grow text-danger" role="status">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                        <div class="spinner-grow text-primary" role="status">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                        <div class="spinner-grow text-light" role="status">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                        <div class="spinner-grow text-secondary" role="status">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                    </div>
+
+                    <ul class="navbar-nav d-flex">
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle bold text-white" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    ${user.userName}
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" onclick="showProfileModal()">Profile Details</a></li>
+                                <li><a class="dropdown-item" onclick="openChangePassword()">Change Password</a></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item" href="<c:url value="/logout" />">Logout</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+
+                </div>
+            </sec:authorize>
+
         </div>
     </nav>
 </section>
@@ -97,4 +220,32 @@
     <nav class="navbar bg-dark bg-opacity-25 justify-content-center rounded">
         <span class="text-success  bold " style="font-size: large">${pageTitle}</span>
     </nav>
+</section>
+<section class="container d-flex justify-content-center" style="margin-top: 10px">
+    <div aria-live="assertive" aria-atomic="true" class="d-flex justify-content-center align-items-center w-100 ">
+
+        <div class="toast" role="alert" aria-live="assertive" aria-atomic="true" id="operationSuccess" data-bs-delay=2000 style="z-index: 11" >
+            <div class="toast-header bg-success text-white">
+                <i class="fa fa-check-circle-o text-white" style="font-size: 30px"></i>
+                <strong class="me-auto">Operation Feedback</strong>
+                <small>just now...</small>
+                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+            <div class="toast-body">
+                <span class="text-success">Your changes applied successfully!</span>
+            </div>
+        </div>
+
+        <div class="toast " role="alert" aria-live="assertive" aria-atomic="true" id="operationError" data-bs-delay=2000 style="z-index: 11">
+            <div class="toast-header bg-danger text-white">
+                <i class="fa fa-times-circle-o text-white" style="font-size: 30px"></i>
+                <strong class="me-auto">Operation Feedback</strong>
+                <small>just now...</small>
+                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+            <div class="toast-body">
+                <span class="text-danger">Your changes applied successfully!</span>
+            </div>
+        </div>
+    </div>
 </section>

@@ -35,7 +35,7 @@ import java.util.Set;
 @AllArgsConstructor
 @Entity @JsonIgnoreProperties(ignoreUnknown = true)
 @Table(name = "role")
-@ToString(exclude = {"users"})
+//@ToString(exclude = {"users", "privileges"}, callSuper = false)
 public class UserRole extends BaseName {
 
     @Transient
@@ -44,7 +44,6 @@ public class UserRole extends BaseName {
         super(id);
     }
 
-    @Lazy
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(name = "role_privilege", joinColumns = {
             @JoinColumn(name = "role_id", nullable = false)}, inverseJoinColumns = {
@@ -53,6 +52,11 @@ public class UserRole extends BaseName {
     
     public String getPrintName(){
         return StringUtils.toCamelCase3(super.getName());
+    }
+
+    @Override
+    public String toString(){
+        return getPrintName();
     }
     
 }

@@ -14,6 +14,7 @@ import javax.annotation.Resource;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
+import java.util.UUID;
 
 /**
  * @author :: codemaster
@@ -58,13 +59,9 @@ public class UserRoleServiceImpl implements UserRoleService {
     @Transactional
     public UserRole save(UserRole t) {
         if (t.getId() == null) {
-            //t.setId(UUIDGen.generateUUID());
-            t.setCreatedBy(userService.getCurrentUser());
-            t.setDateCreated(new Date());
+            t.setId(UUID.randomUUID().toString());
             return userRoleRepo.save(t);
         }
-        t.setModifiedBy(userService.getCurrentUser());
-        t.setDateModified(new Date());
         return userRoleRepo.save(t);
     }
 

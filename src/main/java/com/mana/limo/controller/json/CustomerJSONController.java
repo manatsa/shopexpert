@@ -3,9 +3,10 @@ package com.mana.limo.controller.json;
 import com.mana.limo.domain.Customer;
 import com.mana.limo.service.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.data.repository.query.Param;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -20,11 +21,22 @@ import java.util.List;
 public class CustomerJSONController {
 
     @Autowired
-    CustomerService supplierService;
+    CustomerService customerService;
 
     @GetMapping("/list")
     public List<Customer> getAllCustomers(){
-        return supplierService.getAllCustomers();
+        return customerService.getAllCustomers();
+    }
+
+    @GetMapping("/search-active")
+    public ResponseEntity getActiveCustomers(@RequestParam("term") String term){
+        List<Customer> customers=customerService.searchActiveCustomers(term);
+        return new ResponseEntity(customers, HttpStatus.OK);
+    }
+
+    @GetMapping("/search-customer-by-name")
+    public  Customer searchCustomerByName(@Param("name") String name){
+        return customerService.searchCustomerByName(name);
     }
 
 }

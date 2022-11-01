@@ -46,8 +46,7 @@ public class SaleItemServiceImpl implements SaleItemService {
     @Transactional
     @Override
     public SaleItem Save(SaleItem saleItem) {
-        if(saleItemRepo!=null){
-            saleItem.setId(UUID.randomUUID().toString());
+        if(saleItem!=null){
             return saleItemRepo.save(saleItem);
         }
         return null;
@@ -57,7 +56,7 @@ public class SaleItemServiceImpl implements SaleItemService {
     @Override
     public SaleItem update(SaleItem saleItem) {
         SaleItem target=null;
-        if(saleItem!=null && saleItem.getId()!=null){
+        if(saleItem!=null && saleItem.getId()>-1){
             target=entityManager.find(SaleItem.class, saleItem.getId());
             BeanUtils.copyProperties(saleItem, target);
             return entityManager.merge(target);
@@ -69,6 +68,21 @@ public class SaleItemServiceImpl implements SaleItemService {
     @Override
     public SaleItem get(String id) {
         return saleItemRepo.getById(id);
+    }
+
+    @Override
+    public List<SaleItem> getAllBySale(Sale sale) {
+        return saleItemRepo.getAllBySaleId(sale.getId());
+    }
+
+    @Override
+    public void RemoveAllBySale(Sale sale) {
+        saleItemRepo.deleteAllBySaleId(sale.getId());
+    }
+
+    @Override
+    public SaleItem getByProductAndQuantity(String productId, int quantity) {
+        return saleItemRepo.getByProductIdAndQuantity(productId, quantity);
     }
 
     @Override

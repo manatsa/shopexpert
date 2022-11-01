@@ -23,6 +23,8 @@ import com.mana.limo.domain.enums.UserType;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.CreatedBy;
+import org.springframework.data.annotation.LastModifiedBy;
 
 
 import javax.persistence.*;
@@ -40,7 +42,7 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@JsonIgnoreProperties(value = {"version"})
+//@JsonIgnoreProperties(value = {"version","createdBy","modifiedBy"},allowGetters = true)
 @Table(name = "users", indexes = {
 		@Index(name = "user_user_name", columnList = "userName"),
 		@Index(name = "user_user_organization", columnList = "organization"),
@@ -60,7 +62,6 @@ public class User extends BaseEntity {
     private String confirmPassword;
     private String firstName;
     private String lastName;
-
     @Column(unique = true)
     private String userName;
     @Enumerated
@@ -104,6 +105,15 @@ public class User extends BaseEntity {
     }
 
 
+    @JsonIgnore
+    @Override
+    public User getCreatedBy() {
+        return null;
+    }
 
-
+    @JsonIgnore
+    @Override
+    public User getModifiedBy() {
+        return null;
+    }
 }

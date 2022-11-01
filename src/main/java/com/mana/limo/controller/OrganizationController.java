@@ -22,6 +22,7 @@ import org.springframework.web.context.annotation.RequestScope;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.util.List;
 import java.util.stream.Collectors;
 
 /**
@@ -47,7 +48,9 @@ public class OrganizationController {
     @RequestMapping("orgs-list")
     public String getProductList(Model model,HttpServletRequest request){
         model.addAttribute("pageContext", request.getContextPath());
+        List<String> privileges=user.getUserRoles().stream().map(role->role.getPrivileges().stream().map(privilege -> privilege.getPrintName())).collect(Collectors.toList()).stream().map(stringStream -> stringStream.collect(Collectors.joining(","))).collect(Collectors.toList());
         model.addAttribute("user", user);
+        model.addAttribute("privileges",privileges );
         model.addAttribute("title", "Organizations List");
         model.addAttribute("pageTitle", Constants.TITLE+" :: Organizations List");
         return "orgs/list";
@@ -58,7 +61,9 @@ public class OrganizationController {
         Organization organization=(productId!=null)?organizationService.get(productId):null;
         model.addAttribute("command", organization==null?new Organization():organization);
         model.addAttribute("statuses", Status.values());
+        List<String> privileges=user.getUserRoles().stream().map(role->role.getPrivileges().stream().map(privilege -> privilege.getPrintName())).collect(Collectors.toList()).stream().map(stringStream -> stringStream.collect(Collectors.joining(","))).collect(Collectors.toList());
         model.addAttribute("user", user);
+        model.addAttribute("privileges",privileges );
         model.addAttribute("title", "Organizations List");
         model.addAttribute("pageTitle", Constants.TITLE+" :: Organizations List");
         return "orgs/item";
@@ -67,13 +72,17 @@ public class OrganizationController {
     @PostMapping("/orgs-creation")
     public String makeProduct(Model model, @ModelAttribute("item") @Valid Organization organization, BindingResult result){
         model.addAttribute("msg", new Message("Organization saved successfully!", MsgType.success));
+        List<String> privileges=user.getUserRoles().stream().map(role->role.getPrivileges().stream().map(privilege -> privilege.getPrintName())).collect(Collectors.toList()).stream().map(stringStream -> stringStream.collect(Collectors.joining(","))).collect(Collectors.toList());
         model.addAttribute("user", user);
+        model.addAttribute("privileges",privileges );
         model.addAttribute("title", "Organization List");
         model.addAttribute("pageTitle", Constants.TITLE+" :: Organization List");
         if(result.hasErrors()){
             model.addAttribute("command", organization);
             model.addAttribute("statuses", Status.values());
-            model.addAttribute("user", user);
+           // List<String> privileges=user.getUserRoles().stream().map(role->role.getPrivileges().stream().map(privilege -> privilege.getPrintName())).collect(Collectors.toList()).stream().map(stringStream -> stringStream.collect(Collectors.joining(","))).collect(Collectors.toList());
+        model.addAttribute("user", user);
+        model.addAttribute("privileges",privileges );
             model.addAttribute("title", "Organizations List");
             model.addAttribute("pageTitle", Constants.TITLE+" :: Organizations List");
             model.addAttribute("msg", new Message(result.getAllErrors().stream().map(error->error.toString()).collect(Collectors.joining("\n")), MsgType.danger));

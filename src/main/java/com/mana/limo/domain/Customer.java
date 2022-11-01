@@ -21,7 +21,7 @@ import javax.persistence.Enumerated;
 @AllArgsConstructor
 public class Customer extends BaseEntity{
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String name;
 
     private String address;
@@ -31,5 +31,9 @@ public class Customer extends BaseEntity{
     private String phone;
     @Enumerated
     private ExternalType type;
+
+    public Customer(String name){
+        this.name=name;
+    }
 
 }

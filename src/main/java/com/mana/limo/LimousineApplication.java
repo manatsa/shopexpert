@@ -2,6 +2,7 @@ package com.mana.limo;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 
 /**
  * @author :: codemaster
@@ -9,6 +10,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * Package Name :: com.mana.limo.controller
  */
 
+@EnableJpaAuditing
 @SpringBootApplication
 public class LimousineApplication {
 

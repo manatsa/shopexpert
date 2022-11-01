@@ -44,10 +44,19 @@ public class CustomerServiceImpl implements CustomerService {
         return repo.findAll();
     }
 
+    @Transactional
+    @Override
+    public List<Customer> searchActiveCustomers(String term) {
+        return repo.getAllByActiveAndNameLike(Boolean.TRUE, term);
+    }
+
+    @Override
+    public Customer searchCustomerByName(String name) {
+        return repo.getCustomerByName(name);
+    }
+
     @Override
     public Customer Save(Customer customer) {
-            customer.setCreatedBy(entityManager.find(User.class,userService.getCurrentUser().getId()));
-            customer.setDateCreated(new Date());
             customer.setId(UUID.randomUUID().toString());
             return repo.save(customer);
     }
@@ -56,13 +65,9 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     public Customer update(Customer customer) {
         Customer target=null;
-        User user=userService.get(customer.getCreatedBy().getId());
         if(customer!=null && customer.getId()!=null){
             target=entityManager.find(Customer.class, customer.getId());
-            customer.setModifiedBy(userService.getCurrentUser());
             BeanUtils.copyProperties(customer, target);
-            target.setDateModified(new Date());
-            target.setCreatedBy(user);
             return entityManager.merge(target);
         }
 

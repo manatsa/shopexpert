@@ -20,6 +20,7 @@ import org.springframework.web.context.annotation.RequestScope;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.util.List;
 import java.util.stream.Collectors;
 
 /**
@@ -45,7 +46,9 @@ public class InventoryController {
     @RequestMapping("inventory-list")
     public String getProductList(Model model,HttpServletRequest request){
         model.addAttribute("pageContext", request.getContextPath());
+        List<String> privileges=user.getUserRoles().stream().map(role->role.getPrivileges().stream().map(privilege -> privilege.getPrintName())).collect(Collectors.toList()).stream().map(stringStream -> stringStream.collect(Collectors.joining(","))).collect(Collectors.toList());
         model.addAttribute("user", user);
+        model.addAttribute("privileges",privileges );
         model.addAttribute("title", "Inventory");
         model.addAttribute("pageTitle", Constants.TITLE+" :: Inventory List Items");
         return "inventory/list";
@@ -54,7 +57,9 @@ public class InventoryController {
     @GetMapping("/inventory-creation")
     public String createProduct(Model model, @RequestParam(value = "inventoryId", required = false) Inventory inventory, HttpServletRequest request){
         model.addAttribute("command", inventory==null?new Inventory():inventory);
+        List<String> privileges=user.getUserRoles().stream().map(role->role.getPrivileges().stream().map(privilege -> privilege.getPrintName())).collect(Collectors.toList()).stream().map(stringStream -> stringStream.collect(Collectors.joining(","))).collect(Collectors.toList());
         model.addAttribute("user", user);
+        model.addAttribute("privileges",privileges );
         model.addAttribute("products", productService.getAllProducts());
         model.addAttribute("title", (inventory==null)?"New Product Line":"Edit::"+inventory.getDescription());
         model.addAttribute("pageTitle", Constants.TITLE+" :: New Inventory Item");
@@ -64,7 +69,9 @@ public class InventoryController {
     @PostMapping("/inventory-creation")
     public String makeProduct(Model model, @ModelAttribute("item") @Valid Product product, BindingResult result){
         model.addAttribute("msg", new Message("Product saved successfully!", MsgType.success));
+        List<String> privileges=user.getUserRoles().stream().map(role->role.getPrivileges().stream().map(privilege -> privilege.getPrintName())).collect(Collectors.toList()).stream().map(stringStream -> stringStream.collect(Collectors.joining(","))).collect(Collectors.toList());
         model.addAttribute("user", user);
+        model.addAttribute("privileges",privileges );
         model.addAttribute("title", "Product List");
         model.addAttribute("pageTitle", Constants.TITLE+" :: Product List");
         productValidation.validate(product, result);
@@ -73,6 +80,7 @@ public class InventoryController {
             model.addAttribute("productTypes", ProductType.values());
             model.addAttribute("statuses", Status.values());
             model.addAttribute("user", user);
+            model.addAttribute("privileges",privileges );
             model.addAttribute("title", "New Inventory");
             model.addAttribute("pageTitle", Constants.TITLE+" :: New Product Line");
             model.addAttribute("msg", new Message(result.getAllErrors().stream().map(error->error.toString()).collect(Collectors.joining("\n")), MsgType.danger));

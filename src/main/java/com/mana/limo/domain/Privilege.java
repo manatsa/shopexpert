@@ -36,7 +36,7 @@ import java.util.Set;
 @EqualsAndHashCode
 @Entity @JsonIgnoreProperties(ignoreUnknown = true)
 @Table(name = "privilege")
-@ToString(exclude = {"roles"})
+//@ToString(exclude = {"roles"})
 public class Privilege extends BaseName {
 
     @Transient
@@ -47,6 +47,11 @@ public class Privilege extends BaseName {
 
     public String getPrintName(){
         return StringUtils.toCamelCase3(super.getName());
+    }
+
+    @Override
+    public String toString(){
+        return getPrintName();
     }
     
 }

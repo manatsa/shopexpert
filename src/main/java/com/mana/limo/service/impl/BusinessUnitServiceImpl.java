@@ -47,8 +47,8 @@ public class BusinessUnitServiceImpl implements BusinessUnitService {
 
     @Override
     public BusinessUnit Save(BusinessUnit businessUnit) {
-            businessUnit.setCreatedBy(entityManager.find(User.class,userService.getCurrentUser().getId()));
-            businessUnit.setDateCreated(new Date());
+//            businessUnit.setCreatedBy(entityManager.find(User.class,userService.getCurrentUser().getId()));
+//            businessUnit.setDateCreated(new Date());
             businessUnit.setId(UUID.randomUUID().toString());
             return repo.save(businessUnit);
     }
@@ -57,13 +57,13 @@ public class BusinessUnitServiceImpl implements BusinessUnitService {
     @Override
     public BusinessUnit update(BusinessUnit businessUnit) {
         BusinessUnit target=null;
-        User user=userService.get(businessUnit.getCreatedBy().getId());
+//        User user=userService.get(businessUnit.getCreatedBy().getId());
         if(businessUnit!=null && businessUnit.getId()!=null){
             target=entityManager.find(BusinessUnit.class, businessUnit.getId());
-            businessUnit.setModifiedBy(userService.getCurrentUser());
+//            businessUnit.setModifiedBy(userService.getCurrentUser());
             BeanUtils.copyProperties(businessUnit, target);
-            target.setDateModified(new Date());
-            target.setCreatedBy(user);
+//            target.setDateModified(new Date());
+//            target.setCreatedBy(user);
             return entityManager.merge(target);
         }
 
