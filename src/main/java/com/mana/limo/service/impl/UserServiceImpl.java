@@ -25,6 +25,8 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
+import java.util.stream.Collectors;
 
 
 @Repository
@@ -44,8 +46,13 @@ public class UserServiceImpl implements UserService {
     private UserRoleService userRoleService;
 
     @Override
+    public List<User> getAllActive() {
+        return userRepo.getAllActive(Boolean.TRUE);
+    }
+
+    @Override
     public List<User> getAll() {
-        return userRepo.getOptAll(Boolean.TRUE);
+        return userRepo.findAll();
     }
 
     @Override
@@ -72,6 +79,8 @@ public class UserServiceImpl implements UserService {
             t.setPassword(hashedPassword);
             return userRepo.save(t);
         }
+        t.setId(UUID.randomUUID().toString());
+        t.setUserRoles(t.getUserRoles().stream().map(r->userRoleService.get(r.getId())).collect(Collectors.toSet()));
         return userRepo.save(t);
     }
 

@@ -37,8 +37,13 @@
 <script src="<c:url value="/resources/js/supplier.js" /> "></script>
 <%--<script src="<c:url value="js/invoice.js" /> "></script>--%>
 <%--<script src="<c:url value="js/quotation.js" /> "></script>--%>
-<script src="<c:url value="/resources/js/custom.js" /> "></script>
+<script src="<c:url value="/resources/js/role.js" /> "></script>
+<script src="<c:url value="/resources/js/user.js" /> "></script>
 <script src="<c:url value="/resources/jquery-ui/jquery-ui.js" /> "></script>
+<script src="<c:url value="/resources/dialog/tingle.min.js" /> "></script>
+<script src="<c:url value="/resources/dialog/bootbox.min.js" /> "></script>
+<script src="<c:url value="/resources/js/custom.js" /> "></script>
+<script src="<c:url value="/resources/js/custom-dialogs.js" /> "></script>
 <script src="<c:url value="/resources/js/custom-autocomplete.js" /> "></script>
 
 

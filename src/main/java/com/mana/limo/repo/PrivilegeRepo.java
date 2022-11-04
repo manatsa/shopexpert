@@ -17,7 +17,11 @@
 package com.mana.limo.repo;
 
 import com.mana.limo.domain.Privilege;
+import com.mana.limo.domain.UserRole;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.repository.CrudRepository;
+
+import java.util.List;
 
 /**
  * @author :: codemaster
@@ -25,7 +29,8 @@ import org.springframework.data.repository.CrudRepository;
  * Package Name :: com.mana.limo.service
  */
 
-public interface PrivilegeRepo extends CrudRepository<Privilege, String> {
-    
+public interface PrivilegeRepo extends JpaRepository<Privilege, String> {
 
+
+    List<Privilege> findAllByRolesIn(List<UserRole> role);
 }

@@ -5,6 +5,8 @@ import com.mana.limo.domain.User;
 import com.mana.limo.domain.enums.MsgType;
 import com.mana.limo.domain.enums.ProductType;
 import com.mana.limo.domain.enums.Status;
+import com.mana.limo.service.BusinessUnitService;
+import com.mana.limo.service.OrganizationService;
 import com.mana.limo.service.ProductService;
 import com.mana.limo.util.Constants;
 import com.mana.limo.util.Message;
@@ -41,6 +43,12 @@ public class ProductController {
     ProductValidation productValidation;
 
     @Autowired
+    OrganizationService organizationService;
+
+    @Autowired
+    BusinessUnitService businessUnitService;
+
+    @Autowired
     ProductService productService;
 
     @RequestMapping("product-list")
@@ -62,6 +70,8 @@ public class ProductController {
         model.addAttribute("statuses", Status.values());
         List<String> privileges=user.getUserRoles().stream().map(role->role.getPrivileges().stream().map(privilege -> privilege.getPrintName())).collect(Collectors.toList()).stream().map(stringStream -> stringStream.collect(Collectors.joining(","))).collect(Collectors.toList());
         model.addAttribute("user", user);
+        model.addAttribute("orgs", organizationService.getAllOrganizations());
+        model.addAttribute("bUnits", businessUnitService.getAllBusinessUnits());
         model.addAttribute("privileges",privileges );
         model.addAttribute("title", (product==null)?"New Product Line":"Edit::"+product.getName());
         model.addAttribute("pageTitle", Constants.TITLE+" :: New Product Line");

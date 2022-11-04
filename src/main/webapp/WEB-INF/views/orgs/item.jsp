@@ -11,18 +11,18 @@
             <form:hidden  path="dateModified"  />
             <div class="row">
                 <div class="col-md-6">
-                    <div class="mb-3 form-floating">
-                        <form:input  class="form-control modern" path="name" placeholder="organization name"  />
-                        <label for="name" class="form-label">Organization Name</label>
+                    <div class="mui-textfield mui-textfield--float-label">
+                        <form:input   path="name"   />
+                        <label for="name">Organization Name</label>
                     </div>
                     <div class="text-danger">
                         <form:errors path="name" title="errors on organization name" />
                     </div>
                 </div>
                 <div class="col-md-6">
-                    <div class="mb-3 form-floating">
-                        <form:select  class="form-select modern" path="status" itemLabel="name" itemValue="code" items="${statuses}" />
-                        <label for="status" class="form-label">Organization Status</label>
+                    <div class="mui-select">
+                        <form:select   path="status" itemLabel="name" itemValue="code" items="${statuses}" />
+                        <label for="status" >Organization Status</label>
                     </div>
                     <div class="text-danger">
                         <form:errors path="status" />
@@ -32,8 +32,8 @@
 
 
             <div class="d-flex justify-content-between">
-                <a href="/limousine/orgs-list" class="btn btn-outline-danger">Cancel</a>
-                <button type="submit" class="btn btn-success">Save</button>
+                <a href="/orgs-list" class="mui-btn mui-btn--danger">Cancel</a>
+                <button type="submit" class="mui-btn mui-btn--primary">Save</button>
             </div>
 
         </form:form>

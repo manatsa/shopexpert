@@ -40,7 +40,7 @@ public interface UserRepo extends CrudRepository<User, String> {
     public User findUser(@Param("id") String id);
 
     @Query("Select Distinct u from User u "+ Constants.USER_CONSTANT+" where u.active=:active Order By u.userName ASC")
-    public List<User> getOptAll(@Param("active") Boolean active);
+    public List<User> getAllActive(@Param("active") Boolean active);
 
     @Query("Select Distinct u from User u "+ Constants.USER_CONSTANT+" where u.userName=:userName and u.active=:active")
     public User findByUserName(@Param("userName") String userName, @Param("active") Boolean active);

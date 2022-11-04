@@ -17,7 +17,6 @@
 .rounded-body{
     margin-top: 5px;
     border-radius: 10px;
-    padding:10px;
 }
 
 .modern{
@@ -27,7 +26,6 @@
 
 .padded{
     margin-top: 5px;
-    padding:5px;
 }
 .vertical-padded{
     margin-bottom: 20px;
@@ -35,8 +33,12 @@
 }
 
 .heavily-padded{
-    padding-left: 15px;
-    padding-right: 15px;
+    margin-left: 15px;
+    margin-right: 15px;
+}
+
+div.dt-buttons {
+    width:100%;
 }
 
 .total{
@@ -64,6 +66,7 @@ table.dataTable.productSearchList tbody th, table.dataTable.productSearchList tb
     background-color: transparent !important;
     border: 2px solid transparent !important;
     border-radius: 10%;
+    text-transform: capitalize;
 }
 
 .product-search{
@@ -77,4 +80,80 @@ table.dataTable.productSearchList tbody th, table.dataTable.productSearchList tb
 
 .hidden{
     display: none;
+}
+
+
+
+.modal-staff-danger{
+    background-color: red;
+    opacity: 0.8;
+    color: white;
+    font-weight: bolder;
+    border: 0.1px solid lightgrey;
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1em;
+    width: 300px;
+}
+
+.modal-staff-success{
+    background-color: limegreen;
+    opacity: 0.8;
+    color: white;
+    font-weight: bolder;
+    border: 0.1px solid lightgrey;
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1em;
+    /*width: 300px;*/
+}
+
+.modal-staff-warning{
+    background-color: forestgreen;
+    opacity: 0.8;
+    color: white;
+    font-weight: bolder;
+    border: 0.1px solid lightgrey;
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1em;
+    /*width: 300px;*/
+}
+
+.modal-staff-secondary{
+    background-color: purple;
+    opacity: 0.8;
+    color: white;
+    font-weight: bolder;
+    border: 0.1px solid lightgrey;
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1em;
+    /*width: 300px;*/
+}
+
+.modal-staff-info{
+    background-color: dodgerblue;
+    opacity: 0.8;
+    color: white;
+    font-weight: bolder;
+    border: 0.1px solid lightgrey;
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1em;
+    /*width: 300px;*/
+}
+
+.right-top{
+    float: end;
 }

@@ -1,6 +1,6 @@
 <%@include file="../template/header.jspf" %>
 <%@include file="../template/notification.jspf"%>
-<div class="container rounded-body bg-black bg-opacity-10">
+<div class="container rounded-body  bg-opacity-10">
     <div class="rounded-body">
         <%--@elvariable id="command" type="com.mana.limo.domain.Customer"--%>
         <form:form commandName="command"  >
@@ -11,18 +11,18 @@
             <form:hidden  path="dateModified"  />
             <div class="row">
                 <div class="col-md-6">
-                    <div class="mb-3 form-floating">
-                        <form:input  class="form-control modern" path="name" placeholder="customer name"  />
-                        <label for="name" class="form-label">Customer Name</label>
+                    <div class=" mui-textfield mui-textfield--float-label">
+                        <form:input   path="name"/>
+                        <label for="name" >Customer Name</label>
                     </div>
                     <div class="text-danger">
                         <form:errors path="name" title="errors on customer name" />
                     </div>
                 </div>
                 <div class="col-md-6">
-                    <div class="mb-3 form-floating">
-                        <form:select  class="form-select modern" path="status" itemLabel="name" itemValue="code" items="${statuses}" />
-                        <label for="status" class="form-label">Customer Status</label>
+                    <div class="mui-select">
+                        <form:select   path="status" itemLabel="name" itemValue="code" items="${statuses}" />
+                        <label for="status">Customer Status</label>
                     </div>
                     <div class="text-danger">
                         <form:errors path="status" />
@@ -31,17 +31,17 @@
             </div>
             <div class="row">
                 <div class="col-md-6">
-                    <div class="mb-3 form-floating">
-                        <form:input  class="form-control modern" path="address" placeholder="customer address"  />
-                        <label for="address" class="form-label">Customer Address</label>
+                    <div class="mui-textfield mui-textfield--float-label">
+                        <form:input   path="address"   />
+                        <label for="address">Customer Address</label>
                     </div>
                     <div class="text-danger">
                         <form:errors path="address" title="errors on customer address" />
                     </div>
                 </div>
                 <div class="col-md-6">
-                    <div class="mb-3 form-floating">
-                        <form:select  class="form-select modern" path="type" itemLabel="name" itemValue="code" items="${types}" />
+                    <div class="mui-select">
+                        <form:select   path="type" itemLabel="name" itemValue="code" items="${types}" />
                         <label for="type" class="form-label">Customer Type</label>
                     </div>
                     <div class="text-danger">
@@ -51,17 +51,17 @@
             </div>
             <div class="row">
                 <div class="col-md-6">
-                    <div class="mb-3 form-floating">
-                        <form:input  class="form-control modern" path="phone" placeholder="customer phone"  />
-                        <label for="phone" class="form-label">Customer Phone</label>
+                    <div class="mui-textfield mui-textfield--float-label">
+                        <form:input   path="phone"  />
+                        <label for="phone" >Customer Phone</label>
                     </div>
                     <div class="text-danger">
                         <form:errors path="phone" />
                     </div>
                 </div>
                 <div class="col-md-6">
-                    <div class="mb-3 form-floating">
-                        <form:input  class="form-control modern" path="email" placeholder="Customer email"  />
+                    <div class="mui-textfield mui-textfield--float-label">
+                        <form:input type="email"  path="email"  />
                         <label for="email" class="form-label">Customer Email</label>
                     </div>
                     <div class="text-danger">
@@ -72,8 +72,8 @@
 
 
             <div class="d-flex justify-content-between">
-                <a href="/limousine/customers-list" class="btn btn-outline-danger">Cancel</a>
-                <button type="submit" class="btn btn-success">Save</button>
+                <a href="/customers-list" class="mui-btn mui-btn--danger">Cancel</a>
+                <button type="submit" class="mui-btn mui-btn--primary">Save</button>
             </div>
 
         </form:form>

@@ -3,8 +3,10 @@ package com.mana.limo.service.impl;
 import com.mana.limo.domain.User;
 import com.mana.limo.domain.UserRole;
 import com.mana.limo.repo.UserRoleRepo;
+import com.mana.limo.service.PrivilegeService;
 import com.mana.limo.service.UserRoleService;
 import com.mana.limo.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,6 +17,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 /**
  * @author :: codemaster
@@ -30,6 +33,9 @@ public class UserRoleServiceImpl implements UserRoleService {
     private UserRoleRepo userRoleRepo;
     @Resource
     private UserService userService;
+
+    @Autowired
+    PrivilegeService privilegeService;
 
     @Override
     public List<UserRole> getAll() {
@@ -62,6 +68,7 @@ public class UserRoleServiceImpl implements UserRoleService {
             t.setId(UUID.randomUUID().toString());
             return userRoleRepo.save(t);
         }
+        t.setPrivileges(t.getPrivileges().stream().map(p->privilegeService.get(p.getId())).collect(Collectors.toSet()));
         return userRoleRepo.save(t);
     }
 

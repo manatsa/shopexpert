@@ -10,8 +10,9 @@ $(document).ready(function () {
 })
 
 
+
+
 function populateProducts(items) {
-    showLoading(true)
     if(productTable){
         productTable.destroy()
     }
@@ -27,8 +28,9 @@ function populateProducts(items) {
         createTable(items)
     }
 
-    showLoading(false)
 }
+
+
 
 function createTable(data) {
     productTable=$('#productList').DataTable({
@@ -39,11 +41,9 @@ function createTable(data) {
         info: true,
         select: true,
         colReorder: true,
-        lengthMenu: [
-            [5,10, 25, 50, -1],
-            [5,10, 25, 50, 'All'],
-        ],
-        dom: 'Bfrtip',
+        pagingType: 'full_numbers',
+        searching: true,
+        dom: 'Brtip',
         buttons: [
             {
                 className:'bg-transparent',
@@ -54,7 +54,7 @@ function createTable(data) {
                     location.href="/product-creation"
                 }
             },
-            {
+            /*{
                 className:'bg-transparent',
                 text: ()=>{
                     return ` <a  class="btn btn-outline-primary"><i class="fa fa-bars "></i> Rows</a>`
@@ -111,7 +111,7 @@ function createTable(data) {
                         }
                     }
                 ]
-            },
+            },*/
             {
                 extend: 'spacer',
                 style: 'bar',
@@ -159,9 +159,35 @@ function createTable(data) {
                     columns: [ 0,1, 2, 3, 4, 5, 6, 7 ]
                 }
             },
+            {
+                className: 'bg-transparent',
+                text: () => {
+                    return ` 
+                        <div class="mui-col-md-12 float-right"style="width: 100%; display: flex; flex-grow: 1;">
+                            <div class="mui-col-md-4 col-sm-12 mui-select ">
+                                <select id="productSelect">
+                                    <option value="5">5</option>
+                                    <option value="10">10</option>
+                                    <option value="20">20</option>
+                                    <option value="50">50</option>
+                                    <option value="-1">All</option>
+                                </select>
+                                <label for="productSelect"> Rows </label>
+                            </div>
+                            <div class="mui-col-md-8 col-sm-12 mui-textfield mui-textfield--float-label">
+                                <input type="text" id="productSearch" />
+                                <label for="search">search products</label>
+                            </div>
+                
+                    </div>`
+                }
+            }
+
         ],
 
         columns: [
+            {data: 'organization.name', render: data1 => data1?`<span>${data1}</span>`:`<span></span>`},
+            {data: 'businessUnit.name',render: data1 => data1?`<span>${data1}</span>`:`<span></span>`},
             {data: 'name'},
             {data: 'productType'},
             {data: 'description'},
@@ -205,10 +231,21 @@ function createTable(data) {
 
 
     });
+
+    $('select[name="productList_length"]').css('width','60px')
+
+    $('#productSelect').on('change', ()=>{
+        let rows=$('#productSelect').val()
+        productTable.page.len(rows).draw()
+    })
+
+    $('#productSearch').keyup(function(){
+        productTable.search($(this).val()).draw() ;
+    })
 }
 
+
 function activateAddInventory(data){
-    showLoading(true)
     let quant=$('#'+data.split('-')[0]+data.split('-')[1])?.val()
 
     if(quant && quant>0){
@@ -229,12 +266,10 @@ function activateAddInventory(data){
     }else{
 
     }
-    showLoading(false)
 
 }
 
 function activateRemoveInventory(data){
-    showLoading(true)
     let quant=$('#'+data.split('-')[0]+data.split('-')[1])?.val()
     if(quant && quant>0){
         let url="/inventory/remove-inventory?productId="+data+"&quantity="+quant;
@@ -252,7 +287,6 @@ function activateRemoveInventory(data){
             $('#'+data.split('-')[0]+data.split('-')[1])?.val(null)
         })
     }
-    showLoading(false)
 
 }
 

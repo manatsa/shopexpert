@@ -23,7 +23,7 @@ package com.mana.limo.util;
 
 public interface Constants {
 
-    public final String TITLE=" Limousine Shop Management System ";
+    public final String TITLE=" Limousine Shop Management System ::";
     public final String USER_CONSTANT = "left join fetch u.userRoles left join fetch u.createdBy left join fetch u.modifiedBy left join fetch u.organization left join fetch u.businessUnit";
     
     public final String USER_ROLE_CONSTANT = "left join fetch p.createdBy left join fetch p.modifiedBy ";

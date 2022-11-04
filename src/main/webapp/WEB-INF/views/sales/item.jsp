@@ -2,7 +2,7 @@
 <%@include file="../template/notification.jspf" %>
 
 <div class="container-fluid rounded-body bg-light bg-opacity-10">
-    <div class="rounded-body">
+    <div class="rounded-body" style="margin-bottom: 30px;">
 
         <div class="modal fade" id="invalidQuantityModal" data-bs-backdrop="static" data-bs-keyboard="false"
              tabindex="-1">
@@ -29,7 +29,7 @@
             <form:hidden path="dateCreated"/>
             <form:hidden path="createdBy"/>
             <form:hidden path="receiptNumber"/>
-            <div class="d-flex justify-content-end heavily-padded col-md-12">
+            <div class="d-flex justify-content-end col-md-12">
                 <span class="text-danger ">Receipt No :: ${receiptNumber}</span>
             </div>
             <div class="row">
@@ -58,7 +58,7 @@
             <div class="row">
                 <div class="col-md-6 mui-select">
                     <form:select path="organization" itemLabel="name" itemValue="id" items="${orgs}" required="required"
-                                 onchange="onOrganizationSelectChange(this)"/>
+                                 onchange="onOrganizationSelectChange(this)" onfocus="onOrganizationSelectChange(this)"/>
                     <label for="organization" >Organization</label>
                     <div class="text-danger">
                         <form:errors path="organization"/>
@@ -67,7 +67,7 @@
                 <div class="col-md-6 mui-select">
                     <form:select path="businessUnit" itemLabel="name" itemValue="id" items="${bunits}"
                                  required="required" id="bUnitsSelect"/>
-                    <label for="businessUnit" class="form-label">Business Unit</label>
+                    <label for="businessUnit">Business Unit</label>
                     <div class="text-danger">
                         <form:errors path="businessUnit"/>
                     </div>
@@ -86,12 +86,12 @@
                 </div>
 
                 <div class="col-md-6">
-                Test
+                    //Nothing yet
                 </div>
 
             </div>
             <%--            search for products--%>
-            <div class="product-search d-flex justify-content-md-around">
+            <div class="mui-panel d-flex justify-content-md-around">
                 <div class="col-md-6 heavily-padded">
                     <div class="col-md-12 d-flex justify-content-center">
                         <h3>Search Products</h3>
@@ -145,3 +145,9 @@
 </div>
 
 <%@include file="../template/footer.jspf" %>
+<script>
+    $(document).ready(()=>{
+        // let org=$('#organization').val()
+        // onOrganizationSelectChange(org, null)
+    })
+</script>

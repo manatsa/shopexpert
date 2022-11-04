@@ -35,6 +35,9 @@ public class Product extends BaseEntity{
     private double stock;
     private String details;
     @ManyToOne(optional = true)
+    @JoinColumn(name = "organization_id")
+    private Organization organization;
+    @ManyToOne(optional = true)
     @JoinColumn(name = "business_unit_id")
     private BusinessUnit businessUnit;
 

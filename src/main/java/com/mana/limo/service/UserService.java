@@ -31,6 +31,7 @@ public interface UserService {
 
     public User get(String id);
 
+    public List<User> getAllActive();
     public List<User> getAll();
 
     public User Save(User user);

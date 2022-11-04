@@ -21,6 +21,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.mana.limo.util.StringUtils;
 import lombok.*;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.context.annotation.Role;
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -41,6 +42,9 @@ public class Privilege extends BaseName {
 
     @Transient
     private String printName;
+
+    @ManyToMany
+    private Set<Privilege> roles;
     public Privilege(String id) {
         super(id);
     }

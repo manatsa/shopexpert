@@ -13,11 +13,12 @@ $(document).ready(function () {
             info: true,
             select: true,
             colReorder: true,
+            searching: true,
             lengthMenu: [
                 [5,10, 25, 50, -1],
                 [5,10, 25, 50, 'All'],
             ],
-            dom: 'Bfrtip',
+            dom: 'Brtip',
             buttons: [
                 {
                     className:'bg-transparent',

@@ -2,8 +2,9 @@
 
 
     <div class="container-fluid">
-        <div class="padded">
-            <div class=" col-md-12 d-flex justify-content-md-around" style="margin-top: 20px;">
+        <div>
+            <div class="d-flex justify-content-center mui-col-md-12 text-success text-decoration-underline btn-outline-light"><h3>${pageTitle}</h3></div>
+            <div class=" col-md-12 d-flex justify-content-md-around" style="margin-top: 5px;">
                 <%@include file="../template/notification.jspf"%>
             </div>
             <div class="modal .modal-lg fade" id="customerProfileModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
@@ -53,8 +54,8 @@
                             </table>
                         </div>
                         <div class="modal-footer d-flex justify-content-between">
-                            <button type="button" class="btn btn-outline-success" data-bs-dismiss="modal">Close</button>
-                            <button type="button" class="btn btn-outline-success"   data-bs-dismiss="modal">OK</button>
+                            <button type="button" class="mui-btn mui-btn--danger" data-bs-dismiss="modal">Close</button>
+                            <button type="button" class="mui-btn mui-btn--primary"   data-bs-dismiss="modal">OK</button>
                         </div>
                     </div>
                 </div>
@@ -84,8 +85,8 @@
                                 <div class="mui-tabs__pane text-danger" id="productDetailsPane">Product Details here</div>
                         </div>
                         <div class="modal-footer d-flex justify-content-between">
-                            <button type="button" class="btn btn-outline-success" data-bs-dismiss="modal">Close</button>
-                            <button type="button" class="btn btn-outline-success"   data-bs-dismiss="modal">OK</button>
+                            <button type="button" class="mui-btn mui-btn--danger" data-bs-dismiss="modal">Close</button>
+                            <button type="button" class="btn mui-btn--primary"   data-bs-dismiss="modal">OK</button>
                         </div>
                     </div>
                 </div>
@@ -93,7 +94,7 @@
 
 
             <div style="width:100%; margin-bottom: 100px; margin-top: 20px; overflow: scroll;">
-                <table id="saleList" class="display table-responsive  table-striped-columns" >
+                <table id="saleList" class="table-responsive table-striped  mui-table mui-table--bordered" >
                     <thead>
                     <th>Date Created</th>
                     <th>Receipt #</th>

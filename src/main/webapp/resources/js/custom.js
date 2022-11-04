@@ -1,37 +1,75 @@
-$(document).ready(()=>{
+
+
+$(document).ready(()=> {
+
+    $('div.dataTables_filter input').addClass('mui-textfield mui-textfield--float-label');
+
     $('.datepicker').datepicker()
-})
 
-
-
-function showProfileModal() {
-    let profileModal = new bootstrap.Modal(document.getElementById('userProfileModal'), { keyboard: true})
-    profileModal.show();
-}
-
-function openChangePassword() {
-    let changePasswordModal = new bootstrap.Modal(document.getElementById('ChangePasswordModal'), { keyboard: false})
-    changePasswordModal.show();
-}
-function changePassword(){
-    toggleLoading()
-    let newPass=$('#passwd').val();
-
-    $.ajax({
-        'url':'/users/change-password?pass='+newPass,
-        'method':'POST',
-        'contentType': 'application/json',
-        'data':newPass
-    }).done(()=>{
-        $('#operationSuccess').toast('show');
-        toggleLoading()
+    let dialog = bootbox.dialog({
+        message: '<div class="text-center"><i class="fa fa-spin fa-spinner"></i> Loading...</div>',
+        closeButton: false,
+        show: false,
     })
-}
 
 
-function showLoading(show) {
-    if(show) {
-        $('#spinner').html(`
+    var modal = new tingle.modal({
+        footer: true,
+        stickyFooter: false,
+        closeMethods: ['overlay', 'button', 'escape'],
+        closeLabel: "Close",
+        cssClass: ['custom-class-1', 'custom-class-2'],
+        onOpen: function () {
+            console.log('modal open');
+        },
+        onClose: function () {
+            console.log('modal closed');
+        },
+        beforeClose: function () {
+            // here's goes some logic
+            // e.g. save content before closing the modal
+            return true; // close the modal
+            // return false; // nothing happens
+        }
+    });
+
+    modal.setContent(`
+        <div class="spinner-grow text-danger" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+        <div class="spinner-grow text-primary" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+        <div class="spinner-grow text-light" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+        <div class="spinner-grow text-secondary" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+    `)
+
+    $.ajaxSetup({
+        beforeSend: async function () {
+            // dialog.show()
+            // modal.open()
+            showLoading(true)
+
+
+        },
+        complete: function () {
+            showLoading(false)
+            // modal.close()
+            // dialog.hide()
+
+        }
+    });
+
+
+
+    function showLoading(show) {
+        if (show) {
+            $('#spinner').removeClass('visually-hidden')
+            $('#spinner').html(`
         <div class="spinner-grow text-danger" role="status">
             <span class="visually-hidden">Loading...</span>
         </div>
@@ -45,9 +83,13 @@ function showLoading(show) {
              <span class="visually-hidden">Loading...</span>
         </div>
     `)
-    }else{
-        $('#spinner').html('')
+        } else {
+            $('#spinner').addClass('visually-hidden')
+            $('#spinner').html('')
+        }
+
     }
 
-}
+    showLoading(true)
+})
 

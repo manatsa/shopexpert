@@ -13,16 +13,17 @@ $(document).ready(function () {
             info: true,
             select: true,
             colReorder: true,
+            searching: true,
             lengthMenu: [
                 [5,10, 25, 50, -1],
                 [5,10, 25, 50, 'All'],
             ],
-            dom: 'Bfrtip',
+            dom: 'Brtip',
             buttons: [
                 {
                     className:'bg-transparent',
                     text: ()=>{
-                        return ` <a class="btn btn-success text-white"><i class="fa fa-plus-circle "></i> Supplier</a>`
+                        return ` <a class="btn btn-success text-white"><i class="fa fa-plus-circle "></i> Customer</a>`
                     },
                     action: function ( e, dt, node, config ) {
                         location.href="/customers-creation"

@@ -100,10 +100,16 @@
                                 Administration
                             </a>
                             <ul class="dropdown-menu">
-                                    <li><a class="dropdown-item" href="/product-list">User Admin</a></li>
-                                    <li><hr class="dropdown-divider"></li>
-                                    <li><a class="dropdown-item" href="/suppliers-list">User Reports</a></li>
-                                    <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item" href="/users-list">User Admin</a></li>
+                                <li><a class="dropdown-item" href="/roles-list">Role Admin</a></li>
+                                <li><a class="dropdown-item" href="/privileges-list">Privilege Admin</a></li>
+                                <li>
+                                    <hr class="dropdown-divider">
+                                </li>
+                                <li><a class="dropdown-item" href="/suppliers-list">User Reports</a></li>
+                                <li>
+                                    <hr class="dropdown-divider">
+                                </li>
 
                                 <li><a class="dropdown-item" href="/suppliers-list">System Settings</a></li>
                             </ul>
@@ -180,7 +186,7 @@
                         </li>
                     </ul>
 
-                    <div id="spinner">
+                    <div id="spinner" class="visually-hidden">
                         <div class="spinner-grow text-danger" role="status">
                             <span class="visually-hidden">Loading...</span>
                         </div>

@@ -2,28 +2,28 @@
 <%@include file="../template/notification.jspf"%>
 <div class="container rounded-body  bg-opacity-10">
     <div class="rounded-body">
-        <%--@elvariable id="command" type="com.mana.limo.domain.Product"--%>
+        <%--@elvariable id="command" type="com.mana.limo.domain.User"--%>
         <form:form commandName="command"  >
-            <form:hidden path="id" />
+            <form:hidden cssClass="form-control" path="id" />
             <form:hidden path="dateCreated"/>
             <form:hidden path="createdBy"/>
             <div class="row">
                 <div class="col-md-6">
                     <div class="mui-textfield mui-textfield--float-label">
-                        <form:input  path="name" required="true"/>
-                        <label for="name" >Product Name</label>
+                        <form:input  path="firstName" required="true"/>
+                        <label for="firstName" >First Name</label>
                     </div>
                     <div class="text-danger">
-                        <form:errors path="name" title="errors on product name" />
+                        <form:errors path="firstName"  />
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="mui-textfield mui-textfield--float-label">
-                        <form:textarea rows="1"  path="description" required="true" />
-                        <label for="description" class="form-label">Product Description</label>
+                        <form:input path="lastName" required="true" />
+                        <label for="lastName" class="form-label">Last Name</label>
                     </div>
                     <div class="text-danger">
-                        <form:errors path="description" />
+                        <form:errors path="lastName" />
                     </div>
                 </div>
             </div>
@@ -31,62 +31,62 @@
             <div class="row">
                 <div class="col-md-6">
                     <div class="mui-select">
-                        <form:select  path="productType" itemLabel="name" itemValue="code" items="${productTypes}" />
-                        <label for="productType">Product Type</label>
-                    </div>
-                    <div class="text-danger">
-                        <form:errors path="productType" />
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="mui-select">
                         <form:select  path="status" itemLabel="name" itemValue="code" items="${statuses}" />
-                        <label for="productType" >Product Status</label>
+                        <label for="status">User Type</label>
                     </div>
                     <div class="text-danger">
                         <form:errors path="status" />
                     </div>
                 </div>
-            </div>
-
-            <div class="row">
                 <div class="col-md-6">
-                    <div class="mui-textfield mui-textfield--float-label">
-                        <form:input type="number"   path="price" required="true" />
-                        <label for="price" >Product Price</label>
+                    <div class="mui-select">
+                        <form:select  path="userType" itemLabel="name" itemValue="code" items="${types}" />
+                        <label for="userType">User Type</label>
                     </div>
                     <div class="text-danger">
-                        <form:errors path="price" />
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="mui-textfield mui-textfield--float-label">
-                        <form:input type="number" path="reOderLevel" required="true" />
-                        <label for="reOderLevel" class="form-label">Product Re-Order Level</label>
-                    </div>
-                    <div class="text-danger">
-                        <form:errors path="reOderLevel" />
-                    </div>
+                        <form:errors path="userType" />
+                    </div>>
                 </div>
             </div>
 
             <div class="row">
                 <div class="col-md-6">
                     <div class="mui-textfield mui-textfield--float-label">
-                        <form:input   path="packaging"  required="true" />
-                        <label for="packaging" >Product Packaging</label>
+                        <form:input    path="userName" required="true" />
+                        <label for="userName" >Username</label>
+                    </div>
+                    <div class="text-danger">
+                        <form:errors path="userName" />
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="mui-textfield mui-textfield--float-label">
+                        <form:input type="password"  path="password" required="true" />
+                        <label for="password" >Password</label>
+                    </div>
+                    <div class="text-danger">
+                        <form:errors path="password" />
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="mui-select">
+                        <form:select   path="userRoles" items="${userRoles}" itemValue="id" itemLabel="name" required="true" />
+                        <label for="userRoles" >User Roles</label>
                     </div>
                     <div class="text-danger row">
-                        <form:errors path="packaging" />
+                        <form:errors path="userRoles" />
                     </div>
                 </div>
                 <div class="col-md-6">
-                    <div class="mui-textfield mui-textfield--float-label">
-                        <form:input type="number"  path="stock" required="true" />
-                        <label for="stock"> Product Quantity</label>
+                    <div class="mui-select">
+                        <form:select   path="userLevel" items="${levels}" itemValue="code" itemLabel="name" required="true" />
+                        <label for="userLevel" >User Level</label>
                     </div>
-                    <div class="text-danger">
-                        <form:errors path="stock" />
+                    <div class="text-danger row">
+                        <form:errors path="userLevel" />
                     </div>
                 </div>
             </div>
@@ -110,7 +110,7 @@
             </div>
 
             <div class="d-flex justify-content-between">
-                <a href="/product-list" class="mui-btn mui-btn--danger">Cancel</a>
+                <a href="/users-list" class="mui-btn mui-btn--danger">Cancel</a>
                 <button type="submit" class="mui-btn mui-btn--primary">Save</button>
             </div>
 

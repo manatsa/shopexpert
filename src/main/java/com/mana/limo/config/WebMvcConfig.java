@@ -21,6 +21,8 @@ public class WebMvcConfig implements WebMvcConfigurer {
         registry.addConverter(new ExternalTypeConverter());
         registry.addConverter(new SaleStatusConverter());
         registry.addConverter(new StringToDateConverter());
+        registry.addConverter(new UserTypeConverter());
+        registry.addConverter(new UserLevelConverter());
     }
 
     @Override

@@ -1,5 +1,4 @@
 let saleTable=null
-let prodSearchItems=null;
 
 $(document).ready(function () {
 
@@ -14,13 +13,13 @@ $(document).ready(function () {
         //saleTable.$('tr.selected').on( 'click', function () { $( saleTable.cells().nodes() ).removeClass( 'selected' )})
     });
 
+onOrganizationSelectChange($("#organization"))
 
 
 
 })
 
 function loadSales(){
-    showLoading(true);
     $.ajax({
         'url': "/sales/list",
         'method': "GET",
@@ -35,13 +34,8 @@ function loadSales(){
             select: true,
             fixedHeader: true,
             colReorder: true,
-            // pageResize: true,
-            lengthMenu: [
-                [1,2,3, 5,10, 25, 50, -1],
-                [1,2,3,5,10, 25, 50, 'All'],
-            ],
-            pageLength: 10,
-            dom: 'Bfrtip',
+            searching: true,
+            dom: 'Brtip',
             buttons: [
                 {
                     className:'bg-transparent',
@@ -51,13 +45,6 @@ function loadSales(){
                     action: function ( e, dt, node, config ) {
                         location.href="/sale-creation"
                     }
-                },
-                {
-                    className:'bg-transparent',
-                    text: ()=>{
-                        return ` <a id="productEditBtn" class="btn btn-outline-primary"><i class="fa fa-bars "></i> Rows</a>`
-                    },
-                    extend: 'pageLength'
                 },
 
                 {
@@ -107,12 +94,35 @@ function loadSales(){
                         columns: [ 0,1, 2, 3, 4, 5, 6, 7 ]
                     }
                 },
+                {
+                    className: 'bg-transparent',
+                    text: () => {
+                        return ` 
+                        <div class="mui-col-md-12 float-right"style="width: 100%; display: flex; flex-grow: 1;">
+                            <div class="mui-col-md-4 col-sm-12 mui-select ">
+                                <select id="saleSelect">
+                                    <option value="5">5</option>
+                                    <option value="10">10</option>
+                                    <option value="20">20</option>
+                                    <option value="50">50</option>
+                                    <option value="-1">All</option>
+                                </select>
+                                <label for="saleSelect"> Rows </label>
+                            </div>
+                            <div class="mui-col-md-8 col-sm-12 mui-textfield mui-textfield--float-label">
+                                <input type="text" id="saleSearch" />
+                                <label for="search">search sale</label>
+                            </div>
+                
+                    </div>`
+                    }
+                }
             ],
 
             columns: [
                 {data: 'dateCreated', render:(date)=>{
                         let newDate=new Date(date)?.toISOString();
-                        return `<span>${newDate?.split('T')[0]}</span>`
+                        return `<span>${newDate?newDate?.split('T')[0]:''}</span>`
                     }},
                 {data: 'receiptNumber'},
                 {data: 'customer.name',render:(data, type, row)=>{
@@ -163,8 +173,18 @@ function loadSales(){
 
 
         });
+
+        $('select[name="saleList_length"]').css('width','60px')
+
+        $('#saleSelect').on('change', ()=>{
+            let rows=$('#saleSelect').val()
+            saleTable.page.len(rows).draw()
+        })
+
+        $('#saleSearch').keyup(function(){
+            saleTable.search($(this).val()).draw() ;
+        })
     });
-    showLoading(false);
 }
 
 function onOrganizationSelectChange(element){
@@ -184,7 +204,7 @@ function onOrganizationSelectChange(element){
 }
 
 
-function addProductOnclick(data, add, size, initial) {
+/*function addProductOnclick(data, add, size, initial) {
 
     let quantity = document.getElementById(data + '-input-quantity')?.value;
     if ((!quantity || quantity < 1) && add) {
@@ -197,7 +217,7 @@ function addProductOnclick(data, add, size, initial) {
     }
 
     if (productSearchItems) {
-        productSearchItems.destroy();
+        productSearchItems?.destroy();
     }
 
     //determine if its removing or adding a product to the sale, and act accordingly
@@ -241,11 +261,8 @@ function addProductOnclick(data, add, size, initial) {
             scrollY: "250px",
             scrollX: true,
             scrollCollapse: true,
-            paging: false,
-            fixedColumns: {
-                heightMatch: 'none',
-            },
-            dom: 'Bfrtip',
+            paging: true,
+            dom: 'Brtip',
             buttons: [
                 {
                     className:'bg-transparent',
@@ -259,12 +276,26 @@ function addProductOnclick(data, add, size, initial) {
                         return `<span class="btn btn-danger" style="font-size: x-large">$${total.toFixed(2)}</span>`
                     }
                 },
-                /*{
+                {
+                    className: 'bg-transparent',
+                    text: () => {
+                        return ` 
+                        <div class="mui-col-md-12 float-right"style="width: 100%; display: flex; flex-grow: 1;">
+                           
+                            <div class="mui-col-md-8 mui-col-md-offset-4 col-sm-12 mui-textfield mui-textfield--float-label">
+                                <input type="text" id="saleSearchItems" />
+                                <label for="search">search product</label>
+                            </div>
+                
+                    </div>`
+                    }
+                }
+                /!*{
                     className:'bg-transparent',
                     text: ()=>{
                         return `<span  class="btn btn-danger" style="font-size:large"><i class="fa fa-refresh text-light">Refresh</i></span>`
                     }
-                },*/
+                },*!/
 
             ],
             columns: [
@@ -284,8 +315,13 @@ function addProductOnclick(data, add, size, initial) {
             ],
 
         })
+        $('#saleSearchItems').keyup(function(){
+            prodSearchItems.search($(this).val()).draw() ;
+        })
     })
-}
+
+
+}*/
 
 function showCustomer(customer) {
 
@@ -303,7 +339,6 @@ function showCustomer(customer) {
 }
 
 function showSale(id){
-    showLoading(true)
     $.ajax({
         'url': "/sales/get-sale-by-id?id="+id,
         'method': "GET",
@@ -333,7 +368,7 @@ function showSale(id){
         </thead>
             <tbody>
                 <tr><td class="bold">Customer Name</td><td>${data?.customer?.name}</td></tr>
-                <tr><td class="bold">Date Created</td><td>${new Date(data?.customer?.dateCreated)?.toISOString().split('T')[0]}</td></tr>
+                <tr><td class="bold">Date Created</td><td>${data?.customer?.dateCreated?new Date(data?.customer?.dateCreated)?.toISOString().split('T')[0] : ``}</td></tr>
                 <tr><td class="bold">Customer Address</td><td>${data?.customer?.address}</td></tr>
                 <tr><td class="bold">Customer Type</td><td>${data?.customer?.type}</td></tr>
                 <tr><td class="bold">Customer Phone</td><td>${data?.customer?.phone}</td></tr>
@@ -385,6 +420,5 @@ function showSale(id){
 
     });
 
-    showLoading(false)
 
 }

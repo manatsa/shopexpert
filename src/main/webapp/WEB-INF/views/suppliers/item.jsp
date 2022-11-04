@@ -11,18 +11,18 @@
             <form:hidden  path="dateModified"  />
             <div class="row">
                 <div class="col-md-6">
-                    <div class="mb-3 form-floating">
-                        <form:input  class="form-control modern" path="name" placeholder="supplier name"  />
-                        <label for="name" class="form-label">Supplier Name</label>
+                    <div class="mui-textfield mui-textfield--float-label">
+                        <form:input  path="name"   />
+                        <label for="name" >Supplier Name</label>
                     </div>
                     <div class="text-danger">
-                        <form:errors path="name" title="errors on organization name" />
+                        <form:errors path="name" />
                     </div>
                 </div>
                 <div class="col-md-6">
-                    <div class="mb-3 form-floating">
-                        <form:select  class="form-select modern" path="status" itemLabel="name" itemValue="code" items="${statuses}" />
-                        <label for="status" class="form-label">Supplier Status</label>
+                    <div class="mui-select">
+                        <form:select   path="status" itemLabel="name" itemValue="code" items="${statuses}" />
+                        <label for="status" >Supplier Status</label>
                     </div>
                     <div class="text-danger">
                         <form:errors path="status" />
@@ -31,18 +31,18 @@
             </div>
             <div class="row">
                 <div class="col-md-6">
-                    <div class="mb-3 form-floating">
-                        <form:input  class="form-control modern" path="address" placeholder="supplier address"  />
+                    <div class="mui-textfield mui-textfield--float-label">
+                        <form:input  path="address"  />
                         <label for="address" class="form-label">Supplier Address</label>
                     </div>
                     <div class="text-danger">
-                        <form:errors path="address" title="errors on supplier address" />
+                        <form:errors path="address"  />
                     </div>
                 </div>
                 <div class="col-md-6">
-                    <div class="mb-3 form-floating">
-                        <form:select  class="form-select modern" path="type" itemLabel="name" itemValue="code" items="${types}" />
-                        <label for="type" class="form-label">Supplier Type</label>
+                    <div class="mui-select">
+                        <form:select   path="type" itemLabel="name" itemValue="code" items="${types}" />
+                        <label for="type" >Supplier Type</label>
                     </div>
                     <div class="text-danger">
                         <form:errors path="type" />
@@ -51,9 +51,9 @@
             </div>
             <div class="row">
                 <div class="col-md-6">
-                    <div class="mb-3 form-floating">
-                        <form:input  class="form-control modern" path="phone" placeholder="supplier phone"  />
-                        <label for="phone" class="form-label">Supplier Phone</label>
+                    <div class="mui-textfield mui-textfield--float-label">
+                        <form:input  path="phone"   />
+                        <label for="phone" >Supplier Phone</label>
                     </div>
                     <div class="text-danger">
                         <form:errors path="phone" />
@@ -61,8 +61,8 @@
                 </div>
                 <div class="col-md-6">
                     <div class="mb-3 form-floating">
-                        <form:input  class="form-control modern" path="email" placeholder="Supplier email"  />
-                        <label for="email" class="form-label">Supplier Email</label>
+                        <form:input   path="email"   />
+                        <label for="email">Supplier Email</label>
                     </div>
                     <div class="text-danger">
                         <form:errors path="email"  />
@@ -72,8 +72,8 @@
 
 
             <div class="d-flex justify-content-between">
-                <a href="/limousine/suppliers-list" class="btn btn-outline-danger">Cancel</a>
-                <button type="submit" class="btn btn-success">Save</button>
+                <a href="/suppliers-list" class="mui-btn mui-btn--danger">Cancel</a>
+                <button type="submit" class="mui-btn mui-btn--primary">Save</button>
             </div>
 
         </form:form>

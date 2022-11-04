@@ -6,7 +6,7 @@
             <div class="padded col-md-12 justify-content-md-around">
                 <%@include file="../template/notification.jspf"%>
             </div>
-            <table id="supplierList" class="display table-responsive table-striped table-striped-columns" style="width:100%">
+            <table id="supplierList" class="table-responsive table-striped mui-table mui-table--bordered" style="width:100%">
                 <thead>
                 <th>Date Created</th>
                 <th>Supplier Name</th>

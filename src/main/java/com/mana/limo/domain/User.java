@@ -20,9 +20,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.mana.limo.domain.enums.Gender;
 import com.mana.limo.domain.enums.UserLevel;
 import com.mana.limo.domain.enums.UserType;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.LastModifiedBy;
 
@@ -38,7 +36,9 @@ import java.util.Set;
  * Package Name :: com.mana.limo.domain
  */
 
-@Data
+@Getter
+@Setter
+@ToString(exclude = {"password","confirmPassword",""})
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity

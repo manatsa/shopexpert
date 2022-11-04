@@ -1,25 +1,25 @@
 <%@include file="../template/header.jspf" %>
 
 
-    <div class="container">
-        <div class="padded">
-            <div class="padded col-md-12 justify-content-md-around">
+    <div class="container-fluid">
+        <div>
+            <div class="d-flex justify-content-center mui-col-md-12 text-success text-decoration-underline btn-outline-light"><h3>${pageTitle}</h3></div>
+            <div class="col-md-12 justify-content-md-around">
                 <%@include file="../template/notification.jspf"%>
-<%--                <a id="productEditBtn" class="btn btn-success"><i class="fa fa-plus-circle "></i> Product</a>--%>
             </div>
-            <table id="orgList" class="table-responsive table-striped mui-table mui-table--bordered" style="width:100%">
+            <table id="roleList" class="mui-table mui-table--bordered" style="width:100%">
                 <thead>
                 <th>Date Created</th>
-                <th>Organization Name</th>
-                <th>Status</th>
+                <th>Role Name</th>
+                <th>Active</th>
                 <th>Edit</th>
                 <th>Trash</th>
                 </thead>
                 <tbody>
                 <tfoot>
                 <th>Date Created</th>
-                <th>Organization Name</th>
-                <th>Status</th>
+                <th>Role Name</th>
+                <th>Active</th>
                 <th>Edit</th>
                 <th>Trash</th>
                 </tfoot>

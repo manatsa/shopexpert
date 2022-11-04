@@ -2,11 +2,9 @@ package com.mana.limo.controller;
 
 import com.mana.limo.domain.Customer;
 import com.mana.limo.domain.User;
-import com.mana.limo.domain.enums.ExternalType;
-import com.mana.limo.domain.enums.MsgType;
-import com.mana.limo.domain.enums.Status;
-import com.mana.limo.service.CustomerService;
-import com.mana.limo.service.UserService;
+import com.mana.limo.domain.enums.*;
+import com.mana.limo.repo.PrivilegeRepo;
+import com.mana.limo.service.*;
 import com.mana.limo.util.Constants;
 import com.mana.limo.util.Message;
 import com.mana.limo.validation.ProductValidation;
@@ -39,12 +37,21 @@ public class UserController {
     @Autowired
     User user;
     @Autowired
-    ProductValidation productValidation;
+    OrganizationService organizationService;
+
+    @Autowired
+    BusinessUnitService businessUnitService;
 
     @Autowired
     UserService userService;
 
-    @RequestMapping("users-list.htm")
+    @Autowired
+    UserRoleService userRoleService;
+
+    @Autowired
+    PrivilegeRepo privilegeRepo;
+
+    @RequestMapping("users-list")
     public String getProductList(Model model,HttpServletRequest request){
         model.addAttribute("pageContext", request.getContextPath());
         List<String> privileges=user.getUserRoles().stream().map(role->role.getPrivileges().stream().map(privilege -> privilege.getPrintName())).collect(Collectors.toList()).stream().map(stringStream -> stringStream.collect(Collectors.joining(","))).collect(Collectors.toList());
@@ -55,21 +62,26 @@ public class UserController {
         return "users/list";
     }
 
-    @GetMapping("/users-creation.htm")
+    @GetMapping("/users-creation")
     public String createUser(Model model,@RequestParam(value = "userId", required = false) String userId, HttpServletRequest request){
         User user=(userId!=null)?userService.get(userId):null;
         model.addAttribute("command", user==null?new User():user);
         model.addAttribute("statuses", Status.values());
-        model.addAttribute("types", ExternalType.values());
+        model.addAttribute("types", UserType.values());
+        model.addAttribute("levels", UserLevel.values());
         List<String> privileges=userService.getCurrentUser().getUserRoles().stream().map(role->role.getPrivileges().stream().map(privilege -> privilege.getPrintName())).collect(Collectors.toList()).stream().map(stringStream -> stringStream.collect(Collectors.joining(","))).collect(Collectors.toList());
         model.addAttribute("user", userService.getCurrentUser());
         model.addAttribute("privileges",privileges );
-        model.addAttribute("title", "user List");
-        model.addAttribute("pageTitle", Constants.TITLE+" :: User List");
+        model.addAttribute("userRoles",userRoleService.getAll() );
+        model.addAttribute("orgs",organizationService.getAllOrganizations() );
+        model.addAttribute("bunits", businessUnitService.getAllBusinessUnits());
+        model.addAttribute("title", "User Edit");
+        model.addAttribute("pageTitle", Constants.TITLE+" :: User Edit");
         return "users/item";
     }
 
-    @PostMapping("/users-creation.htm")
+    @Transactional
+    @PostMapping("/users-creation")
     public String makeProduct(Model model, @ModelAttribute("item") @Valid User user, BindingResult result){
         model.addAttribute("msg", new Message("User saved successfully!", MsgType.success));
         List<String> privileges=userService.getCurrentUser().getUserRoles().stream().map(role->role.getPrivileges().stream().map(privilege -> privilege.getPrintName())).collect(Collectors.toList()).stream().map(stringStream -> stringStream.collect(Collectors.joining(","))).collect(Collectors.toList());
@@ -81,13 +93,24 @@ public class UserController {
             model.addAttribute("command", user);
             model.addAttribute("statuses", Status.values());
             model.addAttribute("user", userService.getCurrentUser());
+            model.addAttribute("levels", UserLevel.values());
             model.addAttribute("privileges",privileges );
             model.addAttribute("title", "User List");
             model.addAttribute("pageTitle", Constants.TITLE+" :: User List");
-            model.addAttribute("msg", new Message(result.getAllErrors().stream().map(error->error.toString()).collect(Collectors.joining("\n")), MsgType.danger));
+            model.addAttribute("msg", new Message(result.getFieldErrors().stream().map(error->error.getField()+":"+error.getDefaultMessage()).collect(Collectors.joining("\n")), MsgType.danger));
             return "users/item";
         }
-        User user1=(user.getId()==null || user.getId().length()<1)?userService.Save(user):userService.update(user);
+        User user1=(user.getId()==null || user.getId().isEmpty())?userService.Save(user):userService.update(user);
         return "users/list";
     }
+
+    @RequestMapping("/users-activate")
+    @Transactional
+    public String activateUser(@RequestParam("userId") String userId){
+        User user=userService.get(userId);
+        user.setActive(!user.getActive());
+        userService.update(user);
+        return "users/list";
+    }
+
 }

@@ -13,15 +13,16 @@ $(document).ready(function () {
             info: true,
             autoWidth: true,
             select: true,
+            searching: true,
             scrollY:        "200px",
             scrollX:        true,
             scrollCollapse: true,
-            paging:         false,
+            paging:         true,
             fixedColumns:   {
                 heightMatch: 'none',
             },
             colReorder: true,
-            dom: 'frtip',
+            dom: 'Brtip',
             buttons: [
                 {
                     className:'bg-transparent',
@@ -81,6 +82,29 @@ $(document).ready(function () {
                         }
                     ]
                 },
+                {
+                    className: 'bg-transparent',
+                    text: () => {
+                        return ` 
+                        <div class="mui-col-md-12 float-right"style="width: 100%; display: flex; flex-grow: 1;">
+                            <div class="mui-col-md-4 col-sm-12 mui-select ">
+                                <select id="saleProductSelect">
+                                    <option value="5">5</option>
+                                    <option value="10">10</option>
+                                    <option value="20">20</option>
+                                    <option value="50">50</option>
+                                    <option value="-1">All</option>
+                                </select>
+                                <label for="saleProductSelect"> Rows </label>
+                            </div>
+                            <div class="mui-col-md-8 col-sm-12 mui-textfield mui-textfield--float-label">
+                                <input type="text" id="saleProductSearch" />
+                                <label for="search">search product</label>
+                            </div>
+                
+                    </div>`
+                    }
+                }
             ],
 
             columns: [
@@ -113,6 +137,17 @@ $(document).ready(function () {
         });
 
         addProductOnclick(null, false, null, true);
+
+        $('select[name="productSearchTable_length"]').css('width','60px')
+
+        $('#saleProductSelect').on('change', ()=>{
+            let rows=$('#saleProductSelect').val()
+            productSearchTable.page.len(rows).draw()
+        })
+
+        $('#saleProductSearch').keyup(function(){
+            productSearchTable.search($(this).val()).draw() ;
+        })
 
     });
 
@@ -165,14 +200,14 @@ function addProductOnclick(data, add, items) {
         'url': url,
         'method': "GET",
         'contentType': 'application/json'
-    }).done(function (items) {
+    }).done(function (itemz) {
         if(add){
             $('#operationSuccess').toast('show');
-        }else if(!add && items){
+        }else if(!add && data){
             $('#operationError').toast('show');
         }
 
-        const data = items.map(item => {
+        const datas = itemz.map(item => {
             return {
                 name: item.product.name + '-' + item.product.description + '-' + item.product.packaging,
                 price: item.product.price,
@@ -182,53 +217,75 @@ function addProductOnclick(data, add, items) {
             }
         });
 
-        let total=items.map(item=>item.product.price*item.quantity).reduce((a,b)=>a+b,0);
-        productSearchItems = $('#productSearchItems').DataTable({
-            data,
-            bFilter: true,
-            columnDefs: [{"className": "dt-center", "targets": "_all"}],
-            autoWidth: true,
-            select: true,
-            scrollY: "250px",
-            scrollX: true,
-            scrollCollapse: true,
-            paging: false,
-            fixedColumns: {
-                heightMatch: 'none',
-            },
-            dom: 'Bfrtip',
-            buttons: [
-                {
-                    className:'bg-transparent',
-                    text: ()=>{
-                        return `<span  class="btn btn-outline-danger" style="font-size: x-large"><i class="fa fa-bank "> Total :: </span>`
-                    }
-                },
-                {
-                    className:'bg-transparent',
-                    text: ()=>{
-                        return `<span class="btn btn-danger" style="font-size: x-large">$${total.toFixed(2)}</span>`
-                    }
-                },
+        let total=itemz.map(item=>item.product.price*item.quantity).reduce((a,b)=>a+b,0);
 
-            ],
-            columns: [
-                {data: 'name'},
-                {data: 'quantity'},
-                {data: 'price', render: $.fn.dataTable.render.number(null, '.', 2, '$ ')}, // thousand, decimal, precision, prefix
-                {data: 'total', render: $.fn.dataTable.render.number(null, '.', 2, '$ ')},
-                {
-                    'data': 'name',
-                    title: 'Add',
-                    wrap: true,
-                    "render": function (data, type, row) {
-                        return `<button type="button" onclick="addProductOnclick('${row?.productId}',false, '${row?.quantity}')" class="btn btn-outline-danger" ><i class="fa fa-trash-o "> Remove</i></button>`
-                    }
-                },
-
-            ],
-
+        createProductSearchItemsTable(datas, total)
+        $('#saleSearchItem').keyup(()=>{
+            productSearchItems.search(this.val()).draw() ;
         })
+    })
+
+
+
+}
+
+function createProductSearchItemsTable(data, total) {
+    productSearchItems = $('#productSearchItems').DataTable({
+        data,
+        'bFilter': true,
+        columnDefs: [{"className": "dt-center", "targets": "_all"}],
+        autoWidth: true,
+        select: false,
+        scrollY: "250px",
+        scrollX: true,
+        scrollCollapse: true,
+        searching: true,
+        paging: true,
+        dom: 'Brtip',
+        buttons: [
+            {
+                className:'bg-transparent',
+                text: ()=>{
+                    return `<span  class="btn btn-outline-danger" style="font-size: x-large"><i class="fa fa-bank "> Total :: </span>`
+                }
+            },
+            {
+                className:'bg-transparent',
+                text: ()=>{
+                    return `<span class="btn btn-danger" style="font-size: x-large">$${total.toFixed(2)}</span>`
+                }
+            },
+            {
+                className: 'bg-transparent',
+                text: () => {
+                    return ` 
+                        <div class="mui-col-md-12 float-right"style="width: 100%; display: flex; flex-grow: 1;">
+                           
+                            <div class="mui-col-md-8 mui-col-md-offset-4 col-sm-12 mui-textfield mui-textfield--float-label">
+                                <input type="text" id="saleSearchItem" class="bg-light" />
+                                <label for="saleSearchItem">search product</label>
+                            </div>
+                
+                    </div>`
+                }
+            }
+
+        ],
+        columns: [
+            {data: 'name'},
+            {data: 'quantity'},
+            {data: 'price', render: $.fn.dataTable.render.number(null, '.', 2, '$ ')}, // thousand, decimal, precision, prefix
+            {data: 'total', render: $.fn.dataTable.render.number(null, '.', 2, '$ ')},
+            {
+                'data': 'name',
+                title: 'Add',
+                wrap: true,
+                "render": function (data, type, row) {
+                    return `<button type="button" onclick="addProductOnclick('${row?.productId}',false, '${row?.quantity}')" class="btn btn-outline-danger" ><i class="fa fa-trash-o "> Remove</i></button>`
+                }
+            },
+
+        ],
     })
 }
 

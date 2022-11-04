@@ -11,7 +11,6 @@
             scroll: true,
             highlight: false,
             source: function(request, response) {
-                showLoading(true)
                 $.ajax({
                     url : '/customers/search-active?term='+request.term, //Here we will user the URL that we want to hit
                     type : 'get',
@@ -23,7 +22,6 @@
                     success : function(data) {
                         if (response) {
                             response($.map(data, function (item) {
-                                showLoading(false);
                                 return {
                                     label: item.name,
                                     value: item.name
@@ -45,7 +43,6 @@
     });
 
     $( "#search-box" ).bind( "autocompleteselect", function(event, ui) {
-        showLoading(true)
         $.ajax({
             url: '/customers/search-customer-by-name?name='+ui.item.value,
             method:'GET',
@@ -54,7 +51,6 @@
             $('#search-box2').val(data.id)
         })
 
-        showLoading(false)
     });
 
 

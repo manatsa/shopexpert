@@ -38,6 +38,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder);
     }
 
+
     @Bean
     public PasswordEncoder createPasswordEncoder(){
         return new BCryptPasswordEncoder(8);
@@ -52,7 +53,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/datatables/**", "/jquery-ui/**","/mdb/**").permitAll()
                 .antMatchers("/resources/**", "/WEB-INF/views/*","/images/**").permitAll()
                 .antMatchers("/css/**", "/jquery-validate/**","/js/**","/mui/*").permitAll()
-                .antMatchers("/autocomplete/**").permitAll()
+                .antMatchers("/autocomplete/**","/dialog/**").permitAll()
                 .antMatchers("/login.html","/logout","/logins","/logout.html").permitAll()
                 .anyRequest().authenticated()
                 .and()
