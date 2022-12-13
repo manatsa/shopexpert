@@ -1,35 +1,33 @@
-
 <div class="container">
-    <div class="padded">
-        <div class="alert alert-${msg.type} alert-dismissible fade show <c:if test="${msg==null}"> visually-hidden</c:if>" role="alert">
-            <c:forEach items="${msg.data.split('#')}" var="message">
-                <span>${message}</span><br/>
-            </c:forEach>
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-
-            <div class="alert alert-warning alert-dismissible fade show <c:if test="${msgs==null}"> visually-hidden</c:if>" role="alert">
-                <c:forEach items="${msgs.data.split('#')}" var="message">
-                    <span>${message}</span><br/>
-                </c:forEach>
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
-
-
-
-        <div class="fade" id="progressSpinner" tabindex="-1" >
-            <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
-                <span class="visually-hidden">Loading...</span>
-            </div>
-            <div class="spinner-border text-danger" style="width: 3rem; height: 3rem;" role="status">
-                <span class="visually-hidden">Loading...</span>
-            </div>
-            <div class="spinner-grow text-success" style="width: 3rem; height: 3rem;" role="status">
-                <span class="visually-hidden">Loading...</span>
-            </div>
-        </div>
-
+    <div class="alert alert-${msg.type} alert-dismissible fade show <c:if test="${msg.data==null}"> visually-hidden</c:if>"
+         role="alert">
+        <c:forEach items="${msg.data.split('#')}" var="message">
+            <span>${message}</span><br/>
+        </c:forEach>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
+
+    <div class="alert alert-warning alert-dismissible fade show <c:if test="${msgs.data==null}"> visually-hidden</c:if>"
+         role="alert">
+        <c:forEach items="${msgs.data.split('#')}" var="message">
+            <span>${message}</span><br/>
+        </c:forEach>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+
+
+    <div class="fade" id="progressSpinner" tabindex="-1">
+        <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+        <div class="spinner-border text-danger" style="width: 3rem; height: 3rem;" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+        <div class="spinner-grow text-success" style="width: 3rem; height: 3rem;" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+    </div>
+
 </div>
 
 

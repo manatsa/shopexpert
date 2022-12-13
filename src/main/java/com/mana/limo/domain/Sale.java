@@ -3,11 +3,13 @@ package com.mana.limo.domain;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.mana.limo.controller.SaleController;
+import com.mana.limo.domain.enums.Currency;
 import com.mana.limo.domain.enums.SaleStatus;
 import com.mana.limo.dto.SaleItemDTO;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
@@ -28,6 +30,7 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString(callSuper = true)
 public class Sale extends BaseEntity{
     @Column(unique = true)
     private String receiptNumber;
@@ -38,23 +41,27 @@ public class Sale extends BaseEntity{
     private int quantity;
     @Enumerated
     private SaleStatus saleStatus;
+    @Column(nullable = true)
+    @Enumerated
+    private Currency currency;
     @ManyToOne
     @JoinColumn(name = "organization_id")
     private Organization organization;
     @ManyToOne
     @JoinColumn(name = "business_unit_id")
     private BusinessUnit businessUnit;
-    @ManyToOne(optional = true, targetEntity = Customer.class)
+    @ManyToOne(optional = true, cascade = CascadeType.MERGE)
     @JoinColumn(name="customer_id")
     private Customer customer;
     @Transient
     private int totalItems;
     @Transient
     private double totalPrice;
+    @Transient
+    private String customerName;
 
 
     @OneToMany(mappedBy = "sale", fetch = FetchType.EAGER)
-//    @Cascade(CascadeType.ALL)
     private List<SaleItem> saleItems;
 
 

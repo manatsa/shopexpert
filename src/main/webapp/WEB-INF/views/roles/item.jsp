@@ -17,7 +17,7 @@
                 <div class="col-md-6">
                     <div class=" mui-textfield mui-textfield--float-label">
                         <form:input   path="name"/>
-                        <label for="name" >Customer Name</label>
+                        <label for="name" >Role Name</label>
                     </div>
                     <div class="text-danger">
                         <form:errors path="name" title="errors on customer name" />
@@ -44,8 +44,8 @@
                     </div>
                 </div>
                 <div class="col-md-6">
-                    <div class="mui-select">
-                        <form:select   path="privileges" itemLabel="shortName" itemValue="id" items="${privileges}" />
+                    <div class="mb-3">
+                        <form:select  cssClass="form-control form-floating modern" multiple="multiple" path="privileges" itemLabel="name" itemValue="id" items="${privileges}" />
                         <label for="privileges" >Role Privileges</label>
                     </div>
                     <div class="text-danger">
@@ -55,7 +55,7 @@
             </div>
 
             <div class="d-flex justify-content-between">
-                <a href="/roles-list" class="mui-btn mui-btn--danger">Cancel</a>
+                <a onclick="window.history.back()" class="mui-btn mui-btn--danger">Cancel</a>
                 <button type="submit" class="mui-btn mui-btn--primary">Save</button>
             </div>
 

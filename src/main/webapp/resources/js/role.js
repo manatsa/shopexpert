@@ -1,5 +1,7 @@
 let roleTable=null
+let rocontext=null;
 $(document).ready(function () {
+    rocontext=$('#context').val()
    populateRoles(null);
 
     $('#roleList tbody').on('click', 'tr', function () {
@@ -13,17 +15,15 @@ $(document).ready(function () {
 
 
 function populateRoles(items) {
-    console.log('items::', items)
     if(roleTable){
         roleTable.destroy()
     }
     if(!items){
         $.ajax({
-            'url': "/role/list",
+            'url': `${rocontext}/role/list`,
             'method': "GET",
             'contentType': 'application/json'
         }).done(function (data) {
-            console.log('data::', data)
             createRoleTable(data)
         });
     }else{
@@ -53,7 +53,7 @@ function createRoleTable(data) {
                     return ` <a class="btn btn-success text-white"><i class="fa fa-plus-circle "></i> Role</a>`
                 },
                 action: function ( e, dt, node, config ) {
-                    location.href="/roles"
+                    location.href="/sems/roles-creation"
                 }
             },
             {
@@ -140,7 +140,7 @@ function createRoleTable(data) {
                 title: 'Edit',
                 wrap: true,
                 "render": function (data) {
-                    return `<a href="/roles-creation?roleId=${data}" class="btn btn-outline-primary" ><i class="fa fa-pencil-square-o"></i></a>`
+                    return `<a href="${rocontext}/roles-creation?roleId=${data}" class="btn btn-outline-primary" ><i class="fa fa-pencil-square-o"></i></a>`
                 } },
             { 'data': 'id',
                 title: 'Trash',
@@ -165,50 +165,4 @@ function createRoleTable(data) {
         roleTable.search($(this).val()).draw() ;
     })
 }
-
-
-/*function activateAddInventory(data){
-    let quant=$('#'+data.split('-')[0]+data.split('-')[1])?.val()
-
-    if(quant && quant>0){
-        let url="/inventory/add-inventory?productId="+data+"&quantity="+quant;
-        $.ajax({
-            'url': url,
-            'method': "GET",
-            'contentType': 'application/json'
-        }).done(function (items) {
-            populateProducts(items);
-            if(items) {
-                $('#operationSuccess').toast('show');
-            }else{
-                $('#operationError').toast('show');
-            }
-            $('#'+data.split('-')[0]+data.split('-')[1])?.val(null)
-        })
-    }else{
-
-    }
-
-}
-
-function activateRemoveInventory(data){
-    let quant=$('#'+data.split('-')[0]+data.split('-')[1])?.val()
-    if(quant && quant>0){
-        let url="/inventory/remove-inventory?productId="+data+"&quantity="+quant;
-        $.ajax({
-            'url': url,
-            'method': "GET",
-            'contentType': 'application/json'
-        }).done(function (items) {
-            populateProducts(items);
-            if(items) {
-                $('#operationSuccess').toast('show');
-            }else{
-                $('#operationError').toast('show');
-            }
-            $('#'+data.split('-')[0]+data.split('-')[1])?.val(null)
-        })
-    }
-
-}*/
 

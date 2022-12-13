@@ -1,6 +1,6 @@
 <%@include file="../template/header.jspf" %>
 <%@include file="../template/notification.jspf"%>
-<div class="container rounded-body bg-black bg-opacity-10">
+<div class="container rounded-body bg-opacity-10">
     <div class="rounded-body">
         <%--@elvariable id="command" type="com.mana.limo.domain.Organization"--%>
         <form:form commandName="command"  >
@@ -32,7 +32,7 @@
 
 
             <div class="d-flex justify-content-between">
-                <a href="/orgs-list" class="mui-btn mui-btn--danger">Cancel</a>
+                <a onclick="window.history.back()" class="mui-btn mui-btn--danger">Cancel</a>
                 <button type="submit" class="mui-btn mui-btn--primary">Save</button>
             </div>
 

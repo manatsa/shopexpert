@@ -18,14 +18,20 @@ package com.mana.limo.domain;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.mana.limo.domain.enums.Gender;
+import com.mana.limo.domain.enums.Status;
 import com.mana.limo.domain.enums.UserLevel;
 import com.mana.limo.domain.enums.UserType;
 import lombok.*;
 import org.springframework.data.annotation.CreatedBy;
+import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.format.annotation.DateTimeFormat;
 
 
 import javax.persistence.*;
+import java.io.Serializable;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -49,7 +55,32 @@ import java.util.Set;
 		@Index(name = "user_user_unit", columnList = "business_unit")
 })
 
-public class User extends BaseEntity {
+public class User implements Serializable {
+
+    @Id
+    private String id;
+    private Status status;
+
+   @Column(nullable = false)
+    private String createdBy;
+
+    @Column(nullable = true)
+    private String modifiedBy;
+
+    @CreatedDate
+    @Column(nullable = false, updatable = false)
+    @Temporal(TemporalType.DATE)
+    @DateTimeFormat(pattern = "dd-MM-yyyy")
+    private Date dateCreated;
+
+    @LastModifiedDate
+    @Temporal(TemporalType.DATE)
+    @DateTimeFormat(pattern = "dd-MM-yyyy")
+    private Date dateModified;
+
+    @Version
+    private Long version;
+    private Boolean active = Boolean.TRUE;
 
     @Enumerated
     private Gender gender;
@@ -68,10 +99,10 @@ public class User extends BaseEntity {
     private UserType userType = UserType.STAFF;
     @Enumerated
     private UserLevel userLevel;
-    @ManyToOne
+    @ManyToOne(optional = true)
     @JoinColumn(name = "organization")
     private Organization organization;
-    @ManyToOne
+    @ManyToOne(optional = true)
     @JoinColumn(name = "business_unit")
     private BusinessUnit businessUnit;
     @Transient
@@ -105,15 +136,4 @@ public class User extends BaseEntity {
     }
 
 
-    @JsonIgnore
-    @Override
-    public User getCreatedBy() {
-        return null;
-    }
-
-    @JsonIgnore
-    @Override
-    public User getModifiedBy() {
-        return null;
-    }
 }

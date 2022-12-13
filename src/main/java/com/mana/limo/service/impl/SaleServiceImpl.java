@@ -1,9 +1,11 @@
 package com.mana.limo.service.impl;
 
+import com.mana.limo.domain.Customer;
 import com.mana.limo.domain.Product;
 import com.mana.limo.domain.Sale;
 import com.mana.limo.domain.User;
 import com.mana.limo.repo.SaleRepo;
+import com.mana.limo.service.CustomerService;
 import com.mana.limo.service.SaleService;
 import com.mana.limo.service.UserService;
 import org.springframework.beans.BeanUtils;
@@ -32,6 +34,9 @@ public class SaleServiceImpl implements SaleService {
     @Autowired
     UserService userService;
 
+    @Autowired
+    CustomerService customerService;
+
     @PersistenceContext
     EntityManager entityManager;
 
@@ -46,13 +51,16 @@ public class SaleServiceImpl implements SaleService {
         return saleRepo.getAllByActiveOrderByReceiptNumberAsc(Boolean.TRUE);
     }
 
+    @Transactional
     @Override
     public Sale Save(Sale sale) {
+        System.err.println(sale.getCustomer());
         if(sale!=null){
-//            sale.setCreatedBy(entityManager.find(User.class,userService.getCurrentUser().getId()));
-//            sale.setDateCreated(new Date());
+            sale.setCreatedBy(entityManager.find(User.class,userService.getCurrentUser().getId()));
+            sale.setCustomer(entityManager.find(Customer.class,sale.getCustomer().getId()));
+            sale.setDateCreated(new Date());
             sale.setId(UUID.randomUUID().toString());
-            return saleRepo.save(sale);
+            return entityManager.merge(sale);
         }
         return null;
     }
@@ -61,11 +69,14 @@ public class SaleServiceImpl implements SaleService {
     @Override
     public Sale update(Sale sale) {
         Sale target=null;
+        User user=userService.get(sale.getCreatedBy().getId());
         if(sale!=null && sale.getId()!=null){
             target=entityManager.find(Sale.class, sale.getId());
-//            sale.setModifiedBy(entityManager.find(User.class,userService.getCurrentUser().getId()));
+            sale.setModifiedBy(entityManager.find(User.class,userService.getCurrentUser().getId()));
+            sale.setCustomer(entityManager.find(Customer.class,sale.getCustomer().getId()));
             BeanUtils.copyProperties(sale, target);
-//            target.setDateModified(new Date());
+            target.setDateModified(new Date());
+            target.setCreatedBy(user);
             return entityManager.merge(target);
         }
 

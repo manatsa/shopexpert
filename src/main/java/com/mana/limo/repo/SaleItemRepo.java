@@ -12,11 +12,11 @@ import java.util.List;
 
 @Repository
 public interface SaleItemRepo extends JpaRepository<SaleItem, String> {
-    @Query("select s from SaleItem s left join fetch s.product p where s.sale.id=:saleId")
+    @Query("select s from SaleItem s left join fetch s.inventory i where s.sale.id=:saleId")
     public List<SaleItem> getAllBySaleId(String saleId);
 
-    @Query("select s from SaleItem s left join fetch s.product p where p.id=:productId and s.quantity=:quantity")
-    public SaleItem getByProductIdAndQuantity(@Param("productId") String productId, @Param("quantity") int quantity);
+    @Query("select s from SaleItem s left join fetch s.inventory i where i.id=:inventoryId and s.quantity=:quantity")
+    public SaleItem getByInventoryIdAndQuantity(@Param("inventoryId") String inventoryId, @Param("quantity") int quantity);
 
     @Modifying
     @Query("delete from SaleItem s where  s.sale.id=:saleId")

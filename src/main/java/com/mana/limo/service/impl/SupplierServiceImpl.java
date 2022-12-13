@@ -46,18 +46,23 @@ public class SupplierServiceImpl implements SupplierService {
 
     @Override
     public Supplier Save(Supplier supplier) {
-
-            supplier.setId(UUID.randomUUID().toString());
-            return repo.save(supplier);
+        supplier.setCreatedBy(userService.get(userService.getCurrentUser().getId()));
+        supplier.setId(UUID.randomUUID().toString());
+        supplier.setDateCreated(new Date());
+        return repo.save(supplier);
     }
 
     @Transactional
     @Override
     public Supplier update(Supplier supplier) {
         Supplier target=null;
+        User user=userService.get(supplier.getCreatedBy().getId());
         if(supplier!=null && supplier.getId()!=null){
             target=entityManager.find(Supplier.class, supplier.getId());
             BeanUtils.copyProperties(supplier, target);
+            target.setModifiedBy(entityManager.find(User.class,userService.getCurrentUser().getId()));
+            target.setDateModified(new Date());
+            target.setCreatedBy(user);
             return entityManager.merge(target);
         }
 

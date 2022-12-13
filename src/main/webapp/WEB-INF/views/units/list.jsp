@@ -2,15 +2,16 @@
 
 
     <div class="container">
-        <div class="padded">
-            <div class="padded col-md-12 justify-content-md-around">
+        <div>
+            <div class="d-flex justify-content-center mui-col-md-12 text-success text-decoration-underline btn-outline-light"><h3>${pageTitle}</h3></div>
+            <div class=" col-md-12 justify-content-md-around">
                 <%@include file="../template/notification.jspf"%>
-<%--                <a id="productEditBtn" class="btn btn-success"><i class="fa fa-plus-circle "></i> Product</a>--%>
             </div>
-            <table id="unitTable" class="display table-responsive table-striped table-striped-columns" style="width:100%">
+            <table id="unitTable" class="mui-table mui-table--bordered" style="width:100%">
                 <thead>
                 <th>Date Created</th>
                 <th>B/Unit Name</th>
+                <th>Organization</th>
                 <th>Status</th>
                 <th>Address</th>
                 <th>Phone</th>
@@ -22,6 +23,7 @@
                 <tfoot>
                 <th>Date Created</th>
                 <th>B/Unit Name</th>
+                <th>Organization</th>
                 <th>Status</th>
                 <th>Address</th>
                 <th>Phone</th>

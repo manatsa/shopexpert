@@ -1,6 +1,8 @@
 let saleTable=null
+let slcontext=null;
 
 $(document).ready(function () {
+    slcontext=$('#context').val()
 
     loadSales();
 
@@ -8,12 +10,9 @@ $(document).ready(function () {
         saleTable.$('tbody tr.selected').removeClass('selected');
         saleTable.$('tbody tr').removeClass('select');
         $(this).toggleClass('select');
-        // saleTable.$('tr.selected').css('background-color','lightgrey')
 
-        //saleTable.$('tr.selected').on( 'click', function () { $( saleTable.cells().nodes() ).removeClass( 'selected' )})
     });
 
-onOrganizationSelectChange($("#organization"))
 
 
 
@@ -21,7 +20,7 @@ onOrganizationSelectChange($("#organization"))
 
 function loadSales(){
     $.ajax({
-        'url': "/sales/list",
+        'url': `${slcontext}/sales/list`,
         'method': "GET",
         'contentType': 'application/json'
     }).done(function (data) {
@@ -34,7 +33,9 @@ function loadSales(){
             select: true,
             fixedHeader: true,
             colReorder: true,
+            pageLength:5,
             searching: true,
+            pagingType: 'full_numbers',
             dom: 'Brtip',
             buttons: [
                 {
@@ -43,7 +44,7 @@ function loadSales(){
                         return ` <a id="productEditBtn" class="btn btn-success text-white"><i class="fa fa-plus-circle "></i> Sale</a>`
                     },
                     action: function ( e, dt, node, config ) {
-                        location.href="/sale-creation"
+                        location.href=`${slcontext}/sale-creation`
                     }
                 },
 
@@ -126,9 +127,8 @@ function loadSales(){
                     }},
                 {data: 'receiptNumber'},
                 {data: 'customer.name',render:(data, type, row)=>{
-
                         return `<a href="#" style="border-bottom: 1px solid deepskyblue; color: deepskyblue;" 
-                        onclick='showCustomer("${row?.customer?.name},${row?.customer?.address}, ${row?.customer?.type}, ${row?.customer?.phone}, ${row?.customer?.email}, ${new Date(row?.customer?.dateCreated)}, ${row?.customer?.status}")'>${row?.customer?.name}</a>`
+                        onclick='showCustomer("${row?.customer?.name},${row?.customer?.address}, ${row?.customer?.type}, ${row?.customer?.phone}, ${row?.customer?.email}, ${new Date(row?.customer?.dateCreated)}, ${row?.customer?.status}")'>${row?.customer?row?.customer?.name:''}</a>`
 
                     }},
                 {data: 'saleDate', render:(date)=>{
@@ -137,22 +137,20 @@ function loadSales(){
                     }},
                 {data: 'saleStatus'},
                 {'data': 'saleItems', 'render': (data)=>{
-
                         return (data)?`<table class="display" col-spacing="1"><tbody><th>Product Name</th><th>Price</th><th>Quantity</th><th>Total/Item</th>
                        
                         ${data.map(item=>{
-                            return `<tr><td>${item?.printName}</td><td>$${item?.product?.price?.toFixed(2)}</td><td>${item?.quantity?.toFixed(0)}</td><td>$${(item?.product?.price * item?.quantity)?.toFixed(2)}</td></tr>`
+                            return `<tr><td>${item?.inventory?.product?.name+'-'+item?.inventory?.product?.description+'-'+item?.inventory?.product?.packaging}</td><td>$${item?.inventory?.price?.toFixed(2)}</td><td>${item?.quantity?.toFixed(0)}</td><td>$${(item?.inventory?.price * item?.quantity)?.toFixed(2)}</td></tr>`
                         })}
                     </tbody></table>`:`<span></span>`;
                     }},
                 {'data': 'saleItems', 'render': (data)=>{
-                        return `<span class="bold total" style="border-bottom: 2px double blue">$${data?.map(item=>item?.product?.price * item?.quantity)?.reduce((a,b)=>a+b)?.toFixed(2)}</span>`
+                        return `<span class="bold total" style="border-bottom: 2px double blue">$${data?.map(item=>item?.inventory?.price * item?.quantity)?.reduce((a,b)=>a+b)?.toFixed(2)}</span>`
                     }},
                 { 'data': 'id',
                     title: 'Show Sale',
                     wrap: true,
                     render: function (data, type,row) {
-                        let rowData=JSON.stringify(row);
                         return `<a onclick="showSale('${data}')" class="btn btn-outline-primary" ><i class="fa fa-eye"></i></a>`
                     } },
                 { 'data': 'id',
@@ -160,13 +158,13 @@ function loadSales(){
                     wrap: true,
                     render: function (data) {
 
-                        return `<a href="/sale-creation?saleId=${data}" class="btn btn-outline-secondary" ><i class="fa fa-pencil-square-o"></i></a>`
+                        return `<a href="${slcontext}/sale-creation?saleId=${data}" class="btn btn-outline-secondary" ><i class="fa fa-pencil-square-o"></i></a>`
                     } },
                 { 'data': 'id',
-                    title: 'Trash',
+                    title: 'Print',
                     wrap: true,
-                    render: function (data) {
-                        return `<a href="#" class="btn btn-outline-danger" ><i class="fa fa-trash-o" ></i></a>`
+                    render: function (data,type,row) {
+                        return `<a href="#" onclick="createReceipt('${row?.receiptNumber}', '${row?.id}')" class="btn btn-outline-dark" ><i class="fa fa-print" ></i></a>`
                     } },
 
             ],
@@ -189,7 +187,7 @@ function loadSales(){
 
 function onOrganizationSelectChange(element){
     $.ajax({
-        'url':'/units/list-by-organization?org='+element.value,
+        'url':`${slcontext}/units/list-by-organization?org=`+element.value,
         'method': 'GET',
         'contentType': 'application/json'
     }).done(function (data) {
@@ -202,126 +200,6 @@ function onOrganizationSelectChange(element){
         $('#bUnitsSelect').html(htmlOptions)
     })
 }
-
-
-/*function addProductOnclick(data, add, size, initial) {
-
-    let quantity = document.getElementById(data + '-input-quantity')?.value;
-    if ((!quantity || quantity < 1) && add) {
-        var quantityModal = new bootstrap.Modal(document.getElementById('invalidQuantityModal'), { keyboard: true})
-        quantityModal.show();
-        return;
-    }
-    if(size && size>0){
-        quantity=size;
-    }
-
-    if (productSearchItems) {
-        productSearchItems?.destroy();
-    }
-
-    //determine if its removing or adding a product to the sale, and act accordingly
-    const url = data ?add ? "/sales/add-sale-item-to-sale?productId=" + data + "&quantity=" + quantity :
-            "/sales/remove-sale-item-to-sale?productId=" + data+"&quantity="+quantity:
-        "/sales/get-sale-item-to-sale";
-
-    //clear text box after reading its value (quantity)
-    if(add) {
-        document.getElementById(data + '-input-quantity').value = null;
-    }
-
-    $.ajax({
-        'url': url,
-        'method': "GET",
-        'contentType': 'application/json'
-    }).done(function (items) {
-        if(add){
-            $('#operationSuccess').toast('show');
-        }else if(!add && items && !initial){
-            $('#operationError').toast('show');
-        }
-
-        const data = items?items.map(item => {
-            return {
-                name: item.product.name + '-' + item.product.description + '-' + item.product.packaging,
-                price: item.product.price,
-                quantity: item.quantity,
-                total: item.product.price * item.quantity,
-                productId: item.product.id
-            }
-        }):[];
-
-        let total=items.map(item=>item.product.price*item.quantity).reduce((a,b)=>a+b,0);
-        productSearchItems = $('#productSearchItems').DataTable({
-            data,
-            bFilter: true,
-            columnDefs: [{"className": "dt-center", "targets": "_all"}],
-            autoWidth: true,
-            select: true,
-            scrollY: "250px",
-            scrollX: true,
-            scrollCollapse: true,
-            paging: true,
-            dom: 'Brtip',
-            buttons: [
-                {
-                    className:'bg-transparent',
-                    text: ()=>{
-                        return `<span  class="btn btn-outline-danger" style="font-size: x-large"><i class="fa fa-bank "> Total :: </span>`
-                    }
-                },
-                {
-                    className:'bg-transparent',
-                    text: ()=>{
-                        return `<span class="btn btn-danger" style="font-size: x-large">$${total.toFixed(2)}</span>`
-                    }
-                },
-                {
-                    className: 'bg-transparent',
-                    text: () => {
-                        return ` 
-                        <div class="mui-col-md-12 float-right"style="width: 100%; display: flex; flex-grow: 1;">
-                           
-                            <div class="mui-col-md-8 mui-col-md-offset-4 col-sm-12 mui-textfield mui-textfield--float-label">
-                                <input type="text" id="saleSearchItems" />
-                                <label for="search">search product</label>
-                            </div>
-                
-                    </div>`
-                    }
-                }
-                /!*{
-                    className:'bg-transparent',
-                    text: ()=>{
-                        return `<span  class="btn btn-danger" style="font-size:large"><i class="fa fa-refresh text-light">Refresh</i></span>`
-                    }
-                },*!/
-
-            ],
-            columns: [
-                {data: 'name'},
-                {data: 'quantity'},
-                {data: 'price', render: $.fn.dataTable.render.number(null, '.', 2, '$ ')}, // thousand, decimal, precision, prefix
-                {data: 'total', render: $.fn.dataTable.render.number(null, '.', 2, '$ ')},
-                {
-                    'data': 'name',
-                    title: 'Add',
-                    wrap: true,
-                    "render": function (data, type, row) {
-                        return `<button type="button" onclick="addProductOnclick('${row?.productId}',false, '${row?.quantity}',false)" class="btn btn-outline-danger" ><i class="fa fa-trash-o "> Remove</i></button>`
-                    }
-                },
-
-            ],
-
-        })
-        $('#saleSearchItems').keyup(function(){
-            prodSearchItems.search($(this).val()).draw() ;
-        })
-    })
-
-
-}*/
 
 function showCustomer(customer) {
 
@@ -340,7 +218,7 @@ function showCustomer(customer) {
 
 function showSale(id){
     $.ajax({
-        'url': "/sales/get-sale-by-id?id="+id,
+        'url': `${slcontext}/sales/get-sale-by-id?id=`+id,
         'method': "GET",
         'contentType': 'application/json'
     }).done(function (data)
@@ -354,8 +232,8 @@ function showSale(id){
         </thead>
         <tbody>
             <tr><td class="bold">Receipt Number</td><td class="bold text-danger">${data?.receiptNumber}</td></tr>
-            <tr><td class="bold">Sale Date</td><td>${new Date(data?.saleDate)?.toISOString().split('T')[0]}</td></tr>
-            <tr><td class="bold">Date Created</td><td>${new Date(data?.dateCreated)?.toISOString().split('T')[0]}</td></tr>
+            <tr><td class="bold">Sale Date</td><td>${data?.saleDate?new Date(data?.saleDate)?.toISOString()?.split('T')[0]:''}</td></tr>
+            <tr><td class="bold">Date Created</td><td>${data?.dateCreated?new Date(data?.dateCreated)?.toISOString().split('T')[0]:''}</td></tr>
             <tr><td class="bold">Sale Status</td><td>${data?.saleStatus}</td></tr>
         </tbody>
         </table>`
@@ -379,19 +257,19 @@ function showSale(id){
 
         let productBody=`<table class="mui-table mui-table--bordered table-responsive table-striped-columns" border="1">
                 <thead><th>Product Name</th><th>Product Price</th><th>Product Quanity</th><th> TOTAL </th></thead><tbody>`
-        data?.saleItems?.map(s=>{
-            return `
-                 <tr><td>${s?.product?.name}</td><td>${s?.product?.price}</td><td>${s?.quantity}</td><td>$${(s?.product?.price * s?.quantity)?.toFixed(2)}</td></tr>
-                `
-            })?.forEach(saleItemHtml=>{
-                productBody+=saleItemHtml;
-        })
+                data?.saleItems?.map(s=>{
+                    return `
+                         <tr><td>${s?.inventory.product?.name}</td><td>${s?.inventory?.price}</td><td>${s?.quantity}</td><td>$${(Number(s?.inventory?.price) * Number(s?.quantity))?.toFixed(2)}</td></tr>
+                        `
+                    })?.forEach(saleItemHtml=>{
+                        productBody+=saleItemHtml;
+                })
         productBody+=`</tbody>
             <tfoot class="text-secondary">
                 <tr><th style="font-size: x-large;">Grand Total</th>
                 <td></td>
                 <td></td>
-                <td style="font-size: x-large">$${(data?.saleItems?.map(s=>s?.product?.price * s?.quantity)?.reduce((a,b)=>a+b,0))?.toFixed(2)}</td></tr>
+                <td style="font-size: x-large">$${(data?.saleItems?.map(s=>Number(s?.product?.price) * Number(s?.quantity))?.reduce((a,b)=>a+b,0))?.toFixed(2)}</td></tr>
             </tfoot>
         </table>`
 
@@ -421,4 +299,64 @@ function showSale(id){
     });
 
 
+}
+
+const createReceipt=(receipt, saleId)=>{
+    $.ajax({
+        'url': `${slcontext}/sales/get-sale-by-id?id=${saleId}`,
+        'method': "GET",
+        'contentType': 'application/json'
+    }).done(function (data) {
+        let html=`<div>`;
+        html+=`<span style="font-size: x-small; font-weight: bold">CHIEDZA CENTRE</span><br/>
+                <table class="mui-table">
+                    <tr><td><span style="font-size: x-small">Receipt No:</span></td><td><span class="bold" style="font-size: xx-small; font-weight: bold;">${data?.receiptNumber}</span></td></tr>
+                    <tr><td><span style="font-size: xx-small">Sale Date:</span></td><td><span style="font-size: xx-small">${data?.saleDate}</span></td></tr>
+                    <tr><td><span style="font-size: xx-small">Customer Name:</span></td><td><span style="font-size: xx-small">${data?.customer?.name}</span></td></tr>
+                    <tr><td><span style="font-size: xx-small"></span></td></tr> <tr><hr/></tr>
+                    <tr><td><u><span style="font-size: xx-small; font-weight: bold;">PRODUCT ITEMS</span></u></td><td></td></tr>
+                    <tr><hr/></tr>
+`;
+        data?.saleItems?.forEach(s =>{
+            let inv=s?.inventory;
+            html+=`<tr>
+                <td> <span style="font-size: 5px">${inv?.product?.name} ${inv.product?.packaging} ${inv?.product?.description} </span></td>
+                <td> <span style="font-size: 6px"> @${s?.inventory?.price?.toFixed(2)}</span></td>
+                <td> <span style="font-size: 6px"> x${s.quantity} </span></td>
+                <td><span style="font-size: 6px"> $${(Number(inv?.price)*Number(s?.quantity))?.toFixed(2)} </span></td>
+            </tr>`
+        });
+
+        let total=data?.saleItems?.map(s=>Number(s?.inventory?.price)*Number(s.quantity))?.reduce((a,b)=>a+b);
+        html+=`<tr><td><span></span></td></tr>
+            <tr>
+                <th>
+                    <span style="font-size: 8px; ">
+                        Total
+                    </span>
+                </th>
+            <th>
+                <span style="font-size: 8px; border-bottom: 1px double black; border-top: 1px solid black;">
+                    $${total.toFixed(2)}
+                </span>
+            </th>
+            </tr>
+            </table>
+            <div class="row"></div>
+            <hr/>
+            <div class="row"><span style="font-size: 6px">Thank you. Please come again!</span></div>
+            <div class="row"><span style="font-size: 7px;"> Mneulite Investments (Pvt) Ltd. &copy; 2022</span></div>
+            </div>
+        `
+        printReceipt(html);
+    })
+}
+
+function printReceipt(html) {
+        var WinPrint = window.open('', '', 'left=0,top=0,width=800,height=900,toolbar=0,scrollbars=0,status=0');
+        WinPrint.document.write(html);
+        WinPrint.document.close();
+        WinPrint.focus();
+        WinPrint.print();
+        WinPrint.close();
 }

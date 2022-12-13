@@ -1,9 +1,11 @@
 package com.mana.limo.dto;
 
+import com.mana.limo.domain.Inventory;
 import com.mana.limo.domain.Product;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import java.util.Objects;
 
@@ -18,18 +20,18 @@ import java.util.Objects;
 @AllArgsConstructor
 public class SaleItemDTO {
     private int quantity;
-    private Product product;
+    private Inventory inventory;
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         SaleItemDTO that = (SaleItemDTO) o;
-        return quantity == that.quantity && product.getId().equals(that.product);
+        return quantity == that.quantity && inventory.getId().equals(that.inventory);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(quantity, product.getId());
+        return Objects.hash(quantity, inventory.getId());
     }
 }

@@ -3,6 +3,7 @@ package com.mana.limo.domain;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import javax.persistence.*;
 import java.util.Set;
@@ -17,19 +18,28 @@ import java.util.Set;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString(callSuper = true)
 public class Inventory extends  BaseEntity{
 
     private String description;
 
-    private Integer quantity;
+    private double quantity;
 
-    @ManyToOne(targetEntity = User.class, fetch = FetchType.EAGER,cascade = CascadeType.ALL)
+    private double cost;
+
+    private double price;
+
+    @Column(nullable = true)
+    private String foreignCode;
+
+
+    @ManyToOne
     @JoinColumn(name = "receiver_id")
     private User receiver;
 
-    @ManyToOne(targetEntity = InventoryProduct.class, fetch = FetchType.EAGER,cascade = CascadeType.ALL)
-    @JoinColumn(name = "inventory_product_id")
-    private InventoryProduct inventoryProduct;
+    @ManyToOne
+    @JoinColumn(name = "product_id")
+    private Product product;
 
 
 }

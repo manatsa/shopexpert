@@ -1,4 +1,44 @@
 <section class="container-fluid" style="margin-top: 20px;">
+    <input type="hidden" id="logged" value='${logged}'/>
+    <input type="hidden" id="context" value='${pageContext.request.contextPath}'/>
+
+    <div class="modal .modal-sm fade" id="operationMessageModal" data-bs-backdrop="static" data-bs-keyboard="true" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header" id="operationHeader">
+
+                </div>
+                <div class="modal-body" id="operationMessage">
+
+                </div>
+                <div class="modal-footer d-flex justify-content-between" id="operationFooter">
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal .modal-sm fade" id="ajaxCallModal" data-bs-backdrop="static" data-bs-keyboard="true" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+
+                <div class="modal-body bg-transparent">
+                    <div class="spinner-grow text-danger" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                    <div class="spinner-grow text-primary" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                    <div class="spinner-grow text-light" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                    <div class="spinner-grow text-secondary" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
 
     <div class="modal .modal-lg fade" id="ChangePasswordModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
         <div class="modal-dialog">
@@ -8,6 +48,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
+                    <input type="hidden" id="changePassUser" />
                     <div class="mb-3 form-floating">
                         <input type="password" class="form-control modern" id="passwd" minlength="5" />
                         <label for="passwd">Enter New Password</label>
@@ -81,10 +122,10 @@
 
     <nav class="navbar navbar-expand-lg bg-success text-white indented fixed-top">
         <div class="container-fluid">
-            <a class="navbar-brand" href="/limousine">
-                <img src="<c:url value="/resources/images/limo.jfif"/> " class="rounded" alt="Logo" width="90" height="40" />
+            <a class="navbar-brand" href="${pageContext.request.contextPath}">
+                <img src="<c:url value="/resources/images/logo.gif"/> " class="rounded" alt="Logo" width="150" height="50" />
                 <sec:authorize access="!isAuthenticated()">
-                    <span class="text-white" style="font-size: x-large"> Limousine Shop Management System</span>
+                    <span class="text-white" style="font-size: x-large"> Shop Expert Management System (SEMS)</span>
                 </sec:authorize>
             </a>
 
@@ -97,21 +138,21 @@
                         <sec:authorize access="hasAuthority('ADMIN')">
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle text-white bold" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                Administration
+                                Admin
                             </a>
                             <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" href="/users-list">User Admin</a></li>
-                                <li><a class="dropdown-item" href="/roles-list">Role Admin</a></li>
-                                <li><a class="dropdown-item" href="/privileges-list">Privilege Admin</a></li>
+                                <li class="justify-content-center bg-success bg-opacity-50 text-white bold"><span>&nbsp;USER ADMIN</span></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item" href="${pageContext.request.contextPath}/users-list">User Admin</a></li>
+                                <li><a class="dropdown-item" href="${pageContext.request.contextPath}/roles-list">Role Admin</a></li>
+                                <li><a class="dropdown-item" href="${pageContext.request.contextPath}/privileges-list">Privilege Admin</a></li>
                                 <li>
                                     <hr class="dropdown-divider">
                                 </li>
-                                <li><a class="dropdown-item" href="/suppliers-list">User Reports</a></li>
-                                <li>
-                                    <hr class="dropdown-divider">
-                                </li>
-
-                                <li><a class="dropdown-item" href="/suppliers-list">System Settings</a></li>
+                                <li class="justify-content-center bg-success bg-opacity-50 text-white bold"><span>&nbsp;SYSTEM SETTINGS</span></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item" href="${pageContext.request.contextPath}/rates-list">Exchange Admin</a></li>
+                                <li><a class="dropdown-item" href="${pageContext.request.contextPath}/suppliers-list">General Settings</a></li>
                             </ul>
                         </li>
                         </sec:authorize>
@@ -119,22 +160,34 @@
                         <sec:authorize access="hasAuthority('OPERATIONS') or hasAuthority('ADMIN')">
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle text-white bold" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                    Operations
+                                    Inventory
                                 </a>
                                 <ul class="dropdown-menu">
                                     <li class="justify-content-center bg-success bg-opacity-50 text-white bold"><span>&nbsp;INVENTORY ADMIN</span></li>
                                     <li><hr class="dropdown-divider"></li>
-                                    <li><a class="dropdown-item" href="/product-list">Products</a></li>
+                                    <li><a class="dropdown-item" href="${pageContext.request.contextPath}/product-list">Products</a></li>
+                                    <li><a class="dropdown-item" href="${pageContext.request.contextPath}/inventory-list">Inventory</a></li>
+                                    <li><a class="dropdown-item" href="${pageContext.request.contextPath}/assets-list">Asset Register</a></li>
                                     <li><hr class="dropdown-divider"></li>
-                                    <li class="justify-content-center bg-success bg-opacity-50 text-white bold"><span>&nbsp;RELATIONSHIPS</span></li>
+                                </ul>
+                            </li>
+                        </sec:authorize>
+
+                        <sec:authorize access="hasAuthority('OPERATIONS') or hasAuthority('ADMIN')">
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle text-white bold" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    Relations
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li class="justify-content-center bg-success bg-opacity-50 text-white bold"><span>&nbsp;EXTERNALS ADMIN</span></li>
                                     <li><hr class="dropdown-divider"></li>
-                                    <li><a class="dropdown-item" href="/customers-list">Customers</a></li>
-                                    <li><a class="dropdown-item" href="/suppliers-list">Suppliers</a></li>
+                                    <li><a class="dropdown-item" href="${pageContext.request.contextPath}/customers-list">Customers</a></li>
+                                    <li><a class="dropdown-item" href="${pageContext.request.contextPath}/suppliers-list">Suppliers</a></li>
                                     <li><hr class="dropdown-divider"></li>
-                                    <li class="justify-content-center bg-success bg-opacity-50 text-white bold"><span>&nbsp;COMPANY ADMIN</span></li>
+                                    <li class="justify-content-center bg-success bg-opacity-50 text-white bold"><span>ORGANIZATION ADMIN</span></li>
                                     <li><hr class="dropdown-divider"></li>
-                                    <li><a class="dropdown-item" href="/orgs-list">Organizations</a></li>
-                                    <li><a class="dropdown-item" href="/units-list">Business Units</a></li>
+                                    <li><a class="dropdown-item" href="${pageContext.request.contextPath}/orgs-list">Organizations</a></li>
+                                    <li><a class="dropdown-item" href="${pageContext.request.contextPath}/units-list">Business Units</a></li>
                                 </ul>
                             </li>
                         </sec:authorize>
@@ -142,15 +195,15 @@
                         <sec:authorize access="hasAuthority('ACCOUNTING') or hasAuthority('ADMIN')">
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle text-white bold" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                    Accounting
+                                    Receipting
                                 </a>
                                 <ul class="dropdown-menu">
-                                    <li><a class="dropdown-item" href="/sales-list">Sales</a></li>
+                                    <li><a class="dropdown-item" href="${pageContext.request.contextPath}/sales-list">Sales</a></li>
                                     <li><hr class="dropdown-divider"></li>
                                     <li class="justify-content-center bg-success bg-opacity-50 text-white bold"><span>&nbsp;QUOTES ADMIN</span></li>
                                     <li><hr class="dropdown-divider"></li>
-                                    <li><a class="dropdown-item" href="/quotes-lite">Quotations</a></li>
-                                    <li><a class="dropdown-item" href="/invoices-list">Invoices</a></li>
+                                    <li><a class="dropdown-item" href="${pageContext.request.contextPath}/quotes-lite">Quotations</a></li>
+                                    <li><a class="dropdown-item" href="${pageContext.request.contextPath}/invoices-list">Invoices</a></li>
                                 </ul>
                             </li>
                         </sec:authorize>
@@ -158,11 +211,19 @@
 
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle text-white bold" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                Reporting
+                                Reports
                             </a>
                             <ul class="dropdown-menu">
-                                <sec:authorize access="hasAuthority('OPERATIONS_REPORTS') or hasAuthority('ADMIN')">
-                                    <li><a class="dropdown-item" href="#">Products Report</a></li>
+                                <sec:authorize access="hasAuthority('RECEIPTING_REPORTS') or hasAuthority('ADMIN')">
+                                    <li class="justify-content-center bg-success bg-opacity-50 text-white bold"><span>&nbsp;FINANCIAL REPORTS </span></li>
+                                    <li><hr class="dropdown-divider"></li>
+                                    <li><a class="dropdown-item" href="${pageContext.request.contextPath}/report?name=general_sales.rpt" target="_blank">Sales Report</a></li>
+                                    <li><a class="dropdown-item" href="#">Quotations Report</a></li>
+                                    <li><a class="dropdown-item" href="#">Receipts Report</a></li>
+                                </sec:authorize>
+                                <sec:authorize access="isAuthenticated()">
+                                    <li class="justify-content-center bg-success bg-opacity-50 text-white bold"><span>&nbsp;GENERAL REPORTS </span></li>
+                                    <li><a class="dropdown-item" href="${pageContext.request.contextPath}/report?name=general_products.rpt" target="_blank">Products Report</a></li>
                                     <li><a class="dropdown-item" href="#">Customers Report</a></li>
                                     <li><a class="dropdown-item" href="#">Suppliers Report</a></li>
                                     <li><hr class="dropdown-divider"></li>
@@ -174,13 +235,7 @@
                                     <li><a class="dropdown-item" href="#">Reorder Levels Report</a></li>
                                     <li><hr class="dropdown-divider"></li>
                                 </sec:authorize>
-                                <sec:authorize access="hasAuthority('ACCOUNTING_REPORTS') or hasAuthority('ADMIN')">
-                                    <li class="justify-content-center bg-success bg-opacity-50 text-white bold"><span>&nbsp;FINANCIAL REPORTS </span></li>
-                                    <li><hr class="dropdown-divider"></li>
-                                    <li><a class="dropdown-item" href="#">Sales Report</a></li>
-                                    <li><a class="dropdown-item" href="#">Quotations Report</a></li>
-                                    <li><a class="dropdown-item" href="#">Receipts Report</a></li>
-                                </sec:authorize>
+
 
                             </ul>
                         </li>
@@ -210,7 +265,7 @@
                                 <li><a class="dropdown-item" onclick="showProfileModal()">Profile Details</a></li>
                                 <li><a class="dropdown-item" onclick="openChangePassword()">Change Password</a></li>
                                 <li><hr class="dropdown-divider"></li>
-                                <li><a class="dropdown-item" href="<c:url value="/logout" />">Logout</a></li>
+                                <li><a class="dropdown-item" href="${pageContext.request.contextPath}/logout">Logout</a></li>
                             </ul>
                         </li>
                     </ul>

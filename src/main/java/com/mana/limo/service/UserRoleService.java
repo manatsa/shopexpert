@@ -28,4 +28,6 @@ import java.util.Set;
 public interface UserRoleService extends GenericNameService<UserRole> {
 
     public Set<UserRole> findByNamesIn(Set<String> names);
+
+    public UserRole update(UserRole t);
 }

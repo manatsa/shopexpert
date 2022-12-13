@@ -1,5 +1,7 @@
 let productTable=null
+let pdcontext=null;
 $(document).ready(function () {
+    pdcontext=$('#context').val()
    populateProducts();
 
     $('#productList tbody').on('click', 'tr', function () {
@@ -10,15 +12,13 @@ $(document).ready(function () {
 })
 
 
-
-
 function populateProducts(items) {
     if(productTable){
         productTable.destroy()
     }
     if(!items){
         $.ajax({
-            'url': "/products/list",
+            'url': `${pdcontext}/products/list`,
             'method': "GET",
             'contentType': 'application/json'
         }).done(function (data) {
@@ -51,67 +51,9 @@ function createTable(data) {
                     return ` <a class="btn btn-success text-white"><i class="fa fa-plus-circle "></i> Product</a>`
                 },
                 action: function ( e, dt, node, config ) {
-                    location.href="/product-creation"
+                    location.href=`${pdcontext}/product-creation`
                 }
             },
-            /*{
-                className:'bg-transparent',
-                text: ()=>{
-                    return ` <a  class="btn btn-outline-primary"><i class="fa fa-bars "></i> Rows</a>`
-                },
-                extend: 'pageLength'
-            },
-            {
-                extend: 'collection',
-                text: ()=>{
-                    return `<button class="btn btn-outline-primary"><i class="fa fa-columns"></i></button>`
-                },
-                className: 'bg-transparent',
-                buttons: [
-                    {
-                        text: 'Toggle Name',
-                        action: function ( e, dt, node, config ) {
-                            dt.column(0 ).visible( ! dt.column( 0 ).visible() );
-                        }
-                    },
-                    {
-                        text: 'Toggle Type',
-                        action: function ( e, dt, node, config ) {
-                            dt.column( 1 ).visible( ! dt.column( 1 ).visible() );
-                        }
-                    },
-                    {
-                        text: 'Toggle Details',
-                        action: function ( e, dt, node, config ) {
-                            dt.column( 2 ).visible( ! dt.column( 2 ).visible() );
-                        }
-                    },
-                    {
-                        text: 'Toggle Packaging',
-                        action: function ( e, dt, node, config ) {
-                            dt.column( 3 ).visible( ! dt.column( 3 ).visible() );
-                        }
-                    },
-                    {
-                        text: 'Toggle Price',
-                        action: function ( e, dt, node, config ) {
-                            dt.column( 4 ).visible( ! dt.column( 4 ).visible() );
-                        }
-                    },
-                    {
-                        text: 'Toggle Status',
-                        action: function ( e, dt, node, config ) {
-                            dt.column( 5 ).visible( ! dt.column( 5 ).visible() );
-                        }
-                    },
-                    {
-                        text: 'Toggle Re-Order Level',
-                        action: function ( e, dt, node, config ) {
-                            dt.column( 6 ).visible( ! dt.column( 6 ).visible() );
-                        }
-                    }
-                ]
-            },*/
             {
                 extend: 'spacer',
                 style: 'bar',
@@ -186,39 +128,32 @@ function createTable(data) {
         ],
 
         columns: [
-            {data: 'organization.name', render: data1 => data1?`<span>${data1}</span>`:`<span></span>`},
-            {data: 'businessUnit.name',render: data1 => data1?`<span>${data1}</span>`:`<span></span>`},
+            {data: 'organization', render: function(data1){
+                return `<span>${data1?.name}</span>`
+                }},
+            {data: 'businessUnit', render: function(data1){
+                return `<span>${data1?.name}</span>`
+                }},
             {data: 'name'},
             {data: 'productType'},
             {data: 'description'},
             {data: 'packaging'},
-            {data: 'price'},
+            {data: 'price', render: $.fn.dataTable.render.number(null, '.', 2, '$ ')},
             {data: 'status'},
             {data: 'reOderLevel'},
             {data: 'stock'},
-            { 'data': 'id',
-                title: 'Quantity',
-                wrap: true,
-                "render": function (data) {
-                    return `<input id='${data.split('-')[0]+data.split('-')[1]}' placeholder="items" class='form-control modern'  min="1"style="width: 120px" type="number" /> `
-                } },
             { 'data': 'id',
                 title: 'Add',
                 wrap: true,
                 "render": function (data) {
                     return `<a  onclick="activateAddInventory('${data}')" class="btn btn-outline-success" ><i class="fa fa-plus-circle "></i></a>`
                 } },
-            { 'data': 'id',
-                title: 'Minus',
-                wrap: true,
-                "render": function (data) {
-                    return `<a onclick="activateRemoveInventory('${data}')" class="btn btn-outline-dark" ><i class="fa fa-minus-circle "></i></a>`
-                } },
+
             { 'data': 'id',
                 title: 'Edit',
                 wrap: true,
                 "render": function (data) {
-                    return `<a href="/product-creation?productId=${data}" class="btn btn-outline-primary" ><i class="fa fa-pencil-square-o"></i></a>`
+                    return `<a href="${pdcontext}/product-creation?productId=${data}" class="btn btn-outline-primary" ><i class="fa fa-pencil-square-o"></i></a>`
                 } },
             { 'data': 'id',
                 title: 'Deactivate',
@@ -246,47 +181,59 @@ function createTable(data) {
 
 
 function activateAddInventory(data){
-    let quant=$('#'+data.split('-')[0]+data.split('-')[1])?.val()
 
-    if(quant && quant>0){
-        let url="/inventory/add-inventory?productId="+data+"&quantity="+quant;
+    let addInventoryModal = new bootstrap.Modal(document.getElementById('addInventoryModal'), { keyboard: false})
+    addInventoryModal.show();
+    let url=`${pdcontext}/inventory/get-product-by-id?productId=`+data
+    $.ajax({
+        'url': url,
+        'method': "GET",
+        'contentType': 'application/json'
+    }).done(function (product) {
+
+        $("#productdescription").html(product.description);
+        $('#productPackaging').html('Packaging::'+product?.packaging);
+        $('#productName').html(product?.name);
+        $('#ProductInventoryPrice').html('Price::'+product?.price)
+        $('#ProductInventoryCost').html('Cost::'+product?.cost)
+
+        $('#productCost').click()
+        $('#productCost').val(Number(product?.cost)+0);
+        $('#productPrice').click()
+        $('#productPrice').val(Number(product?.price)+0);
+        $('#productQuantity').click()
+        $('#productId').val(product?.id)
+        $("#inventoryDescription").focus();
+    })
+}
+
+function addInventory(){
+    let productId=$('#productId').val();
+    let cost=$('#productCost').val();
+    let price=$('#productPrice').val();
+    let quantity=$('#productQuantity').val();
+    let description=$('#inventoryDescription').val()
+    let fcode=$('#productForeignCode').val()
+
+    if(productId && cost && price && quantity) {
+        let url = `${pdcontext}/inventory/add-inventory?productId=` + productId + "&cost=" + cost + "&price=" + price + "&quantity=" + quantity + "&description=" + description+"&fcode="+fcode;
         $.ajax({
             'url': url,
             'method': "GET",
             'contentType': 'application/json'
-        }).done(function (items) {
-            populateProducts(items);
-            if(items) {
-                $('#operationSuccess').toast('show');
-            }else{
-                $('#operationError').toast('show');
+        }).done(function (products) {
+            populateProducts(products);
+            if (products) {
+                showOperationStatusDialog('Operation Feedback','Inventory added successfully!',`${quantity} items have been added to the inventory`,'info',3000);
+            } else {
+                showOperationStatusDialog('Operation Feedback','Error while adding inventory!',`Failed adding ${quantity} items to the inventory`,'danger',3000);
             }
-            $('#'+data.split('-')[0]+data.split('-')[1])?.val(null)
         })
     }else{
-
+        $showOperationStatusDialog('Data Validation Failed','Your data does not make sense',`Quantity and product cannot be empty when adding inventory`,'danger',3000);
     }
-
 }
 
-function activateRemoveInventory(data){
-    let quant=$('#'+data.split('-')[0]+data.split('-')[1])?.val()
-    if(quant && quant>0){
-        let url="/inventory/remove-inventory?productId="+data+"&quantity="+quant;
-        $.ajax({
-            'url': url,
-            'method': "GET",
-            'contentType': 'application/json'
-        }).done(function (items) {
-            populateProducts(items);
-            if(items) {
-                $('#operationSuccess').toast('show');
-            }else{
-                $('#operationError').toast('show');
-            }
-            $('#'+data.split('-')[0]+data.split('-')[1])?.val(null)
-        })
-    }
 
-}
+
 

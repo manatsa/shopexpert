@@ -1,12 +1,13 @@
 package com.mana.limo.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.mana.limo.domain.enums.ProductType;
-import lombok.*;
-import org.hibernate.annotations.DynamicUpdate;
-import org.springframework.context.annotation.Lazy;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 import org.springframework.format.annotation.NumberFormat;
-import org.springframework.lang.Nullable;
 
 import javax.persistence.*;
 import java.util.Set;
@@ -29,17 +30,24 @@ public class Product extends BaseEntity{
     private String description;
     private ProductType productType;
     private String packaging;
+    @Column(nullable = true)
+    private String code;
     @NumberFormat(style = NumberFormat.Style.CURRENCY)
     private double price;
+    @NumberFormat(style = NumberFormat.Style.CURRENCY)
+    private double cost;
     private int reOderLevel;
-    private double stock;
+    private double stock=0;
     private String details;
-    @ManyToOne(optional = true)
+    @ManyToOne(optional = false)
     @JoinColumn(name = "organization_id")
     private Organization organization;
-    @ManyToOne(optional = true)
+    @ManyToOne(optional = false)
     @JoinColumn(name = "business_unit_id")
     private BusinessUnit businessUnit;
+    @Transient
+    @JsonProperty("printName")
+    public String printName;
 
     public Product(String id){
         super(id);
@@ -57,6 +65,10 @@ public class Product extends BaseEntity{
     Set<Supplier> suppliers;
 
 
+    @JsonProperty("printName")
+    public String getPrintName() {
+        return this.getName()+" - "+this.getDescription()+" - "+this.getPackaging();
+    }
 
     @Override
     public boolean equals(BaseEntity entity){

@@ -1,7 +1,9 @@
 let productSearchTable=null
+let pscontext=null;
 $(document).ready(function () {
+    pscontext=$('#context').val()
     $.ajax({
-        'url': "/products/list",
+        'url': `${pscontext}/inventory/list`,
         'method': "GET",
         'contentType': 'application/json'
     }).done(function (data) {
@@ -108,10 +110,11 @@ $(document).ready(function () {
             ],
 
             columns: [
-                {data: 'name'},
-                {data: 'description'},
-                {data: 'packaging'},
-                {data: 'price'},
+                {data: 'product.name'},
+                {data: 'product.description'},
+                {data: 'product.packaging'},
+                {data:'quantity'},
+                {data: 'price', render: $.fn.dataTable.render.number(null, '.', 2, '$ ')},
                 { 'data': 'id',
                     title: 'Quantity',
                     wrap: true,
@@ -187,9 +190,9 @@ function addProductOnclick(data, add, items) {
     }
 
     //determine if its removing or adding a product to the sale, and act accordingly
-    const url = data ?add ? "/sales/add-sale-item-to-sale?productId=" + data + "&quantity=" + quantity :
-        "/sales/remove-sale-item-to-sale?productId=" + data+"&quantity="+quantity:
-        "/sales/get-sale-item-to-sale";
+    const url = data ?add ? `${pscontext}/sales/add-sale-item-to-sale?inventoryId=` + data + "&quantity=" + quantity :
+        `${pscontext}/sales/remove-sale-item-to-sale?inventoryId=` + data+"&quantity="+quantity:
+        `${pscontext}/sales/get-sale-item-to-sale`;
 
     //clear text box after reading its value (quantity)
     if(add) {
@@ -202,22 +205,22 @@ function addProductOnclick(data, add, items) {
         'contentType': 'application/json'
     }).done(function (itemz) {
         if(add){
-            $('#operationSuccess').toast('show');
+            showOperationStatusDialog('Operation Feedback','Product added successfully!',`Product has been added to the list.`,'info',3000);
         }else if(!add && data){
-            $('#operationError').toast('show');
+            showOperationStatusDialog('Operation Feedback','Product adding failed!',`Failed to add product to the list.`,'info',3000);
         }
 
         const datas = itemz.map(item => {
             return {
-                name: item.product.name + '-' + item.product.description + '-' + item.product.packaging,
-                price: item.product.price,
-                quantity: item.quantity,
-                total: item.product.price * item.quantity,
-                productId: item.product.id
+                name: item?.inventory?.product?.name + '-' + item?.inventory?.product?.description + '-' + item?.inventory?.product?.packaging,
+                price: item.inventory?.price,
+                quantity: item?.quantity,
+                total: item.inventory?.price * item?.quantity,
+                inventoryId: item?.inventory?.id
             }
         });
 
-        let total=itemz.map(item=>item.product.price*item.quantity).reduce((a,b)=>a+b,0);
+        let total=itemz.map(item=>item.inventory?.price*item?.quantity).reduce((a,b)=>a+b,0);
 
         createProductSearchItemsTable(datas, total)
         $('#saleSearchItem').keyup(()=>{
@@ -281,7 +284,7 @@ function createProductSearchItemsTable(data, total) {
                 title: 'Add',
                 wrap: true,
                 "render": function (data, type, row) {
-                    return `<button type="button" onclick="addProductOnclick('${row?.productId}',false, '${row?.quantity}')" class="btn btn-outline-danger" ><i class="fa fa-trash-o "> Remove</i></button>`
+                    return `<button type="button" onclick="addProductOnclick('${row?.inventoryId}',false, '${row?.quantity}')" class="btn btn-outline-danger" ><i class="fa fa-trash-o "> Remove</i></button>`
                 }
             },
 

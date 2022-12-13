@@ -26,7 +26,7 @@ import com.mana.limo.util.StringUtils;
 
 public enum ProductType {
 
-    SOLAR(1), OIL(2), GROCER(3), BUILDING(4), TOOL(5), FURNITURE(6), OTHER(7);
+    SOLAR(1), CAR_SPARE(2), GROCER(3), STATIONERY(4), BUILDING(5), TOOL(6), FURNITURE(7), OTHER(8);
 
     private final Integer code;
 
@@ -43,16 +43,18 @@ public enum ProductType {
             case 1:
                 return SOLAR;
             case 2:
-                return OIL;
+                return CAR_SPARE;
             case 3:
                 return GROCER;
             case 4:
-                return BUILDING;
+                return STATIONERY;
             case 5:
-                return TOOL;
+                return BUILDING;
             case 6:
-                return FURNITURE;
+                return TOOL;
             case 7:
+                return FURNITURE;
+            case 8:
                 return OTHER;
             default:
                 throw new IllegalArgumentException("Illegal parameter passed to method :" + code);

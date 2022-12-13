@@ -23,6 +23,8 @@ public class WebMvcConfig implements WebMvcConfigurer {
         registry.addConverter(new StringToDateConverter());
         registry.addConverter(new UserTypeConverter());
         registry.addConverter(new UserLevelConverter());
+        registry.addConverter(new AssetTypeConverter());
+        registry.addConverter(new CurrencyConverter());
     }
 
     @Override

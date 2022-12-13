@@ -19,7 +19,7 @@
                 </div>
                 <div class="col-md-6">
                     <div class="mui-textfield mui-textfield--float-label">
-                        <form:textarea rows="1"  path="description" required="true" />
+                        <form:input path="description" required="true" />
                         <label for="description" class="form-label">Product Description</label>
                     </div>
                     <div class="text-danger">
@@ -32,7 +32,7 @@
                 <div class="col-md-6">
                     <div class="mui-select">
                         <form:select  path="productType" itemLabel="name" itemValue="code" items="${productTypes}" />
-                        <label for="productType">Product Type</label>
+                        <label for="productType">Product Category</label>
                     </div>
                     <div class="text-danger">
                         <form:errors path="productType" />
@@ -52,27 +52,6 @@
             <div class="row">
                 <div class="col-md-6">
                     <div class="mui-textfield mui-textfield--float-label">
-                        <form:input type="number"   path="price" required="true" />
-                        <label for="price" >Product Price</label>
-                    </div>
-                    <div class="text-danger">
-                        <form:errors path="price" />
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="mui-textfield mui-textfield--float-label">
-                        <form:input type="number" path="reOderLevel" required="true" />
-                        <label for="reOderLevel" class="form-label">Product Re-Order Level</label>
-                    </div>
-                    <div class="text-danger">
-                        <form:errors path="reOderLevel" />
-                    </div>
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="mui-textfield mui-textfield--float-label">
                         <form:input   path="packaging"  required="true" />
                         <label for="packaging" >Product Packaging</label>
                     </div>
@@ -82,11 +61,11 @@
                 </div>
                 <div class="col-md-6">
                     <div class="mui-textfield mui-textfield--float-label">
-                        <form:input type="number"  path="stock" required="true" />
-                        <label for="stock"> Product Quantity</label>
+                        <form:input   path="code" required="true" />
+                        <label for="code"> Product Code</label>
                     </div>
                     <div class="text-danger">
-                        <form:errors path="stock" />
+                        <form:errors path="code" />
                     </div>
                 </div>
             </div>
@@ -108,9 +87,46 @@
                     </div>
                 </div>
             </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="mui-textfield mui-textfield--float-label">
+                        <form:input   path="cost" required="true" />
+                        <label for="cost" >Product Cost</label>
+                    </div>
+                    <div class="text-danger">
+                        <form:errors path="cost" />
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="mui-textfield mui-textfield--float-label">
+                        <form:input   path="price" required="true" />
+                        <label for="price" >Product Price</label>
+                    </div>
+                    <div class="text-danger">
+                        <form:errors path="price" />
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="mui-textfield mui-textfield--float-label">
+                        <form:input   path="reOderLevel" required="true" />
+                        <label for="reOderLevel"> Product Re-order Level</label>
+                    </div>
+                    <div class="text-danger">
+                        <form:errors path="reOderLevel" />
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="mui-textfield mui-textfield--float-label">
+                        <form:textarea rows="5" type="number" path="details"/>
+                        <label for="price">Details (eg. Car names)</label>
+                    </div>
+                </div>
+            </div>
 
             <div class="d-flex justify-content-between">
-                <a href="/product-list" class="mui-btn mui-btn--danger">Cancel</a>
+                <a onclick="window.history.back()" class="mui-btn mui-btn--danger">Cancel</a>
                 <button type="submit" class="mui-btn mui-btn--primary">Save</button>
             </div>
 

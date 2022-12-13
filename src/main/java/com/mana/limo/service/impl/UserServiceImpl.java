@@ -9,6 +9,7 @@ import com.mana.limo.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -73,14 +74,14 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public User Save(User t) {
-        if (t.getId() == null) {
-            BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-            String hashedPassword = encoder.encode(t.getPassword());
-            t.setPassword(hashedPassword);
-            return userRepo.save(t);
-        }
+
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+        String hashedPassword = encoder.encode(t.getPassword());
+        t.setPassword(hashedPassword);
+        t.setCreatedBy(getCurrentUsername());
+        t.setDateCreated(new Date());
         t.setId(UUID.randomUUID().toString());
-        t.setUserRoles(t.getUserRoles().stream().map(r->userRoleService.get(r.getId())).collect(Collectors.toSet()));
+        t.setUserRoles(t.getUserRoles().stream().map(r -> userRoleService.get(r.getId())).collect(Collectors.toSet()));
         return userRepo.save(t);
     }
 
@@ -100,6 +101,11 @@ public class UserServiceImpl implements UserService {
         if(user!=null && user.getId()!=null){
             target=entityManager.find(User.class, user.getId());
             BeanUtils.copyProperties(user, target);
+            String currentUser=getCurrentUsername();
+            target.setModifiedBy(currentUser);
+            User creator=findByUserName(user.getCreatedBy());
+            target.setCreatedBy(creator.getUserName());
+            target.setDateModified(new Date());
             return entityManager.merge(target);
         }
 
@@ -122,6 +128,7 @@ public class UserServiceImpl implements UserService {
         if (user == null) {
             return null;
         }
+
         return user;
     }
 

@@ -6,8 +6,10 @@ package com.mana.limo.config;
  * Package Name :: com.mana.limo.config
  */
 
+import com.crystaldecisions.report.web.viewer.CrystalReportViewerServlet;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.hibernate5.Hibernate5Module;
+import org.springframework.boot.web.servlet.ServletRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
@@ -18,7 +20,6 @@ import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
 import java.text.SimpleDateFormat;
 
-@EnableWebMvc
 @Configuration
 public class AppConfig implements WebMvcConfigurer{
 
@@ -39,5 +40,22 @@ public class AppConfig implements WebMvcConfigurer{
         mapper.registerModule(hibernate5Module);
         mapper.setDateFormat(new SimpleDateFormat("yyyy-MM-dd"));
         return converter;
+    }
+
+    @Bean
+    public CrystalReportViewerServlet createViewerServlet(){
+        return new CrystalReportViewerServlet();
+    }
+
+    @Bean
+    public ServletRegistrationBean getServletRegistrationBean() {
+        ServletRegistrationBean bean = new ServletRegistrationBean(new CrystalReportViewerServlet());
+        bean.addUrlMappings("/CrystalReportViewerHandler");
+        return bean;
+    }
+
+    @Bean
+    public CrystalReportViewerServlet CrystalReportViewerHandler(){
+        return new CrystalReportViewerServlet();
     }
 }

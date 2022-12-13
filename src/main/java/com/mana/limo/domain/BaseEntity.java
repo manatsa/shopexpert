@@ -43,31 +43,31 @@ import java.util.Date;
 @Getter
 @Setter
 @MappedSuperclass
-@EntityListeners(AuditingEntityListener.class)
+//@EntityListeners(AuditingEntityListener.class)
 abstract public class BaseEntity implements Serializable {
     @Id
     private String id;
     private Status status;
 
     @JsonIgnore
-    @CreatedBy
+//    @CreatedBy
     @JoinColumn(name="created_by")
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private User createdBy;
 
     @JsonIgnore
-    @LastModifiedBy
+//    @LastModifiedBy
     @JoinColumn(name="modified_by")
     @ManyToOne(fetch = FetchType.LAZY)
     private User modifiedBy;
 
-    @CreatedDate
-    @Column(updatable = false)
+//    @CreatedDate
+    @Column(nullable = false, updatable = false)
     @Temporal(TemporalType.DATE)
     @DateTimeFormat(pattern = "dd-MM-yyyy")
     private Date dateCreated;
 
-    @LastModifiedDate
+//    @LastModifiedDate
     @Temporal(TemporalType.DATE)
     @DateTimeFormat(pattern = "dd-MM-yyyy")
     private Date dateModified;

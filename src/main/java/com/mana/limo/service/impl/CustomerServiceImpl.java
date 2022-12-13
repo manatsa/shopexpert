@@ -5,6 +5,7 @@ import com.mana.limo.domain.User;
 import com.mana.limo.repo.CustomerRepo;
 import com.mana.limo.service.CustomerService;
 import com.mana.limo.service.UserService;
+import com.mana.limo.util.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -52,22 +53,30 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public Customer searchCustomerByName(String name) {
-        return repo.getCustomerByName(name);
+        String camelName= StringUtils.toCamelCase3(name);
+        return repo.getCustomerByName(camelName);
     }
 
+    @Transactional
     @Override
     public Customer Save(Customer customer) {
-            customer.setId(UUID.randomUUID().toString());
-            return repo.save(customer);
+        customer.setId(UUID.randomUUID().toString());
+        customer.setCreatedBy(entityManager.find(User.class, userService.getCurrentUser().getId()));
+        customer.setDateCreated(new Date());
+        return repo.save(customer);
     }
 
     @Transactional
     @Override
     public Customer update(Customer customer) {
         Customer target=null;
+        User user=userService.get(customer.getCreatedBy().getId());
         if(customer!=null && customer.getId()!=null){
             target=entityManager.find(Customer.class, customer.getId());
+            target.setModifiedBy(entityManager.find(User.class,userService.getCurrentUser().getId()));
             BeanUtils.copyProperties(customer, target);
+            target.setCreatedBy(user);
+            target.setDateModified(new Date());
             return entityManager.merge(target);
         }
 

@@ -1,7 +1,9 @@
 var supplierTable=null
+let spcontext=null;
 $(document).ready(function () {
+    spcontext=$('#context').val()
     $.ajax({
-        'url': "/suppliers/list",
+        'url': `${spcontext}/suppliers/list`,
         'method': "GET",
         'contentType': 'application/json'
     }).done(function (data) {
@@ -26,7 +28,7 @@ $(document).ready(function () {
                         return ` <a class="btn btn-success text-white"><i class="fa fa-plus-circle "></i> Supplier</a>`
                     },
                     action: function ( e, dt, node, config ) {
-                        location.href="/suppliers-creation"
+                        location.href=`${spcontext}/suppliers-creation`
                     }
                 },
                 {
@@ -171,7 +173,7 @@ $(document).ready(function () {
                     title: 'Edit',
                     wrap: true,
                     "render": function (data) {
-                                return `<a href="/suppliers-creation?supplierId=${data}" class="btn btn-outline-primary" ><i class="fa fa-pencil-square-o"></i></a>`
+                                return `<a href="${spcontext}/suppliers-creation?supplierId=${data}" class="btn btn-outline-primary" ><i class="fa fa-pencil-square-o"></i></a>`
                 } },
                 { 'data': 'id',
                     title: 'Trash',

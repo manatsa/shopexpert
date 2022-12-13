@@ -67,6 +67,7 @@ public class UserController {
         User user=(userId!=null)?userService.get(userId):null;
         model.addAttribute("command", user==null?new User():user);
         model.addAttribute("statuses", Status.values());
+        model.addAttribute("editing", userId!=null);
         model.addAttribute("types", UserType.values());
         model.addAttribute("levels", UserLevel.values());
         List<String> privileges=userService.getCurrentUser().getUserRoles().stream().map(role->role.getPrivileges().stream().map(privilege -> privilege.getPrintName())).collect(Collectors.toList()).stream().map(stringStream -> stringStream.collect(Collectors.joining(","))).collect(Collectors.toList());

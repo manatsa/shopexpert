@@ -1,6 +1,6 @@
 <%@include file="../template/header.jspf" %>
 <%@include file="../template/notification.jspf"%>
-<div class="container rounded-body bg-black bg-opacity-10">
+<div class="container rounded-body  bg-opacity-10">
     <div class="rounded-body">
         <%--@elvariable id="command" type="com.mana.limo.domain.Supplier"--%>
         <form:form commandName="command"  >
@@ -60,7 +60,7 @@
                     </div>
                 </div>
                 <div class="col-md-6">
-                    <div class="mb-3 form-floating">
+                    <div class="mui-textfield mui-textfield--float-label">
                         <form:input   path="email"   />
                         <label for="email">Supplier Email</label>
                     </div>
@@ -72,7 +72,7 @@
 
 
             <div class="d-flex justify-content-between">
-                <a href="/suppliers-list" class="mui-btn mui-btn--danger">Cancel</a>
+                <a onclick="window.history.back()" class="mui-btn mui-btn--danger">Cancel</a>
                 <button type="submit" class="mui-btn mui-btn--primary">Save</button>
             </div>
 

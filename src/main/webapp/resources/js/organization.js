@@ -1,7 +1,9 @@
 var orgTable=null
+let ocontext=null;
 $(document).ready(function () {
+    ocontext=$('#context').val()
     $.ajax({
-        'url': "/organizations/list",
+        'url': `${ocontext}/organizations/list`,
         'method': "GET",
         'contentType': 'application/json'
     }).done(function (data) {
@@ -26,7 +28,7 @@ $(document).ready(function () {
                         return ` <a class="btn btn-success text-white"><i class="fa fa-plus-circle "></i> Organization</a>`
                     },
                     action: function ( e, dt, node, config ) {
-                        location.href="/orgs-creation"
+                        location.href=`${ocontext}/orgs-creation`
                     }
                 },
                 {
@@ -143,7 +145,7 @@ $(document).ready(function () {
                     title: 'Edit',
                     wrap: true,
                     "render": function (data) {
-                                return `<a href="/orgs-creation?productId=${data}" class="btn btn-outline-primary" ><i class="fa fa-pencil-square-o"></i></a>`
+                                return `<a href="${ocontext}/orgs-creation?productId=${data}" class="btn btn-outline-primary" ><i class="fa fa-pencil-square-o"></i></a>`
                 } },
                 { 'data': 'id',
                     title: 'Trash',

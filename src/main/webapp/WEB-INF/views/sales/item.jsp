@@ -76,17 +76,24 @@
             <div class="row">
                 <div class="col-md-6">
                     <div class="ui-widget mui-textfield mui-textfield--float-label">
-                        <input type="text" class="modern" id="search-box" />
+                        <form:input type="text" class="modern" path="customerName" id="search-box" />
                         <label for="search-box" >Search Customer</label>
                     </div>
-                    <div>
+                    <div class="col-md-6">
                         <form:hidden  id="search-box2" path="customer"  />
                     </div>
 
                 </div>
 
                 <div class="col-md-6">
-                    //Nothing yet
+                    <div class="col-md-6 mui-select">
+                        <form:select path="currency" itemLabel="name" itemValue="code" items="${currencies}"
+                                     required="required" />
+                        <label for="currency">Transaction Currency</label>
+                        <div class="text-danger">
+                            <form:errors path="currency"/>
+                        </div>
+                    </div>
                 </div>
 
             </div>
@@ -101,6 +108,7 @@
                         <th>Name</th>
                         <th>Details</th>
                         <th>Packaging</th>
+                        <th>Items</th>
                         <th>Price</th>
                         <th>Quantity</th>
                         <th>Add</th>
@@ -135,7 +143,7 @@
 
             <div class="vertical-padded">
                 <div class="padded d-flex justify-content-between ">
-                    <a href="/sales-list" class="btn btn-outline-danger">Cancel</a>
+                    <a onclick="window.history.back()" class="btn btn-outline-danger">Cancel</a>
                     <button type="submit" class="btn btn-success">Save</button>
                 </div>
             </div>

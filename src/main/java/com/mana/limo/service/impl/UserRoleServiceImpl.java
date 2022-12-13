@@ -1,11 +1,13 @@
 package com.mana.limo.service.impl;
 
+import com.mana.limo.domain.Privilege;
 import com.mana.limo.domain.User;
 import com.mana.limo.domain.UserRole;
 import com.mana.limo.repo.UserRoleRepo;
 import com.mana.limo.service.PrivilegeService;
 import com.mana.limo.service.UserRoleService;
 import com.mana.limo.service.UserService;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -13,6 +15,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 
 import javax.annotation.Resource;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
@@ -33,6 +37,8 @@ public class UserRoleServiceImpl implements UserRoleService {
     private UserRoleRepo userRoleRepo;
     @Resource
     private UserService userService;
+    @PersistenceContext
+    private EntityManager entityManager;
 
     @Autowired
     PrivilegeService privilegeService;
@@ -64,10 +70,9 @@ public class UserRoleServiceImpl implements UserRoleService {
     @Override
     @Transactional
     public UserRole save(UserRole t) {
-        if (t.getId() == null) {
-            t.setId(UUID.randomUUID().toString());
-            return userRoleRepo.save(t);
-        }
+        t.setId(UUID.randomUUID().toString());
+        t.setCreatedBy(userService.get(userService.getCurrentUser().getId()));
+        t.setDateCreated(new Date());
         t.setPrivileges(t.getPrivileges().stream().map(p->privilegeService.get(p.getId())).collect(Collectors.toSet()));
         return userRoleRepo.save(t);
     }
@@ -103,6 +108,21 @@ public class UserRoleServiceImpl implements UserRoleService {
     @Override
     public Set<UserRole> findByNamesIn(Set<String> names) {
         return userRoleRepo.findByNamesIn(names);
+    }
+
+    @Override
+    @Transactional
+    public UserRole update(UserRole userRole) {
+        UserRole target=null;
+        if(userRole!=null && userRole.getId()!=null){
+            target=entityManager.find(UserRole.class, userRole.getId());
+            BeanUtils.copyProperties(userRole, target);
+            target.setCreatedBy(userService.get(userRole.getCreatedBy().getId()));
+            target.setModifiedBy(entityManager.find(User.class,userService.getCurrentUser().getId()));
+            target.setDateModified(new Date());
+            return entityManager.merge(target);
+        }
+        return null;
     }
 
 

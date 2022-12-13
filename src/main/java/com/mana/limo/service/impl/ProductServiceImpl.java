@@ -45,6 +45,7 @@ public class ProductServiceImpl implements ProductService {
         return repo.findAll();
     }
 
+    @Transactional
     @Override
     public Product Save(Product product) {
             product.setCreatedBy(entityManager.find(User.class,userService.getCurrentUser().getId()));
@@ -53,13 +54,16 @@ public class ProductServiceImpl implements ProductService {
             return repo.save(product);
     }
 
+    @Transactional
     @Override
     public Product update(String id,Product product) {
         Product target=null;
         if(id!=null){
             target=entityManager.find(Product.class, id);
             product.setModifiedBy(userService.getCurrentUser());
+            product.setCreatedBy(userService.get(product.getCreatedBy().getId()));
             BeanUtils.copyProperties(product, target);
+            target.setModifiedBy(userService.get(userService.getCurrentUser().getId()));
             target.setDateModified(new Date());
             return entityManager.merge(target);
         }

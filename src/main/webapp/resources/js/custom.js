@@ -2,64 +2,45 @@
 
 $(document).ready(()=> {
 
-    $('div.dataTables_filter input').addClass('mui-textfield mui-textfield--float-label');
 
     $('.datepicker').datepicker()
 
-    let dialog = bootbox.dialog({
-        message: '<div class="text-center"><i class="fa fa-spin fa-spinner"></i> Loading...</div>',
-        closeButton: false,
-        show: false,
-    })
+    let ajaxCallModal = new bootstrap.Modal(document.getElementById('ajaxCallModal'), { keyboard: false})
 
+    $("#sale-accordion").accordionjs({
+        // Allow self close.(data-close-able)
+        closeAble   : true,
 
-    var modal = new tingle.modal({
-        footer: true,
-        stickyFooter: false,
-        closeMethods: ['overlay', 'button', 'escape'],
-        closeLabel: "Close",
-        cssClass: ['custom-class-1', 'custom-class-2'],
-        onOpen: function () {
-            console.log('modal open');
+        // Close other sections.(data-close-other)
+        closeOther  : true,
+
+        // Animation Speed.(data-slide-speed)
+        slideSpeed  : 150,
+
+        // The section open on first init. A number from 1 to X or false.(data-active-index)
+        activeIndex : 1,
+
+        // Callback when a section is open
+        openSection: function( section ){
+            let org=$('#organization')
+            onOrganizationSelectChange(org)
         },
-        onClose: function () {
-            console.log('modal closed');
-        },
-        beforeClose: function () {
-            // here's goes some logic
-            // e.g. save content before closing the modal
-            return true; // close the modal
-            // return false; // nothing happens
-        }
+
+        // Callback before a section is open
+        beforeOpenSection: function( section ){},
     });
-
-    modal.setContent(`
-        <div class="spinner-grow text-danger" role="status">
-            <span class="visually-hidden">Loading...</span>
-        </div>
-        <div class="spinner-grow text-primary" role="status">
-            <span class="visually-hidden">Loading...</span>
-        </div>
-        <div class="spinner-grow text-light" role="status">
-            <span class="visually-hidden">Loading...</span>
-        </div>
-        <div class="spinner-grow text-secondary" role="status">
-            <span class="visually-hidden">Loading...</span>
-        </div>
-    `)
 
     $.ajaxSetup({
         beforeSend: async function () {
-            // dialog.show()
-            // modal.open()
-            showLoading(true)
+            // ajaxCallModal.show();
+            showLoading(true);
 
 
         },
         complete: function () {
-            showLoading(false)
-            // modal.close()
-            // dialog.hide()
+            // ajaxCallModal.hide();
+            showLoading(false);
+
 
         }
     });
@@ -91,5 +72,32 @@ $(document).ready(()=> {
     }
 
     showLoading(true)
+
+
 })
+
+function showOperationStatusDialog(title,message,small, type, time) {
+    $('#operationHeader').html(`
+        <h4 class="modal-title text-white bold" >${title}</h4>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+    `)
+    $('#operationHeader').addClass(`bg-${type}`)
+    $('#operationFooter').html(`
+        <button type="button" class="btn btn-outline-${type}"  data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-outline-${type}" data-bs-dismiss="modal">OK</button>
+    `)
+
+    $('#operationMessage').html(`
+        <h2 > ${message}</h2>
+        <p class="small" id="operationSubMessage">${small}</p>
+    `)
+    let operationMessageModal = new bootstrap.Modal(document.getElementById('operationMessageModal'), { keyboard: true})
+    operationMessageModal.show();
+    if(time) {
+        setTimeout(() => {
+            operationMessageModal.hide();
+        }, Number(time))
+    }
+
+}
 

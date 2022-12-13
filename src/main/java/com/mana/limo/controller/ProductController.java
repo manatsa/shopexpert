@@ -13,6 +13,7 @@ import com.mana.limo.util.Message;
 import com.mana.limo.validation.ProductValidation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -34,7 +35,7 @@ import java.util.stream.Collectors;
 @Controller
 @RequestScope
 @Validated
-@Transactional
+@Transactional(propagation = Propagation.SUPPORTS)
 public class ProductController {
 
     @Autowired
@@ -62,6 +63,7 @@ public class ProductController {
         return "product/list";
     }
 
+    @Transactional
     @GetMapping("/product-creation")
     public String createProduct(Model model,@RequestParam(value = "productId", required = false) String productId, HttpServletRequest request){
         Product product=(productId!=null)?productService.get(productId):null;
@@ -78,6 +80,7 @@ public class ProductController {
         return "product/item";
     }
 
+    @Transactional
     @PostMapping("/product-creation")
     public String makeProduct(Model model, @ModelAttribute("item") @Valid Product product, BindingResult result){
         model.addAttribute("msg", new Message("Product saved successfully!", MsgType.success));

@@ -72,7 +72,7 @@
 
 
             <div class="d-flex justify-content-between">
-                <a href="/customers-list" class="mui-btn mui-btn--danger">Cancel</a>
+                <a onclick="window.history.back()" class="mui-btn mui-btn--danger">Cancel</a>
                 <button type="submit" class="mui-btn mui-btn--primary">Save</button>
             </div>
 

@@ -7,7 +7,13 @@ import java.util.List;
 
 public interface InventoryService {
     public List<Inventory> getAllInventory();
-    public Inventory Save(Inventory inventory);
+    public Inventory save(Inventory inventory);
+
+    public Inventory update(Inventory inventory);
 
     public Inventory get(String id);
+
+    public Inventory findByProductAndPriceAndForeignCode(Product product, double price, String code);
+
+    public List<Inventory> searchInventoryForSale(String term);
 }

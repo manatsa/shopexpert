@@ -1,7 +1,9 @@
 var supplierTable=null
+let ccontext=null;
 $(document).ready(function () {
+    ccontext=$('#context').val()
     $.ajax({
-        'url': "/customers/list",
+        'url': `${ccontext}/customers/list`,
         'method': "GET",
         'contentType': 'application/json'
     }).done(function (data) {
@@ -26,7 +28,7 @@ $(document).ready(function () {
                         return ` <a class="btn btn-success text-white"><i class="fa fa-plus-circle "></i> Customer</a>`
                     },
                     action: function ( e, dt, node, config ) {
-                        location.href="/customers-creation"
+                        location.href=`${ccontext}/customers-creation`
                     }
                 },
                 {
@@ -171,7 +173,7 @@ $(document).ready(function () {
                     title: 'Edit',
                     wrap: true,
                     "render": function (data) {
-                                return `<a href="/customers-creation?customerId=${data}" class="btn btn-outline-primary" ><i class="fa fa-pencil-square-o"></i></a>`
+                                return `<a href="${ccontext}/customers-creation?customerId=${data}" class="btn btn-outline-primary" ><i class="fa fa-pencil-square-o"></i></a>`
                 } },
                 { 'data': 'id',
                     title: 'Trash',

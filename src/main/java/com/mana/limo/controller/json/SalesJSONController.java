@@ -1,11 +1,9 @@
 package com.mana.limo.controller.json;
 
 import com.mana.limo.controller.SaleController;
-import com.mana.limo.domain.Customer;
-import com.mana.limo.domain.Product;
-import com.mana.limo.domain.Sale;
-import com.mana.limo.domain.SaleItem;
+import com.mana.limo.domain.*;
 import com.mana.limo.dto.SaleItemDTO;
+import com.mana.limo.service.InventoryService;
 import com.mana.limo.service.ProductService;
 import com.mana.limo.service.SaleItemService;
 import com.mana.limo.service.SaleService;
@@ -39,6 +37,9 @@ public class SalesJSONController {
     @Autowired
     SaleItemService saleItemService;
 
+    @Autowired
+    InventoryService inventoryService;
+
     @GetMapping("/list")
     public List<Sale> getAllProducts(){
         return saleService.getAllActiveSales().stream().map(sale -> {
@@ -53,42 +54,48 @@ public class SalesJSONController {
     }
 
     @RequestMapping("/add-sale-item-to-sale")
-    public List<SaleItemDTO> addSaleItem(@RequestParam("productId") String productId, @RequestParam("quantity") int quantity){
+    public List<SaleItemDTO> addSaleItem(@RequestParam("inventoryId") String inventoryId, @RequestParam("quantity") int quantity){
 
-        Optional<SaleItemDTO> saleItemDTOOptional=SaleController.saleItemDTOS.stream().filter(saleItemDTO1 -> saleItemDTO1.getProduct().getId().equals(productId)).findFirst();
+//        System.err.println("Inventory ID::"+inventoryId);
+        Optional<SaleItemDTO> saleItemDTOOptional=SaleController.saleItemDTOS.stream().filter(saleItemDTO1 -> saleItemDTO1.getInventory().getId().equals(inventoryId)).findFirst();
         SaleItemDTO saleItemDTO=saleItemDTOOptional!=null && saleItemDTOOptional.isPresent()?saleItemDTOOptional.get():null;
-        SaleController.saleItemDTOS=SaleController.saleItemDTOS.stream().filter(saleItemDTO1 -> !saleItemDTO1.getProduct().getId().equals(productId)).collect(Collectors.toSet());
+        SaleController.saleItemDTOS=SaleController.saleItemDTOS.stream().filter(saleItemDTO1 -> !saleItemDTO1.getInventory().getId().equals(inventoryId)).collect(Collectors.toSet());
 
+        //search if inventory item is already picked and in the list of items to be bought
         if(saleItemDTO!=null){
             saleItemDTO.setQuantity(saleItemDTO.getQuantity()+quantity);
             SaleController.saleItemDTOS.add(saleItemDTO);
 
         }else {
-            Product product=productService.get(productId);
-            SaleItemDTO saleDTO=new SaleItemDTO(quantity, product);
+//      to add new inventory item to the list of items to be bought
+            Inventory inventory=inventoryService.get(inventoryId);
+            SaleItemDTO saleDTO=new SaleItemDTO(quantity, inventory);
             SaleController.saleItemDTOS.add(saleDTO);
         }
+        //convert Set toList
         List<SaleItemDTO> saleItemDTOList= SaleController.saleItemDTOS.stream().collect(Collectors.toList());
+        System.err.println(saleItemDTOList);
         return saleItemDTOList;
     }
 
     @RequestMapping("/remove-sale-item-to-sale")
-    public List<SaleItemDTO> removeSaleItem(@RequestParam("productId") String productId, @RequestParam("quantity") int quantity){
-        Optional<SaleItemDTO> saleItemDTOOptional=SaleController.saleItemDTOS.stream().filter(saleItemDTO1 -> saleItemDTO1.getProduct().getId().equals(productId)).findFirst();
+    public List<SaleItemDTO> removeSaleItem(@RequestParam("inventoryId") String inventoryId, @RequestParam("quantity") int quantity){
+        Optional<SaleItemDTO> saleItemDTOOptional=SaleController.saleItemDTOS.stream().filter(saleItemDTO1 -> saleItemDTO1.getInventory().getId().equals(inventoryId)).findFirst();
         SaleItemDTO saleItemDTO=saleItemDTOOptional!=null && saleItemDTOOptional.isPresent()?saleItemDTOOptional.get():null;
-        SaleController.saleItemDTOS=SaleController.saleItemDTOS.stream().filter(saleItemDTO1 -> !saleItemDTO1.getProduct().getId().equals(productId)).collect(Collectors.toSet());
+        SaleController.saleItemDTOS=SaleController.saleItemDTOS.stream().filter(saleItemDTO1 -> !saleItemDTO1.getInventory().getId().equals(inventoryId)).collect(Collectors.toSet());
         if(saleItemDTO!=null && saleItemDTO.getQuantity()>quantity){
             saleItemDTO.setQuantity(saleItemDTO.getQuantity()-quantity);
             SaleController.saleItemDTOS.add(saleItemDTO);
         }
-        return SaleController.saleItemDTOS.stream().toList();
+        return SaleController.saleItemDTOS.stream().collect(Collectors.toList());
     }
 
 
     @RequestMapping("/get-sale-item-to-sale")
     public List<SaleItemDTO> getSaleItem(){
-        List<SaleItemDTO> items=SaleController.saleItemDTOS.stream().toList();
+        List<SaleItemDTO> items=SaleController.saleItemDTOS.stream().collect(Collectors.toList());
         return items;
     }
 
 }
+

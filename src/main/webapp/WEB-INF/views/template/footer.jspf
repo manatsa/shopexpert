@@ -1,17 +1,19 @@
+<c:if test="${pageContext.request.getSession(null).getAttribute('report_name')==null}">
+    <nav class="navbar bg-success rounded fixed-bottom">
+        <div class="container-fluid">
+            <div class="col-md-12 justify-content-around row">
+                <div class="col-md-6">
+                    <a class="navbar-brand text-light" style="font-size: small" href="#"><span class="justify-content-start">Copyright &copy; 2022</span></a>
+                </div>
+                <div class="col-md-6 d-flex flex-row-reverse text-light">
+                    <span class="justify-content-end">Mneulite Investments</span>
+                </div>
+            </div>
 
-<nav class="navbar bg-success rounded fixed-bottom">
-    <div class="container-fluid">
-        <div class="col-md-12 justify-content-around row">
-            <div class="col-md-6">
-                <a class="navbar-brand text-light" style="font-size: small" href="#"><span class="justify-content-start">Copyright &copy; 2022</span></a>
-            </div>
-            <div class="col-md-6 d-flex flex-row-reverse text-light">
-                <span class="justify-content-end">Mneulite Investments</span>
-            </div>
         </div>
+    </nav>
+</c:if>
 
-    </div>
-</nav>
 </div>
 </div> 
 <script src="<c:url value="/resources/js/jquery-3.6.1.min.js" /> "></script>
@@ -35,17 +37,33 @@
 <script src="<c:url value="/resources/js/businessUnit.js" /> "></script>
 <script src="<c:url value="/resources/js/customer.js" /> "></script>
 <script src="<c:url value="/resources/js/supplier.js" /> "></script>
-<%--<script src="<c:url value="js/invoice.js" /> "></script>--%>
-<%--<script src="<c:url value="js/quotation.js" /> "></script>--%>
+<script src="<c:url value="/resources/js/inventory.js" /> "></script>
+<script src="<c:url value="/resources/js/privilege.js" /> "></script>
 <script src="<c:url value="/resources/js/role.js" /> "></script>
 <script src="<c:url value="/resources/js/user.js" /> "></script>
+<script src="<c:url value="/resources/js/inventory.js" /> "></script>
 <script src="<c:url value="/resources/jquery-ui/jquery-ui.js" /> "></script>
 <script src="<c:url value="/resources/dialog/tingle.min.js" /> "></script>
 <script src="<c:url value="/resources/dialog/bootbox.min.js" /> "></script>
 <script src="<c:url value="/resources/js/custom.js" /> "></script>
 <script src="<c:url value="/resources/js/custom-dialogs.js" /> "></script>
 <script src="<c:url value="/resources/js/custom-autocomplete.js" /> "></script>
+<script src="<c:url value="/resources/js/asset.js" /> "></script>
+<script src="<c:url value="/resources/js/rate.js" /> "></script>
+<script src="<c:url value="/resources/jquery-ui/jquery-ui.min.js" /> "></script>
+<script src="<c:url value="/resources/jquery-ui/jquery.autocomplete.min.js" /> "></script>
+<script src="<c:url value="/resources/accordion/accordion.min.js" /> "></script>
+<%--<script src="<c:url value="/resources/js/custom-accordion.js" /> "></script>--%>
+<%--<% out.println(request.getAttribute("javax.servlet.forward.request_uri")); %>--%>
+<script>
+    $(document).ready(()=>{
+        let logged=$('#logged').val();
+        if(Boolean(logged)){
+            showOperationStatusDialog('Login Feedback Message','You are now logged in!','You can now access all authorized features','info',3000)
+        }
+    })
 
+</script>
 
 </body>
 </html>

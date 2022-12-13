@@ -1,38 +1,80 @@
 <div class="container">
-    <div id="carouselExampleDark" class="carousel carousel-dark slide" data-bs-ride="carousel">
+    <div id="carouselMain" class="carousel carousel-light slide" data-bs-ride="carousel">
         <div class="carousel-indicators">
-            <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
-            <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="1" aria-label="Slide 2"></button>
-            <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="2" aria-label="Slide 3"></button>
+            <button type="button" data-bs-target="#carouselMain" data-bs-slide-to="0" class="active" ></button>
+            <button type="button" data-bs-target="#carouselMain" data-bs-slide-to="1" aria-label="Slide 2"></button>
+            <button type="button" data-bs-target="#carouselMain" data-bs-slide-to="2" aria-label="Slide 3"></button>
+            <button type="button" data-bs-target="#carouselMain" data-bs-slide-to="3" aria-label="Slide 4"></button>
         </div>
         <div class="carousel-inner">
-            <div class="carousel-item active" data-bs-interval="10000">
-                <img src="images/solar.jfif" class="d-block w-100 padded h-50" alt="solar">
-                <div class="carousel-caption d-none d-md-block">
-                    <h5>First slide label</h5>
-                    <p>Some representative placeholder content for the first slide.</p>
+            <div class="carousel-item active" data-bs-interval="7000">
+                    <div class="rounded bg-dark bg-opacity-10 w-100 horizontally-padded" style="min-height: 400px">
+                        <h3 class="text-success">Our Core Business</h3>
+                        <p class="text-success">Chiedza Centre (Mneulite Investments Pvt. Ltd) deals mainly in Three categories of goods and these are:
+                            <br/>&nbsp;&nbsp;1. Motor Spares
+                            <br/>&nbsp;&nbsp;2. Solar Products.
+                            <br/>&nbsp;&nbsp;3. Stationery.
+                            <br/>We offer both WHOLESALE and RETAIL. Wholesale id offerred on
+                            <br/>&nbsp;&nbsp; 1. All Motor Spares
+                            <br/>&nbsp;&nbsp; 2. Select Solar products
+                        </p>
+                    </div>
+
+            </div>
+
+            <div class="carousel-item" data-bs-interval="7000">
+                <div class="rounded bg-dark bg-opacity-10 w-100 horizontally-padded" style="min-height: 400px">
+                    <h3 class="text-success">Solar Systems</h3>
+                    <p class="text-success">Chiedza Centre deals in solar products. These include
+                        <br/>&nbsp;&nbsp;1. flood lights
+                        <br/>&nbsp;&nbsp;2. solar panels
+                        <br/>&nbsp;&nbsp;3. solar batteries
+                        <br/>&nbsp;&nbsp;4. hybrid
+                        <br/>&nbsp;&nbsp;5. simple inverters.
+                        <br/>&nbsp;&nbsp;6. etc
+                        <br/>We also do wholesale for some select products.
+                    </p>
                 </div>
             </div>
-            <div class="carousel-item" data-bs-interval="2000">
-                <img src="images/solar_system.jfif" class="d-block w-100 padded h-50" alt="solar system">
-                <div class="carousel-caption d-none d-md-block">
-                    <h5>Second slide label</h5>
-                    <p>Some representative placeholder content for the second slide.</p>
+
+            <div class="carousel-item" data-bs-interval="7000">
+                <div class="rounded bg-dark bg-opacity-10 w-100 horizontally-padded" style="min-height: 400px">
+                    <h3 class="text-success">Motor Spares</h3>
+                    <p class="text-success">At Chiedza we also deal extensively in motor spares. These include
+                        <br/>&nbsp;&nbsp;1. suspension spares
+                        <br/>&nbsp;&nbsp;2. service kits
+                        <br/>&nbsp;&nbsp;3. body parts
+                        <br/>&nbsp;&nbsp;4. oils
+                        <br/>&nbsp;&nbsp;5. motor repair tools.
+                        <br/>The tools include
+                        <br/>&nbsp;&nbsp;1. spanners
+                        <br/>&nbsp;&nbsp;2. gasket makers
+                        <br/>&nbsp;&nbsp;3. seat covers,
+                        <br/>&nbsp;&nbsp;4. etc</p>
+                </div>
+                </div>
+
+            <div class="carousel-item" data-bs-interval="7000">
+                <div class="rounded bg-dark bg-opacity-10 w-100 horizontally-padded" style="min-height: 400px">
+                    <h3 class="text-success">Stationery </h3>
+                    <p class="text-success">Chiedza Centre is also a centre for stationery. We deal in
+                        <br/>&nbsp;&nbsp; 1. exercise books
+                        <br/>&nbsp;&nbsp; 2. files
+                        <br/>&nbsp;&nbsp; 3. pens
+                        <br/>&nbsp;&nbsp; 4. erasers
+                        <br/>&nbsp;&nbsp; 5.crayons
+                        <br/>&nbsp;&nbsp; 6. etc.
+                        <br/> We only have retail in this  category.
+                    </p>
                 </div>
             </div>
-            <div class="carousel-item">
-                <img src="images/solar_system.jfif" class="d-block w-100" alt="solar system">
-                <div class="carousel-caption d-none d-md-block">
-                    <h5>Third slide label</h5>
-                    <p>Some representative placeholder content for the third slide.</p>
-                </div>
-            </div>
+
         </div>
-        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleDark" data-bs-slide="prev">
+        <button class="carousel-control-prev" type="button" data-bs-target="#carouselMain" data-bs-slide="prev">
             <span class="carousel-control-prev-icon" aria-hidden="true"></span>
             <span class="visually-hidden">Previous</span>
         </button>
-        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleDark" data-bs-slide="next">
+        <button class="carousel-control-next" type="button" data-bs-target="#carouselMain" data-bs-slide="next">
             <span class="carousel-control-next-icon" aria-hidden="true"></span>
             <span class="visually-hidden">Next</span>
         </button>

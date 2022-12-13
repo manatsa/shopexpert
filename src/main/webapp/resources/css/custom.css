@@ -3,7 +3,7 @@
 }
 
 .indented{
-    padding-left: 50px;
+    padding-left: 20px;
     padding-right: 50px;
     border-radius: 10px;
 }
@@ -15,7 +15,6 @@
 
 
 .rounded-body{
-    margin-top: 5px;
     border-radius: 10px;
 }
 
@@ -36,7 +35,12 @@
     margin-left: 15px;
     margin-right: 15px;
 }
-
+.horizontally-padded{
+    padding: 20px;
+    margin: 10px;
+    border: 3px solid green;
+    border-radius: 50px;
+}
 div.dt-buttons {
     width:100%;
 }
@@ -156,4 +160,16 @@ table.dataTable.productSearchList tbody th, table.dataTable.productSearchList tb
 
 .right-top{
     float: end;
+}
+
+.x-small{
+    font-size: x-small;
+}
+
+.xx-small{
+    font-size: xx-small;
+}
+
+.bordered{
+    border: 3px solid green;
 }

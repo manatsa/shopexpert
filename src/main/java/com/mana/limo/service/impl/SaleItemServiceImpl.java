@@ -2,6 +2,7 @@ package com.mana.limo.service.impl;
 
 import com.mana.limo.domain.*;
 import com.mana.limo.repo.SaleItemRepo;
+import com.mana.limo.service.InventoryService;
 import com.mana.limo.service.ProductService;
 import com.mana.limo.service.SaleItemService;
 import com.mana.limo.service.UserService;
@@ -38,6 +39,9 @@ public class SaleItemServiceImpl implements SaleItemService {
     @Autowired
     ProductService productService;
 
+    @Autowired
+    InventoryService inventoryService;
+
     @Override
     public List<SaleItem> getAllSaleItems() {
         return saleItemRepo.findAll();
@@ -47,6 +51,7 @@ public class SaleItemServiceImpl implements SaleItemService {
     @Override
     public SaleItem Save(SaleItem saleItem) {
         if(saleItem!=null){
+            saleItem.setInventory(inventoryService.get(saleItem.getInventory().getId()));
             return saleItemRepo.save(saleItem);
         }
         return null;
@@ -81,8 +86,8 @@ public class SaleItemServiceImpl implements SaleItemService {
     }
 
     @Override
-    public SaleItem getByProductAndQuantity(String productId, int quantity) {
-        return saleItemRepo.getByProductIdAndQuantity(productId, quantity);
+    public SaleItem getByProductAndQuantity(String inventoryId, int quantity) {
+        return saleItemRepo.getByInventoryIdAndQuantity(inventoryId, quantity);
     }
 
     @Override

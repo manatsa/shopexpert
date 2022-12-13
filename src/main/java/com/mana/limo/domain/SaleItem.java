@@ -28,8 +28,8 @@ public class SaleItem implements Serializable {
     private long id;
     private int quantity;
     @ManyToOne(fetch = FetchType.EAGER, optional = false)
-    @JoinColumn(name = "product_id", nullable = false)
-    private Product product;
+    @JoinColumn(name = "inventory_id", nullable = false)
+    private Inventory inventory;
     @Transient
     private String printName;
     @ManyToOne(optional = false, fetch = FetchType.EAGER)
@@ -37,15 +37,15 @@ public class SaleItem implements Serializable {
     @JsonIgnore
     private  Sale sale;
 
-    public SaleItem(int quantity, Product product){
+    public SaleItem(int quantity, Inventory inventory){
         this.quantity=quantity;
-        this.product=product;
+        this.inventory=inventory;
     }
 
     public String getPrintName() {
-        if(product==null){
+        if(inventory==null){
             return "";
         }
-        return product.getDescription()+"-"+product.getName()+"-"+product.getPackaging();
+        return inventory.getProduct().getDescription()+"-"+inventory.getProduct().getName()+"-"+inventory.getProduct().getPackaging();
     }
 }

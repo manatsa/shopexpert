@@ -33,11 +33,10 @@ import java.util.Set;
  */
 @Data
 @NoArgsConstructor
-//@AllArgsConstructor
+@AllArgsConstructor
 @EqualsAndHashCode
 @Entity @JsonIgnoreProperties(ignoreUnknown = true)
 @Table(name = "privilege")
-//@ToString(exclude = {"roles"})
 public class Privilege extends BaseName {
 
     @Transient
@@ -55,7 +54,7 @@ public class Privilege extends BaseName {
 
     @Override
     public String toString(){
-        return getPrintName();
+        return "ID::"+this.getId()+", Name::"+getPrintName();
     }
     
 }

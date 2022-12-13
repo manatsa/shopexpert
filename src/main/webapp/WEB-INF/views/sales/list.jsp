@@ -15,7 +15,7 @@
                             <button type="button" class="btn-close pull-right" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
-                            <table class="table table-responsive  bg-light table-striped" style="width: 100%">
+                            <table class="mui-table mui-table--bordered" style="width: 100%">
                                 <thead>
                                 <th>PROPERTY</th>
                                 <th>PROPERTY VALUE</th>
@@ -93,8 +93,8 @@
             </div>
 
 
-            <div style="width:100%; margin-bottom: 100px; margin-top: 20px; overflow: scroll;">
-                <table id="saleList" class="table-responsive table-striped  mui-table mui-table--bordered" >
+            <div style="width:100%; margin-bottom: 100px; overflow: scroll;">
+                <table id="saleList" class="mui-table mui-table--bordered" >
                     <thead>
                     <th>Date Created</th>
                     <th>Receipt #</th>
@@ -105,7 +105,7 @@
                     <th>Sale Total</th>
                     <th>View</th>
                     <th>Edit</th>
-                    <th>Trash</th>
+                    <th>Print</th>
                     </thead>
                     <tbody>
                     <tfoot>
@@ -118,7 +118,7 @@
                     <th>Sale Total</th>
                     <th>View</th>
                     <th>Edit</th>
-                    <th>Trash</th>
+                    <th>Print</th>
                     </tfoot>
                 </table>
             </div>
